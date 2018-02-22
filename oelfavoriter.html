@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mmmmm beeer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAl6h2TDLbhuqPvCcRenX7KVgvtPtJVUDE",
+            authDomain: "bringmybeerbro-a2b2e.firebaseapp.com",
+            databaseURL: "https://bringmybeerbro-a2b2e.firebaseio.com",
+            projectId: "bringmybeerbro-a2b2e",
+            storageBucket: "bringmybeerbro-a2b2e.appspot.com",
+            messagingSenderId: "787446559372"
+        };
+        firebase.initializeApp(config);
+
+    </script>
+
+    <script>
+        //      https://github.com/larsha/bolaget.io
+        //      BreweryDB - API-key: 7c3c827d07c560a0ff836f3b889f32e8
+
+        window.addEventListener("load", function() {
+            // Initialize Firebase
+            const db = firebase.database();
+            let container = document.getElementsByClassName("container")[0];
+
+            let beerFavorites = {};
+
+
+
+
+
+
+            //carl är bara ett exempel, key för riktiga användaren ska vara där
+            db.ref("users/carl/favorites/").on("child_added", function(snapshot) {
+                let database = snapshot.val();
+                beerFavorites = {
+                    name: database.name,
+                    style: database.style,
+                    description: database.description,
+                    brewery: database.brewery,
+                    img: database.img,
+
+                    //                    id: database.key,
+                }
+                let favoriteArray = [];
+                favoriteArray.push(beerFavorites);
+                output(beerFavorites);
+            })
+
+            function output(favoriteArray) {
+                console.log(favoriteArray)
+                //                for (let i = 0; i < favoriteArray.length; i++) {
+                let content = {
+                    div: document.createElement("div"),
+                    img: document.createElement("img"),
+                    beerName: document.createElement("h2"),
+                    style: document.createElement("h4"),
+                    brewery: document.createElement("h5"),
+                    description: document.createElement("p"),
+                    favorite: document.createElement("button"),
+                }
+
+                content.div.setAttribute("class", "card-body beer");
+                content.img.setAttribute("src", favoriteArray.img);
+                content.img.setAttribute("height", "140px");
+                content.favorite.setAttribute("class", "btn btn-outline-light");
+                content.favorite.setAttribute("id", favoriteArray.id);
+                content.favorite.innerText = "Does it exist?";
+                content.beerName.innerText = favoriteArray.name;
+                content.style.innerText = favoriteArray.style;
+                content.brewery.innerText = favoriteArray.brewery;
+                content.description.innerText = favoriteArray.description;
+
+                content.div.appendChild(content.img);
+                content.div.appendChild(content.beerName);
+                content.div.appendChild(content.style);
+                content.div.appendChild(content.brewery);
+                content.div.appendChild(content.description);
+                content.div.appendChild(content.favorite);
+
+                container.appendChild(content.div);
+            }
+            //            }
+
+        })
+
+
+
+
+
+
+
+
+
+        //            function printOut(beerDB) {
+        //                let container = document.getElementsByClassName("container")[0];
+        //                container.innerHTML = "";
+        //
+        //
+        //                for (let i = 0; i < beerDB.length; i++) {
+        //                    let content = {
+        //                        div: document.createElement("div"),
+        //                        img: document.createElement("img"),
+        //                        beerName: document.createElement("h2"),
+        //                        tagline: document.createElement("h5"),
+        //                        info: document.createElement("p"),
+        //                        favorite: document.createElement("button"),
+        //                    }
+        //
+        //                    content.div.setAttribute("class", "card-body beer");
+        //                    content.img.setAttribute("src", beerDB[i].image_url);
+        //                    content.img.setAttribute("height", "140px");
+        //                    content.favorite.setAttribute("class", "btn btn-outline-light");
+        //                    content.favorite.setAttribute("id", beerDB[i].id);
+        //                    content.favorite.innerText = "Favorite";
+        //                    content.beerName.innerText = beerDB[i].name;
+        //                    content.tagline.innerText = beerDB[i].tagline;
+        //                    content.info.innerText = beerDB[i].description;
+        //
+        //                    content.div.appendChild(content.img);
+        //                    content.div.appendChild(content.beerName);
+        //                    content.div.appendChild(content.tagline);
+        //                    content.div.appendChild(content.info);
+        //                    content.div.appendChild(content.favorite);
+        //
+        //                    container.appendChild(content.div);
+        //                }
+        //            }
+
+
+
+        //        })
+
+    </script>
+    <style>
+        img {
+            float: left;
+            margin-right: 15px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .beer {
+            margin: 0 auto;
+            background-color: rgba(61, 100, 61, 0.7);
+            margin-top: 30px;
+            box-shadow: 5px 5px black;
+            padding: 20px;
+            width: 700px;
+            height: auto;
+        }
+
+        .beer:last-child {
+            margin-bottom: 30px;
+        }
+
+        .btn-outline-light {
+            float: right;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Mina favoriter</h1>
+
+
+    <br>
+    <div class="container card">
+
+    </div>
+
+</body>
+
+</html>
