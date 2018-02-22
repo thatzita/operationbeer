@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untappd API</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAl6h2TDLbhuqPvCcRenX7KVgvtPtJVUDE",
+            authDomain: "bringmybeerbro-a2b2e.firebaseapp.com",
+            databaseURL: "https://bringmybeerbro-a2b2e.firebaseio.com",
+            projectId: "bringmybeerbro-a2b2e",
+            storageBucket: "bringmybeerbro-a2b2e.appspot.com",
+            messagingSenderId: "787446559372"
+        };
+        firebase.initializeApp(config);
+
+    </script>
+
+    <script>
+        //      https://github.com/larsha/bolaget.io
+        //      BreweryDB - API-key: 7c3c827d07c560a0ff836f3b889f32e8
+
+        window.addEventListener("load", function() {
+            // Initialize Firebase
+            const db = firebase.database();
+
+            let clientId = "153D83356A0B65CE0BDB2F2058AA09CEE92F165D";
+            let clientSecret = "7B480C43412EF225E1E7E6F802A05FEE835B016B";
+            let searchBeerBtn = document.getElementById("searchBeerBtn");
+            let searchBeerInput = document.getElementById("searchBeerInput");
+
+            let beerArray = [];
+
+            function printOut(array) {
+                let container = document.getElementsByClassName("container")[0];
+                container.innerHTML = "";
+                let increment = 0;
+
+                for (let i = 0; i < array.length; i++) {
+                    //                        console.log(db[i].id)
+                    let content = {
+                        div: document.createElement("div"),
+
+                        hide: document.createElement("a"),
+                        show: document.createElement("a"),
+                        moreInfo: document.createElement("div"),
+                        arrowUp: document.createElement("div"),
+                        arrowDown: document.createElement("div"),
+
+
+                        img: document.createElement("img"),
+                        beerNameShow: document.createElement("h2"),
+                        beerNameHide: document.createElement("h2"),
+                        style: document.createElement("h4"),
+                        brewery: document.createElement("h5"),
+                        description: document.createElement("p"),
+                        favorite: document.createElement("button"),
+                    }
+
+                    content.div.setAttribute("class", "card-body beer");
+
+
+                    content.hide.setAttribute("id", "hide" + increment);
+                    content.hide.setAttribute("href", "#hide" + increment);
+                    content.hide.setAttribute("class", "hide");
+                    content.arrowUp.setAttribute("class", "arrowUp");
+
+
+                    content.show.setAttribute("id", "show" + increment);
+                    content.show.setAttribute("href", "#show" + increment);
+                    content.show.setAttribute("class", "show");
+                    content.arrowDown.setAttribute("class", "arrowDown");
+
+                    content.moreInfo.setAttribute("class", "details");
+
+                    content.img.setAttribute("src", array[i].beer.beer_label);
+                    content.img.setAttribute("height", "140px");
+
+                    content.favorite.setAttribute("class", "btn btn-outline-light");
+                    content.favorite.setAttribute("id", array[i].beer.bid);
+
+                    content.favorite.innerText = "Favorite";
+                    content.beerNameShow.innerText = array[i].beer.beer_name;
+                    content.beerNameHide.innerText = array[i].beer.beer_name;
+                    content.style.innerText = array[i].beer.beer_style;
+                    content.brewery.innerText = array[i].brewery.brewery_name;
+                    content.description.innerText = array[i].beer.beer_description;
+
+                    content.hide.appendChild(content.arrowDown);
+                    content.hide.appendChild(content.beerNameHide);
+                    content.div.appendChild(content.hide);
+
+                    content.show.appendChild(content.arrowUp);
+                    content.show.appendChild(content.beerNameShow);
+                    content.div.appendChild(content.show);
+
+
+                    content.moreInfo.appendChild(content.img);
+                    content.moreInfo.appendChild(content.style);
+                    content.moreInfo.appendChild(content.brewery);
+                    content.moreInfo.appendChild(content.description);
+                    content.moreInfo.appendChild(content.favorite);
+
+                    content.div.appendChild(content.moreInfo);
+                    container.appendChild(content.div);
+
+                    increment++;
+                }
+            }
+
+            searchBeerBtn.addEventListener("click", function() {
+                beerArray = [];
+                let value = searchBeerInput.value;
+                fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}`)
+                    .then(function(request) {
+                        return request.json();
+                    })
+                    .then(function(json) {
+                        let beerDB = json;
+                        for (let i = 0; i < beerDB.response.beers.items.length; i++) {
+                            beerArray.push(beerDB.response.beers.items[i]);
+                        }
+                        //                    console.log(beerArray[0].brewery.brewery_name)
+                        //                    console.log(beerArray[0].brewery.country) //ska detta användas?
+                        //                    console.log(beerArray[0].beer.bid) //id på öl
+                        //                    console.log(beerArray[0].beer.beer_description) //beskrivning, olika bra beroende på popularitet
+                        //                    console.log(beerArray[0].beer.beer_label) //bild 
+                        //                    console.log(beerArray[0].beer.beer_style) // typ av öl 
+                        //                    console.log(beerArray[0].beer.beer_name) //namnet på ölen
+                        printOut(beerArray);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    })
+            })
+
+
+            window.addEventListener("click", function(e) {
+                let toNumber = parseInt(e.target.id);
+                //                console.log(beerArray)
+                let beerObj = {}
+                for (let i = 0; i < beerArray.length; i++) {
+                    if (toNumber == beerArray[i].beer.bid) {
+                        console.log("match! just like tinder")
+                        beerObj.name = beerArray[i].beer.beer_name;
+                        beerObj.style = beerArray[i].beer.beer_style;
+                        beerObj.description = beerArray[i].beer.beer_description;
+                        beerObj.brewery = beerArray[i].brewery.brewery_name;
+                        beerObj.img = beerArray[i].beer.beer_label;
+                        db.ref("users/carl/favorites/").push(beerObj);
+                    }
+                }
+            })
+        })
+
+    </script>
+    <style>
+        .arrowUp {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+
+            border-bottom: 20px solid white;
+            float: right;
+            top: 0;
+        }
+
+        .arrowDown {
+            top: 0;
+            float: right;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+
+            border-top: 20px solid white;
+        }
+
+        /* unvisited link */
+
+        a:link {
+            color: ghostwhite;
+        }
+
+        /* visited link */
+
+        a:visited {
+            color: ghostwhite;
+        }
+
+        /* mouse over link */
+
+        a:hover {
+            color: antiquewhite;
+            text-decoration: none;
+        }
+
+        /* selected link */
+
+        a:active {
+            color: white;
+        }
+
+        img {
+            float: left;
+            margin-right: 15px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .beer {
+            margin: 0 auto;
+            background-color: rgba(61, 100, 61, 0.7);
+            margin-top: 30px;
+            box-shadow: 5px 5px black;
+            padding: 20px;
+            width: 700px;
+            height: auto;
+        }
+
+        .beer:last-child {
+            margin-bottom: 30px;
+        }
+
+        .btn-outline-light {
+            float: right;
+        }
+
+
+        .details,
+        .show,
+        .hide:target {
+            display: none;
+        }
+
+        .hide:target+.show,
+        .hide:target~.details {
+            display: block;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav>
+        <input id="searchBeerInput" type="search" placeholder="Search for a beer">
+        <button id="searchBeerBtn" class="btn btn-secondary">Search beer!</button>
+    </nav>
+
+    <br>
+    <div class="container card">
+
+    </div>
+
+</body>
+
+</html>

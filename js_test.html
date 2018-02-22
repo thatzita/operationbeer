@@ -74,8 +74,8 @@
             searchBeerBtn.addEventListener("click", function() {
                 let value = searchBeerInput.value;
                 console.log(value);
-                fetch("https://api.punkapi.com/v2/beers?beer_name=" + value)
-//                fetch("https://api.punkapi.com/v2/beers/random")
+//                fetch("https://api.punkapi.com/v2/beers?beer_name=" + value)
+                fetch("https://api.punkapi.com/v2/beers/random")
                     .then(function(request) {
                         return request.json();
                     })
