@@ -155,6 +155,7 @@
                         beerObj.brewery = beerArray[i].brewery.brewery_name;
                         beerObj.img = beerArray[i].beer.beer_label;
                         db.ref("users/carl/favorites/").push(beerObj);
+
                     }
                 }
             })

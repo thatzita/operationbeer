@@ -28,117 +28,117 @@
         //      BreweryDB - API-key: 7c3c827d07c560a0ff836f3b889f32e8
 
         window.addEventListener("load", function() {
-            // Initialize Firebase
-            const db = firebase.database();
-            let container = document.getElementsByClassName("container")[0];
+                // Initialize Firebase
+                const db = firebase.database();
+                let container = document.getElementsByClassName("container")[0];
 
-            let beerFavorites = {};
-
-
+                let beerFavorites = {};
 
 
 
-
-            //carl är bara ett exempel, key för riktiga användaren ska vara där
-            db.ref("users/carl/favorites/").on("child_added", function(snapshot) {
-                let database = snapshot.val();
-                beerFavorites = {
-                    name: database.name,
-                    style: database.style,
-                    description: database.description,
-                    brewery: database.brewery,
-                    img: database.img,
-
-                    //                    id: database.key,
-                }
                 let favoriteArray = [];
-                favoriteArray.push(beerFavorites);
-                output(beerFavorites);
-            })
 
-            function output(favoriteArray) {
-                console.log(favoriteArray)
-                //                for (let i = 0; i < favoriteArray.length; i++) {
-                let content = {
-                    div: document.createElement("div"),
-                    img: document.createElement("img"),
-                    beerName: document.createElement("h2"),
-                    style: document.createElement("h4"),
-                    brewery: document.createElement("h5"),
-                    description: document.createElement("p"),
-                    favorite: document.createElement("button"),
+
+                //carl är bara ett exempel, key för riktiga användaren ska vara där
+                db.ref("users/carl/favorites/").on("child_added", function(snapshot) {
+                    let database = snapshot.val();
+                    //                console.log(snapshot.key)
+
+
+                    beerFavorites = {
+                        name: database.name,
+                        style: database.style,
+                        description: database.description,
+                        brewery: database.brewery,
+                        img: database.img,
+                        id: snapshot.key,
+                    }
+
+                    favoriteArray.push(beerFavorites);
+//                    console.log(favoriteArray.length)
+                    output(beerFavorites);
+                })
+
+                function output(favoriteArray) {
+//                    container.innerHTML = "";
+                    
+                    //                console.log(favoriteArray)
+                    //                for (let i = 0; i < favoriteArray.length; i++) {
+                    let content = {
+                        div: document.createElement("div"),
+                        img: document.createElement("img"),
+                        beerName: document.createElement("h2"),
+                        style: document.createElement("h4"),
+                        brewery: document.createElement("h5"),
+                        description: document.createElement("p"),
+                        favorite: document.createElement("button"),
+                        remove: document.createElement("button"),
+                    }
+
+                    content.div.setAttribute("class", "card-body beer");
+                    content.img.setAttribute("src", favoriteArray.img);
+                    content.img.setAttribute("height", "140px");
+                    content.favorite.setAttribute("class", "btn btn-outline-light");
+                    //                content.favorite.setAttribute("id", favoriteArray.id);
+                    content.favorite.innerText = "Does it exist?";
+
+                    content.remove.setAttribute("class", "btn btn-outline-danger");
+                    content.remove.setAttribute("id", favoriteArray.id);
+                    content.remove.innerText = "Remove beer";
+
+
+
+                    content.beerName.innerText = favoriteArray.name;
+                    content.style.innerText = favoriteArray.style;
+                    content.brewery.innerText = favoriteArray.brewery;
+                    content.description.innerText = favoriteArray.description;
+
+                    content.div.appendChild(content.img);
+                    content.div.appendChild(content.beerName);
+                    content.div.appendChild(content.style);
+                    content.div.appendChild(content.brewery);
+                    content.div.appendChild(content.description);
+                    content.div.appendChild(content.favorite);
+                    content.div.appendChild(content.remove);
+                    container.appendChild(content.div);
                 }
 
-                content.div.setAttribute("class", "card-body beer");
-                content.img.setAttribute("src", favoriteArray.img);
-                content.img.setAttribute("height", "140px");
-                content.favorite.setAttribute("class", "btn btn-outline-light");
-                content.favorite.setAttribute("id", favoriteArray.id);
-                content.favorite.innerText = "Does it exist?";
-                content.beerName.innerText = favoriteArray.name;
-                content.style.innerText = favoriteArray.style;
-                content.brewery.innerText = favoriteArray.brewery;
-                content.description.innerText = favoriteArray.description;
+                function removeBeerFromDb(remove, node) {
+                    for(let i = 0; i < favoriteArray.length; i++){
+                        if(remove === favoriteArray[i].id){
+//                            console.log(remove)
+//                            console.log(favoriteArray[i].id)
+                            favoriteArray.splice(i,1);
+                        }
+                    }
+                    
+                    node.remove();
+                    db.ref("users/carl/favorites/" + remove).remove();
+                    
+//                output(favoriteArray)    
+                }
+            
 
-                content.div.appendChild(content.img);
-                content.div.appendChild(content.beerName);
-                content.div.appendChild(content.style);
-                content.div.appendChild(content.brewery);
-                content.div.appendChild(content.description);
-                content.div.appendChild(content.favorite);
+            db.ref("users/carl/favorites/").on("child_removed", function(snapshot) {
+                    // Inträffar när ett objekt tas bort.
+                    let data = snapshot.val(); // det borttagna objektet
+                    let key = snapshot.key;
+//                console.log(favoriteArray)
 
-                container.appendChild(content.div);
-            }
-            //            }
-
-        })
-
-
+                })
 
 
+                window.addEventListener("click", function(e) {
+                    let parentNode = e.target.parentNode;
+//                    console.log(parentNode)
+                    let removeId = e.target.id;
+                    removeBeerFromDb(removeId, parentNode)
+                })
+
+            
 
 
-
-
-
-        //            function printOut(beerDB) {
-        //                let container = document.getElementsByClassName("container")[0];
-        //                container.innerHTML = "";
-        //
-        //
-        //                for (let i = 0; i < beerDB.length; i++) {
-        //                    let content = {
-        //                        div: document.createElement("div"),
-        //                        img: document.createElement("img"),
-        //                        beerName: document.createElement("h2"),
-        //                        tagline: document.createElement("h5"),
-        //                        info: document.createElement("p"),
-        //                        favorite: document.createElement("button"),
-        //                    }
-        //
-        //                    content.div.setAttribute("class", "card-body beer");
-        //                    content.img.setAttribute("src", beerDB[i].image_url);
-        //                    content.img.setAttribute("height", "140px");
-        //                    content.favorite.setAttribute("class", "btn btn-outline-light");
-        //                    content.favorite.setAttribute("id", beerDB[i].id);
-        //                    content.favorite.innerText = "Favorite";
-        //                    content.beerName.innerText = beerDB[i].name;
-        //                    content.tagline.innerText = beerDB[i].tagline;
-        //                    content.info.innerText = beerDB[i].description;
-        //
-        //                    content.div.appendChild(content.img);
-        //                    content.div.appendChild(content.beerName);
-        //                    content.div.appendChild(content.tagline);
-        //                    content.div.appendChild(content.info);
-        //                    content.div.appendChild(content.favorite);
-        //
-        //                    container.appendChild(content.div);
-        //                }
-        //            }
-
-
-
-        //        })
+            })
 
     </script>
     <style>
@@ -163,8 +163,10 @@
             margin-bottom: 30px;
         }
 
-        .btn-outline-light {
+        .btn-outline-light,
+        .btn-outline-danger {
             float: right;
+            margin-left: 10px;
         }
 
     </style>
