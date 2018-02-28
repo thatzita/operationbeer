@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Untappd API</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
 
     <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
@@ -20,14 +21,13 @@
             messagingSenderId: "787446559372"
         };
         firebase.initializeApp(config);
-
     </script>
 
     <script>
         //      https://github.com/larsha/bolaget.io
         //      BreweryDB - API-key: 7c3c827d07c560a0ff836f3b889f32e8
 
-        window.addEventListener("load", function() {
+        let loaded = function() {
             // Initialize Firebase
             const db = firebase.database();
 
@@ -38,8 +38,189 @@
             let container = document.getElementsByClassName("container")[0];
             let beerArray = [];
 
+            // Providers
+            let facebookProvider = new firebase.auth.FacebookAuthProvider();
+            let googleProvider = new firebase.auth.GoogleAuthProvider();
+
+            let logInWithFb = document.getElementById("facebookBtn");
+            let logInWithgoogle = document.getElementById("googleBtn");
+            // Signar in med Google
+            logInWithgoogle.addEventListener("click", function(event) {
+                firebase.auth().signInWithRedirect(googleProvider);
+            });
+
+            // Signar in med FB
+            logInWithFb.addEventListener("click", function(event) {
+                firebase.auth().signInWithRedirect(facebookProvider);
+            });
+
+
+            // Användar object och lista
+            let user = {};
+            let userList = [];
+            
+            db.ref("/users").on("child_added", function(snapshot) {
+                let data = snapshot.val();
+                let key = snapshot.key;
+
+
+                user = {
+                    dbId: key,
+                    name: data.name,
+                    favorites: data.favorites,
+                    email: data.email,
+                    img: data.profileImg,
+                    uId: data.id
+                };
+
+                userList.push(user);
+                getUserInfo(userList)
+
+            });
+
+            /* db.ref("users/").once("value", function(snapshot) {
+                 let data = snapshot.val();
+
+                 let keys = Object.keys(data);
+                 let keyNr = 0;
+
+                 for (let user in data) {
+                     let userInfo = data[user];
+                     let key = keys[keyNr];
+                     keyNr++;
+
+                     user = {
+                         dbId: key,
+                         name: userInfo.name,
+                         favorites: userInfo.favorites,
+                         email: userInfo.email,
+                         img: userInfo.profileImg,
+                         uId: userInfo.id
+                     }
+                     userList.push(user);
+                 }
+                 getUserInfo(userList);
+             })*/
+
+            console.log(userList);
+
+            function getUserInfo(uList) {
+                firebase.auth().onAuthStateChanged(function(user) {
+
+                    let elements = {
+                        logged: document.getElementsByClassName("logged")[0],
+                        notLogged: document.getElementsByClassName("notLogged")[0],
+                        userDiv: document.createElement("div"),
+                        logOutBtn: document.createElement("button"),
+                        header: document.getElementsByTagName("header")[0],
+                        imgcontainer: document.createElement("div"),
+                        img: document.createElement("img"),
+                        name: document.createElement("span"),
+
+                    };
+
+                    if (user) {
+                        // User is signed in.
+                        var displayName = user.displayName;
+                        var email = user.email;
+                        var emailVerified = user.emailVerified;
+                        var photoURL = user.photoURL;
+                        var isAnonymous = user.isAnonymous;
+                        var uid = user.uid;
+                        var providerData = user.providerData;
+
+                        let uData = {
+                            name: displayName,
+                            email: email,
+                            profileImg: photoURL,
+                            id: uid
+                        }
+
+
+                        console.log('onAuthStateChanged: user is signed in', user);
+                        console.log("User logged in..");
+
+                        elements.userDiv.setAttribute("class", "userDiv");
+                        elements.logOutBtn.setAttribute("id", "logOut");
+                        elements.logOutBtn.innerText = "Sign out";
+                        elements.name.innerText = `${displayName}`;
+                        elements.imgcontainer.setAttribute("class", "userInfo");
+                        elements.img.setAttribute("class", "userImg");
+                        elements.img.setAttribute("src", photoURL);
+
+                        elements.imgcontainer.appendChild(elements.img);
+                        elements.userDiv.appendChild(elements.logOutBtn);
+                        elements.userDiv.appendChild(elements.name);
+                        elements.userDiv.appendChild(elements.imgcontainer);
+                        elements.header.appendChild(elements.userDiv);
+
+                        elements.logged.style.display = "block";
+                        elements.notLogged.style.display = "none";
+
+                        let loggedOut = document.getElementById('logOut');
+                        let logOut = function(event) {
+                            firebase.auth().signOut().then(function(result) {
+                                    console.log('User signed out');
+                                    elements.logged.style.display = "none";
+                                    elements.notLogged.style.display = "block";
+                                    elements.userDiv.style.display = "none";
+                                })
+                                .catch(function(error) {
+                                    console.log('Signout failed');
+                                })
+                        };
+
+                        loggedOut.addEventListener('click', logOut);
+
+                     /*   for (i = 0; i < userList.length; i++) {
+                            if (userList[i].name !== uData.name){
+                                console.log(userList[i].name);
+                                console.log(uData.name);
+                            db.ref("users/").push(uData);
+
+                        }
+                           }
+*/
+
+                    } else {
+                        console.log("No User");
+
+                    }
+
+                })
+            } //function 
+
+            firebase.auth().getRedirectResult().then(function(result) {
+
+                if (result.credential) {
+                    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                    var token = result.credential.accessToken;
+                    // ...
+                }
+                // The signed-in user info.
+                var user = result.user;
+                console.log(result.status)
+
+            }).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+            })
+
+
+
+
+
+
+
+
             function printOut(array) {
-                
+
                 container.innerHTML = "";
                 let increment = 0;
 
@@ -144,7 +325,7 @@
             container.addEventListener("click", function(e) {
                 let toNumber = parseInt(e.target.id);
                 //                console.log(beerArray)
-                let beerObj = {}
+                let beerObj = {};
                 for (let i = 0; i < beerArray.length; i++) {
                     if (toNumber == beerArray[i].beer.bid) {
                         console.log("match! just like tinder")
@@ -157,9 +338,10 @@
 
                     }
                 }
-            })
-        })
+            });
 
+        };
+        window.addEventListener("load", loaded);
     </script>
     <style>
         body {
@@ -168,7 +350,7 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-            background-color: rgba(0,0,0, 1)
+            background-color: rgba(0, 0, 0, 1)
         }
 
         .arrowUp {
@@ -218,12 +400,13 @@
             color: white;
         }
 
-        img {
+        /*img {
             float: left;
             margin-right: 15px;
             margin-top: 25px;
             margin-bottom: 15px;
         }
+*/
 
         .beer {
             margin: 0 auto;
@@ -256,46 +439,160 @@
 
         .container {
             background: rgba(0, 0, 0, 0.3);
-            float:right;
-            
+            float: right;
+
 
         }
 
         .container>div.beer {
             background-color: rgba(61, 100, 61, 0.7);
-            color: rgb(250,250,245);
+            color: rgb(250, 250, 245);
 
         }
+
         header {
             width: 100vw;
-            height: 10vh;
-            background: brown;
+            height: 11vh;
+            background: rgba(134, 49, 12, 1);
         }
-        .searchbar {
-            
+
+        nav>a>h3 {
+            float: right;
+            margin-left: 1vw;
+            margin-top: 0.5vw;
         }
+
+
+
+        .userDiv {
+            position: absolute;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            top: 2.3vh;
+            right: 2vw;
+            width: 70vw;
+        }
+
+        #logOut {
+            height: 50%;
+        }
+
+        .userDiv span {
+            margin: 0 30px;
+            font-size: 1.2rem;
+        }
+
+
+
+        .userInfo {
+            width: 50px;
+            height: 50px;
+            border: 2px solid black;
+            border-radius: 50%;
+        }
+
+        .userImg {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .logged {
+            display: none;
+        }
+
+        .notLogged {
+            display: block;
+            width: 100%;
+        }
+
+        .logContainer {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            width: 100%;
+            height: 89vh;
+        }
+
+        .logInSection {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 30%;
+            width: 400px;
+            height: 200px;
+            background-color: saddlebrown;
+            border: 2px solid black;
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            display: none;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .searchbar {}
     </style>
 </head>
 
 <body>
-<!--
-    <nav>
-        
-    </nav>
--->
 
-<header>
-    
-</header>
-<div class="searchbar">
-    <input id="searchBeerInput" type="search" placeholder="Search for a beer">
-        <button id="searchBeerBtn" class="btn btn-secondary">Search beer!</button>
-</div>
-    <br>
-    <div class="container card">
-
-    </div>
-
+    <header>
+        <nav class="navbar navbar-light bg-faded">
+            <a class="navbar-brand" href="untappd.html">
+                <h3>BMBB</h3>
+                <i class="fas fa-beer fa-3x"></i>
+            </a>
+        </nav>
+    </header>
+    <main>
+        <div class="logged">
+            <div class="searchbar">
+                <input id="searchBeerInput" type="search" placeholder="Search for a beer">
+                <button id="searchBeerBtn" class="btn btn-secondary">Search beer!</button>
+            </div>
+            <br>
+            <div class="container card">
+            </div>
+        </div>
+        <div class="loader"></div>
+        <div class="notLogged">
+            <div class="logContainer">
+                <div class="logInSection">
+                    <button id="googleBtn">Log in with Google</button>
+                    <button id="facebookBtn"> Log in with FB</button>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>
