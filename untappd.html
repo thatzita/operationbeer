@@ -27,6 +27,8 @@
         //      https://github.com/larsha/bolaget.io
         //      BreweryDB - API-key: 7c3c827d07c560a0ff836f3b889f32e8
 
+
+
         let loaded = function() {
             // Initialize Firebase
             const db = firebase.database();
@@ -54,17 +56,12 @@
                 firebase.auth().signInWithRedirect(facebookProvider);
             });
 
-
-            // Användar object och lista
-            let user = {};
-            let userList = [];
-            
-            db.ref("/users").on("child_added", function(snapshot) {
+            /* db.ref("/users").once("child_added", function(snapshot) {
                 let data = snapshot.val();
                 let key = snapshot.key;
 
 
-                user = {
+                  user = {
                     dbId: key,
                     name: data.name,
                     favorites: data.favorites,
@@ -73,36 +70,49 @@
                     uId: data.id
                 };
 
-                userList.push(user);
-                getUserInfo(userList)
+                // userList.push(user);
+
+                //getUserInfo(userList);
 
             });
+        */
+            
+            /* NOTERING LOADINGSPINNER
+            När du klickar på log in with FB tex, så skickar du upp ett värde till databasen
+            när du kommer tillbaka så är det värdet ex true
+            och då skickar man ut en loading spinner och sätter det värdet till false
+            när det finns en user i onAuthStageChanged
+            */
+            
+            // Användar object och lista
+            let user = {};
+            let userList = [];
 
-            /* db.ref("users/").once("value", function(snapshot) {
-                 let data = snapshot.val();
+            db.ref("users/").once("value", function(snapshot) {
+                let data = snapshot.val();
 
-                 let keys = Object.keys(data);
-                 let keyNr = 0;
+                let keys = Object.keys(data);
+                let keyNr = 0;
 
-                 for (let user in data) {
-                     let userInfo = data[user];
-                     let key = keys[keyNr];
-                     keyNr++;
+                for (let user in data) {
+                    let userInfo = data[user];
+                    let key = keys[keyNr];
+                    keyNr++;
 
-                     user = {
-                         dbId: key,
-                         name: userInfo.name,
-                         favorites: userInfo.favorites,
-                         email: userInfo.email,
-                         img: userInfo.profileImg,
-                         uId: userInfo.id
-                     }
-                     userList.push(user);
-                 }
-                 getUserInfo(userList);
-             })*/
+                    user = {
+                        dbId: key,
+                        name: userInfo.name,
+                        favorites: userInfo.favorites,
+                        email: userInfo.email,
+                        img: userInfo.profileImg,
+                        uId: userInfo.id
+                    }
+                    userList.push(user);
+                }
+                console.log(userList);
+                getUserInfo(userList);
+            })
 
-            console.log(userList);
 
             function getUserInfo(uList) {
                 firebase.auth().onAuthStateChanged(function(user) {
@@ -134,8 +144,7 @@
                             email: email,
                             profileImg: photoURL,
                             id: uid
-                        }
-
+                        };
 
                         console.log('onAuthStateChanged: user is signed in', user);
                         console.log("User logged in..");
@@ -156,7 +165,8 @@
 
                         elements.logged.style.display = "block";
                         elements.notLogged.style.display = "none";
-
+                        
+                        // Logga-ut funktionen 
                         let loggedOut = document.getElementById('logOut');
                         let logOut = function(event) {
                             firebase.auth().signOut().then(function(result) {
@@ -169,26 +179,42 @@
                                     console.log('Signout failed');
                                 })
                         };
-
                         loggedOut.addEventListener('click', logOut);
 
-                     /*   for (i = 0; i < userList.length; i++) {
-                            if (userList[i].name !== uData.name){
-                                console.log(userList[i].name);
-                                console.log(uData.name);
-                            db.ref("users/").push(uData);
-
-                        }
-                           }
-*/
+                        function checkUsers(list) {
+                            // Variabel som kollar om ett id som är identiskt som användaren
+                            let userExist = true;
+                            // Går igenom listan
+                            for (i = 0; i < userList.length; i++) {
+                                // Kollar om ett användar redan id redan finns
+                                if (userList[i].uId === uData.id) {
+                                    // Isf bryt loopen
+                                    console.log("Match = " + userList[i].uId);
+                                    userExist = true;
+                                    break;
+                                    // Annars ingen match, och userExist är false
+                                } else {
+                                    console.log("No Match");
+                                    userExist = false;
+                                }
+                            }
+                            if (userExist === false) {
+                                db.ref("users/").push(uData);
+                            }
+                        }; // End of checkUsers
+                        checkUsers(uList);
 
                     } else {
                         console.log("No User");
-
                     }
-
                 })
-            } //function 
+            }; // getUserInfo ends
+
+
+
+
+
+
 
             firebase.auth().getRedirectResult().then(function(result) {
 
@@ -199,7 +225,6 @@
                 }
                 // The signed-in user info.
                 var user = result.user;
-                console.log(result.status)
 
             }).catch(function(error) {
                 // Handle Errors here.
