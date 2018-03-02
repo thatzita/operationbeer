@@ -25,27 +25,27 @@
     </script>
 
     <script>
-        //      https://github.com/larsha/bolaget.io
-        //      BreweryDB - API-key: 7c3c827d07c560a0ff836f3b889f32e8
-
         window.addEventListener("load", function() {
+
             // Initialize Firebase
             const db = firebase.database();
             let container = document.getElementsByClassName("container")[0];
             let increment = 0;
             let beerFavorites = {};
             let store = [];
+            let yourBeer = [];
             let favoriteArray = [];
+            let resultProducts;
+            let beerToFind;
+            let result;
 
-
+            let loading = document.getElementsByClassName("loading")[0];
 
             //carl är bara ett exempel, key för riktiga användaren ska vara där
             db.ref("users/carl/favorites/").on("child_added", function(snapshot) {
-
                 let database = snapshot.val();
-                //                console.log(snapshot.key)
 
-
+                //Lägger till ett objekt för varje ny child_added
                 beerFavorites = {
                     name: database.name,
                     style: database.style,
@@ -56,16 +56,48 @@
                 }
 
                 favoriteArray.push(beerFavorites);
-                //                    console.log(favoriteArray.length)
+                //Skickas till funktionen output för att visas på sidan
                 output(beerFavorites);
             })
 
+
+
+
+
+            //Hämtar hem alla produkter som finns på systembolaget
+            fetch("https://www.systembolaget.se/api/assortment/products/xml")
+                .then(function(requestProducts) {
+                    return requestProducts.text();
+                })
+                .then(function(json) {
+                    beerToFind = json;
+                    resultProducts = xmlToJSON.parseString(beerToFind);
+
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+
+            //Hämtar hem butiker och deras sortiment
+            fetch("https://www.systembolaget.se/api/assortment/stock/xml")
+                .then(function(requestInStock) {
+                    return requestInStock.text();
+                })
+                .then(function(json) {
+                    let beerDB = json;
+                    result = xmlToJSON.parseString(beerDB);
+                    loading.style.display = "none";
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+
+
+
+
+            //Skriver ut lista på sidan över favoriter
             function output(favoriteArray) {
-
-                //                    container.innerHTML = "";
-
-                //                console.log(favoriteArray)
-                //                for (let i = 0; i < favoriteArray.length; i++) {
+                console.log(favoriteArray)
                 let content = {
                     div: document.createElement("div"),
                     img: document.createElement("img"),
@@ -76,158 +108,166 @@
                     favorite: document.createElement("button"),
                     remove: document.createElement("button"),
                 }
+                if (favoriteArray.length !== 0) {
+                    content.div.setAttribute("class", "card-body beer");
+                    content.img.setAttribute("src", favoriteArray.img);
+                    content.img.setAttribute("height", "140px");
+                    content.favorite.setAttribute("class", "btn btn-outline-light");
+                    content.favorite.setAttribute("id", "favorite" + increment);
+                    content.favorite.innerText = "Does it exist?";
 
-                content.div.setAttribute("class", "card-body beer");
-                content.img.setAttribute("src", favoriteArray.img);
-                content.img.setAttribute("height", "140px");
-                content.favorite.setAttribute("class", "btn btn-outline-light");
-                content.favorite.setAttribute("id", "favorite" + increment);
-                content.favorite.innerText = "Does it exist?";
+                    content.remove.setAttribute("class", "btn btn-outline-danger");
+                    content.remove.setAttribute("id", favoriteArray.id);
+                    content.remove.innerText = "Remove beer";
 
-                content.remove.setAttribute("class", "btn btn-outline-danger");
-                content.remove.setAttribute("id", favoriteArray.id);
-                content.remove.innerText = "Remove beer";
+                    content.beerName.innerText = favoriteArray.name;
+                    content.style.innerText = favoriteArray.style;
+                    content.brewery.innerText = favoriteArray.brewery;
+                    content.description.innerText = favoriteArray.description;
 
-                content.beerName.innerText = favoriteArray.name;
-                content.style.innerText = favoriteArray.style;
-                content.brewery.innerText = favoriteArray.brewery;
-                content.description.innerText = favoriteArray.description;
+                    content.div.appendChild(content.img);
+                    content.div.appendChild(content.beerName);
+                    content.div.appendChild(content.style);
+                    content.div.appendChild(content.brewery);
+                    content.div.appendChild(content.description);
+                    content.div.appendChild(content.favorite);
+                    content.div.appendChild(content.remove);
+                    container.appendChild(content.div);
 
-                content.div.appendChild(content.img);
-                content.div.appendChild(content.beerName);
-                content.div.appendChild(content.style);
-                content.div.appendChild(content.brewery);
-                content.div.appendChild(content.description);
-                content.div.appendChild(content.favorite);
-                content.div.appendChild(content.remove);
-                container.appendChild(content.div);
-
-                increment++;
+                    increment++;
+                    loading.style.display = "none";
+                }
             }
 
+            ///////////////////////////////////////////////////////////////            
+            //Ta bort öl från databasen, arrayen och output 
             function removeBeerFromDb(remove, node) {
-                //                console.log(remove)
-                //                console.log(node)
                 for (let i = 0; i < favoriteArray.length; i++) {
                     if (remove === favoriteArray[i].id) {
-                        //                            console.log(remove)
-                        //                            console.log(favoriteArray[i].id)
                         favoriteArray.splice(i, 1);
                         node.remove();
                     }
                 }
                 db.ref("users/carl/favorites/" + remove).remove();
-                //                output(favoriteArray)    
             }
+
 
             db.ref("users/carl/favorites/").on("child_removed", function(snapshot) {
                 // Inträffar när ett objekt tas bort.
                 let data = snapshot.val(); // det borttagna objektet
                 let key = snapshot.key;
-                //                console.log(favoriteArray)
-
             })
 
 
             container.addEventListener("click", function(e) {
                 let parentNodeForBeer = e.target.parentNode.lastChild.id;
-                //                console.log(parentNodeForBeer);
                 let removeId = e.target.id;
-                //                console.log(removeId)
                 if (removeId === parentNodeForBeer && removeId !== "" && removeId !== undefined) {
                     let removeParent = e.target.parentNode;
                     removeBeerFromDb(removeId, removeParent)
                 }
             })
 
-
             ///////////////////////////////////////////////////////////////
 
-
-
-            function doesBeerExist(favoriteId, idOfBeer, inputArray) {
-                let beerNumbers = [];
-
-                console.log(inputArray.length)
-                for (let i = 0; i < inputArray.length; i++) {
-
-                    beerNumbers[i] = {
-                        nr: inputArray[i].nr,
-                        name: inputArray[i].name,
-                        packaging: inputArray[i].packaging,
-                        producer: inputArray[i].producer,
-                        price: inputArray[i].price.amount,
-                    }
-                }
-                //                console.log(beerNumbers.length);
-                //                console.log(beerNumbers[1].nr);
-                //                console.log(beerNumbers[increase].nr);
-
-                if (favoriteId === idOfBeer) {
-                    fetch("https://www.systembolaget.se/api/assortment/stock/xml")
-                        .then(function(request) {
-                            return request.text();
-                        })
-                        .then(function(json) {
-                        
-                            let beerDB = json;
-                            let result = xmlToJSON.parseString(beerDB);
-                        console.log(result)
-                            for (let i = 0; i < result.ButikArtikel[0].Butik.length; i++) {
-                                if (result.ButikArtikel[0].Butik[i]._attr.ButikNr._value == 1410) { //Lerum Solkatten
-                                    console.log("It's a match! just like tinder!");
-                                    store.push(result.ButikArtikel[0].Butik[i]);
-                                }
-                            }
-
-                            //                                console.log(store[0].ArtikelNr.length);
-                            //                                console.log(store[0].ArtikelNr)
-                            loopIt(beerNumbers, store);
-                        })
-
-
-                        .catch(function(error) {
-                            console.log(error);
-                        })
-                }
-            }
-
-
+            //Loopar igenom numret på ölen och kollar om match finns mellan öl och sortiment i butik
             function loopIt(beer) {
-                for (let i = 0; i < store[0].ArtikelNr.length; i++) {
-                    for (let y = 0; y < beer.length; y++) {
-                        if (store[0].ArtikelNr[i]._text == beer[y].nr) {
-                            console.log("another match, you dawg! ;)");
-                            console.log(beer[y].nr);
+                let bool;
+                if (beer[0].nr[0]._text !== undefined) {
+                    for (let i = 0; i < store[0].ArtikelNr.length; i++) {
+                        for (let y = 0; y < beer.length; y++) {
+                            if (store[0].ArtikelNr[i]._text == beer[y].nr[0]._text) { // 154803 Brooklyn lager
+                                console.log("match!")
+                                bool = true;
+                                break;
+                            }
                         }
                     }
                 }
+
+                if (bool == true)
+                    console.log("Beer exists in store, now go and pick up that beer bro! ;)");
+                else
+                    console.log("Beer exists but not in store, been searching everywhere");
             }
 
+
+            //Matchar knapp id vid tryck med childnode id för att se om array ska sökas igenom och matchas mot artiklarna i butik (om den finns)
+            function doesBeerExist(favoriteId, idOfBeer, inputArray) {
+                let beerNumbers = [];
+                store = [];
+                for (let i = 0; i < inputArray.length; i++) {
+                    beerNumbers[i] = {
+                        nr: inputArray[i],
+                    }
+                }
+                if (favoriteId === idOfBeer && inputArray.length !== 0) {
+                    for (let i = 0; i < result.ButikArtikel[0].Butik.length; i++) {
+                        if (result.ButikArtikel[0].Butik[i]._attr.ButikNr._value == 1508) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
+                            console.log("Store exists, moving on");
+                            store.push(result.ButikArtikel[0].Butik[i]);
+                        }
+                    }
+                    loopIt(beerNumbers);
+                } else {
+                    console.log("Your beer seem to be lost in space or something");
+                }
+            }
+
+            //Söker med hjälp av bolaget.io efter produkt och sparar ner numret på ölen och skickar till doesBeerExists
+            function fetchFromBolagetIO(favoriteId, parentNodeForBeer, name) {
+                let bolagetSearch;
+                fetch("https://bolaget.io/v1/products?search=" + name)
+                    .then(function(search) {
+                        return search.json();
+                    })
+                    .then(function(json) {
+                        bolagetSearch = json;
+                        for (let i = 0; i < resultProducts.artiklar[0].artikel.length; i++) {
+                            for (let y = 0; y < bolagetSearch.length; y++) {
+                                if (resultProducts.artiklar[0].artikel[i].nr[0]._text == bolagetSearch[y].nr && resultProducts.artiklar[0].artikel[i].Varugrupp[0]._text == "Öl") {
+                                    console.log("Beer exists - found it through bolaget.io");
+                                    yourBeer.push(resultProducts.artiklar[0].artikel[i].nr);
+                                    break;
+                                }
+                            }
+                        }
+                        doesBeerExist(favoriteId, parentNodeForBeer, yourBeer);
+                    })
+            }
+
+            //Klick på "does it exist?" kollar target.id mot id på child om de matchar så söker vi igenom systembolagets produkter med namnet vi fått från Untappd
             container.addEventListener("click", function(e) {
-                let beerToFind = [];
                 let parentNodeForBeer = e.target.parentNode.childNodes[5].id;
                 let parentNodeBeerName = e.target.parentNode.childNodes[1].innerText;
                 let favoriteId = e.target.id;
-                //                console.log(parentNodeForBeer)
-                //                console.log(favoriteId);
-                fetch("https://bolaget.io/v1/products?search=" + parentNodeBeerName)
-                    .then(function(reqBeer) {
-                        return reqBeer.json();
-                        //                    console.log(reqBeer.json())
-                    })
-                    .then(function(json) {
-                        beerToFind = json;
-                                            console.log("Array of beerNames", beerToFind);
-                        //                    console.log(beerToFind.length);
-                        if (beerToFind != 0) {
-                            doesBeerExist(favoriteId, parentNodeForBeer, beerToFind);
-                        }
+                yourBeer = [];
 
-                    }).catch(function(error) {
-                        console.log(error)
-                    })
+                //Systembolaget använder två namn, kan endast matcha på en av dom, slutar leta om den matchar
+                for (let i = 0; i < resultProducts.artiklar[0].artikel.length; i++) {
+                    if (resultProducts.artiklar[0].artikel[i].Namn[0]._text == parentNodeBeerName && resultProducts.artiklar[0].artikel[i].Varugrupp[0]._text == "Öl") {
+                        console.log("Beer exists - found it through 'Namn'");
+                        yourBeer.push(resultProducts.artiklar[0].artikel[i].nr);
+                        break;
+                    } else if (resultProducts.artiklar[0].artikel[i].Namn2[0]._text == parentNodeBeerName && resultProducts.artiklar[0].artikel[i].Varugrupp[0]._text == "Öl") {
+                        console.log("Beer exists - found it through 'Namn2'");
+                        yourBeer.push(resultProducts.artiklar[0].artikel[i].nr);
+                        break;
+                    }
+                }
+
+                //Om listan är tom har vi inte matchat via systembolagets API, då kollar vi bolaget.io om en mindre sträng sökning kan hjälpa
+                if (yourBeer.length === 0) {
+                    console.log(parentNodeBeerName);
+                    fetchFromBolagetIO(favoriteId, parentNodeForBeer, parentNodeBeerName);
+
+                    //Är listan inte tom har vi hittat något, då anropar vi funktion som kollar om ölen finns i vald butik
+                } else if (yourBeer.length !== 0) {
+                    console.log(yourBeer);
+                    doesBeerExist(favoriteId, parentNodeForBeer, yourBeer);
+                }
             })
+
         })
 
     </script>
@@ -263,7 +303,8 @@
         }
 
         .container {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.0);
+            border: 0px;
 
         }
 
@@ -299,6 +340,54 @@
             color: rgb(20, 5, 5);
         }
 
+
+        .lds-ripple {
+            display: inline-block;
+            position: relative;
+            left: 45%;
+            top: 30%;
+            width: 64px;
+            height: 64px;
+        }
+
+        .lds-ripple div {
+            position: absolute;
+            border: 4px solid #fff;
+            opacity: 1;
+            border-radius: 50%;
+            animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+
+        .lds-ripple div:nth-child(2) {
+            animation-delay: -0.5s;
+        }
+
+        @keyframes lds-ripple {
+            0% {
+                top: 56px;
+                left: 56px;
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                top: -1px;
+                left: -1px;
+                width: 116px;
+                height: 116px;
+                opacity: 0;
+            }
+        }
+
+
+
+        .loading h3 {
+            position: relative;
+            text-align: center;
+            top: 65px;
+            
+        }
+
     </style>
 </head>
 
@@ -311,6 +400,9 @@
             </a>
         </nav>
     </header>
+
+
+
     <div class="favorites">
         <h1>Mina favoriter</h1>
     </div>
@@ -318,6 +410,14 @@
     <br>
     <div class="container card">
 
+        <div class="loading">
+            <div class="lds-ripple">
+                <div></div>
+                <div></div>
+            </div>
+            <br>
+            <h3>Fetching your beers...</h3>
+        </div>
     </div>
 
 </body>
