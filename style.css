@@ -326,13 +326,15 @@
             color: rgb(20, 5, 5);
         }
 
-        #profilePic {
+      /*  Släckte ner denna // Jonte
+            #profilePic {
             height: 60px;
             width: 60px;
             border-radius: 30px;
             background-color: white;
             float: right;
         }
+*/
 
         .container {
           width: 100%;
@@ -421,5 +423,130 @@
                 width: 30px;
                 margin-top: 10px;
                 margin-left: 0;
+            }
+        }
+
+        /* Authenticate classes and ids */
+
+        .userDiv {
+            position: absolute;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            top: 2.3vh;
+            right: 2vw;
+            width: 70vw;
+        }
+
+        #logOut {
+            height: 50%;
+        }
+
+        .userDiv span {
+            margin: 0 30px;
+            font-size: 1.2rem;
+        }
+
+        .userInfo {
+            width: 50px;
+            height: 50px;
+            border: 2px solid black;
+            border-radius: 50%;
+        }
+
+        .userImg {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .logged {
+            display: none;
+        }
+
+        .notLogged {
+            display: block;
+            width: 100%;
+        }
+
+        .logContainer {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            width: 100%;
+            height: 89vh;
+        }
+
+        .logInSection {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 30%;
+            width: 400px;
+            height: 200px;
+            background-color: saddlebrown;
+            border: 2px solid black;
+        }
+
+        .logInSection button {
+            width: 50%;
+            height: 20%;
+            margin-top: 2%;
+            font-weight: bold;
+            color: black;
+            align-self: center;
+            border-radius: 8px;
+            border-style: none;
+        }
+
+        .logInSection button:hover {
+            cursor: pointer;
+            background-color: goldenrod;
+            opacity: 0.8;
+        }
+
+        .loaderContainer {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        .loader {
+            position: relative;
+            margin: auto;
+            top: 35%;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #DAA520;
+            width: 120px;
+            height: 120px;
+            display: none;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
             }
         }
