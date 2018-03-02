@@ -7,7 +7,9 @@
     <title>Untappd API</title>
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
 
 
     <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
@@ -163,173 +165,31 @@
         })
 
     </script>
-    <style>
-        body {
-            background: url(1oelglas.jpg) no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            background-color: rgba(0, 0, 0, 1);
-/*            width: 100%;*/
-        }
-
-        .arrowUp {
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 20px solid white;
-            float: right;
-            top: 0;
-        }
-
-        .arrowDown {
-            top: 0;
-            float: right;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-
-            border-top: 20px solid white;
-        }
-
-        /* unvisited link */
-
-        a:link {
-            color: ghostwhite;
-        }
-
-        /* visited link */
-
-        a:visited {
-            color: ghostwhite;
-        }
-
-        /* mouse over link */
-
-        a:hover {
-            color: antiquewhite;
-            text-decoration: none;
-        }
-
-        /* selected link */
-
-        a:active {
-            color: white;
-        }
-
-        img {
-            float: left;
-            margin-right: 15px;
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
-
-        .beer {
-            margin: 0 auto;
-            margin-top: 30px;
-            box-shadow: 5px 5px black;
-            padding: 20px;
-            width: 700px;
-            height: auto;
-        }
-
-        .beer:last-child {
-            margin-bottom: 30px;
-        }
-
-        .btn-outline-light {
-            float: right;
-        }
-
-
-        .details,
-        .show,
-        .hide:target {
-            display: none;
-        }
-
-        .hide:target+.show,
-        .hide:target~.details {
-            display: block;
-        }
-
-        .container {
-            background: rgba(0, 0, 0, 0.1);
-            position: absolute;
-            top: 10vw;
-            right: 0;
-
-        }
-
-        .container>div.beer {
-            background-color: rgba(57, 77, 55, 0.8);
-            color: rgb(250, 250, 245);
-
-        }
-
-        header {
-            width: 100vw;
-            background: rgba(134, 49, 12, 1);
-        }
-
-        .searchbar {
-            margin-left: 1vw;
-        }
-
-        .searchbar>#searchBeerBtn {
-            margin-top: 1vw;
-        }
-
-        nav>a>h3 {
-            float: right;
-            margin-left: 1vw;
-            margin-top: 0.5vw;
-        }
-
-        .searchField {    
-            padding-top: 2vw;
-            /*            border: 1px solid black;*/
-            display: inline-block;
-            width: 20vw;
-            height: 30vw;
-            background-color: rgba(91, 35, 25, 0.9)
-        }
-        .searchTitle {
-            padding-top:1vw;
-            top:6.2vw;
-            position: absolute;
-            left: 25vw;
-            color: rgb(20,5,5);
-        }
-        .hejsan {
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-light bg-faded">
             <a class="navbar-brand" href="untappd.html">
-                <h3>BMBB</h3>
-                <i class="fas fa-beer fa-3x"></i>
+
+                <img src='beerLogo7.png' alt='logo' height="60" width="60" class="logotype"> 
+                <h3>Bring My Beer Bro</h3>
             </a>
+            <div id='profilePic'></div>
         </nav>
     </header>
-    
-<div class="searchTitle">
-    <h1>Beers to bring</h1>
-    </div>
-    
+
     <div class="searchField">
         <div class="searchbar">
             <input id="searchBeerInput" type="search" placeholder="Search for a beer">
             <button id="searchBeerBtn" class="btn btn-outline-warning">Search beer!</button>
         </div>
     </div>
+
+    <div class="searchTitle">
+        <h1>Beers to bring</h1>
+    </div>
+
 
     <div class="container card">
 
