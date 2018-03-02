@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mmmmm beeer</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+    <script type="text/javascript" src="xmltoJS/lib/xmlToJSON.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAl6h2TDLbhuqPvCcRenX7KVgvtPtJVUDE",
+            authDomain: "bringmybeerbro-a2b2e.firebaseapp.com",
+            databaseURL: "https://bringmybeerbro-a2b2e.firebaseio.com",
+            projectId: "bringmybeerbro-a2b2e",
+            storageBucket: "bringmybeerbro-a2b2e.appspot.com",
+            messagingSenderId: "787446559372"
+        };
+        firebase.initializeApp(config);
+
+    </script>
+
+    <script>
+        //      https://github.com/larsha/bolaget.io
+        //      BreweryDB - API-key: 7c3c827d07c560a0ff836f3b889f32e8
+
+        window.addEventListener("load", function() {
+            // Initialize Firebase
+            const db = firebase.database();
+            let container = document.getElementsByClassName("container")[0];
+            let increment = 0;
+            let beerFavorites = {};
+            let store = [];
+            let favoriteArray = [];
+
+
+
+            //carl är bara ett exempel, key för riktiga användaren ska vara där
+            db.ref("users/carl/favorites/").on("child_added", function(snapshot) {
+
+                let database = snapshot.val();
+                //                console.log(snapshot.key)
+
+
+                beerFavorites = {
+                    name: database.name,
+                    style: database.style,
+                    description: database.description,
+                    brewery: database.brewery,
+                    img: database.img,
+                    id: snapshot.key,
+                }
+
+                favoriteArray.push(beerFavorites);
+                //                    console.log(favoriteArray.length)
+                output(beerFavorites);
+            })
+
+            function output(favoriteArray) {
+
+                //                    container.innerHTML = "";
+
+                //                console.log(favoriteArray)
+                //                for (let i = 0; i < favoriteArray.length; i++) {
+                let content = {
+                    div: document.createElement("div"),
+                    img: document.createElement("img"),
+                    beerName: document.createElement("h2"),
+                    style: document.createElement("h4"),
+                    brewery: document.createElement("h5"),
+                    description: document.createElement("p"),
+                    favorite: document.createElement("button"),
+                    remove: document.createElement("button"),
+                }
+
+                content.div.setAttribute("class", "card-body beer");
+                content.img.setAttribute("src", favoriteArray.img);
+                content.img.setAttribute("height", "140px");
+                content.favorite.setAttribute("class", "btn btn-outline-light");
+                content.favorite.setAttribute("id", "favorite" + increment);
+                content.favorite.innerText = "Does it exist?";
+
+                content.remove.setAttribute("class", "btn btn-outline-danger");
+                content.remove.setAttribute("id", favoriteArray.id);
+                content.remove.innerText = "Remove beer";
+
+                content.beerName.innerText = favoriteArray.name;
+                content.style.innerText = favoriteArray.style;
+                content.brewery.innerText = favoriteArray.brewery;
+                content.description.innerText = favoriteArray.description;
+
+                content.div.appendChild(content.img);
+                content.div.appendChild(content.beerName);
+                content.div.appendChild(content.style);
+                content.div.appendChild(content.brewery);
+                content.div.appendChild(content.description);
+                content.div.appendChild(content.favorite);
+                content.div.appendChild(content.remove);
+                container.appendChild(content.div);
+
+                increment++;
+            }
+
+            function removeBeerFromDb(remove, node) {
+                //                console.log(remove)
+                //                console.log(node)
+                for (let i = 0; i < favoriteArray.length; i++) {
+                    if (remove === favoriteArray[i].id) {
+                        //                            console.log(remove)
+                        //                            console.log(favoriteArray[i].id)
+                        favoriteArray.splice(i, 1);
+                        node.remove();
+                    }
+                }
+                db.ref("users/carl/favorites/" + remove).remove();
+                //                output(favoriteArray)    
+            }
+
+            db.ref("users/carl/favorites/").on("child_removed", function(snapshot) {
+                // Inträffar när ett objekt tas bort.
+                let data = snapshot.val(); // det borttagna objektet
+                let key = snapshot.key;
+                //                console.log(favoriteArray)
+
+            })
+
+
+            container.addEventListener("click", function(e) {
+                let parentNodeForBeer = e.target.parentNode.lastChild.id;
+                //                console.log(parentNodeForBeer);
+                let removeId = e.target.id;
+                //                console.log(removeId)
+                if (removeId === parentNodeForBeer && removeId !== "" && removeId !== undefined) {
+                    let removeParent = e.target.parentNode;
+                    removeBeerFromDb(removeId, removeParent)
+                }
+            })
+
+
+            ///////////////////////////////////////////////////////////////
+
+
+
+            function doesBeerExist(favoriteId, idOfBeer, inputArray) {
+                let beerNumbers = [];
+
+                console.log(inputArray.length)
+                for (let i = 0; i < inputArray.length; i++) {
+
+                    beerNumbers[i] = {
+                        nr: inputArray[i].nr,
+                        name: inputArray[i].name,
+                        packaging: inputArray[i].packaging,
+                        producer: inputArray[i].producer,
+                        price: inputArray[i].price.amount,
+                    }
+                }
+                //                console.log(beerNumbers.length);
+                //                console.log(beerNumbers[1].nr);
+                //                console.log(beerNumbers[increase].nr);
+
+                if (favoriteId === idOfBeer) {
+                    fetch("https://www.systembolaget.se/api/assortment/stock/xml")
+                        .then(function(request) {
+                            return request.text();
+                        })
+                        .then(function(json) {
+                        
+                            let beerDB = json;
+                            let result = xmlToJSON.parseString(beerDB);
+                        console.log(result)
+                            for (let i = 0; i < result.ButikArtikel[0].Butik.length; i++) {
+                                if (result.ButikArtikel[0].Butik[i]._attr.ButikNr._value == 1410) { //Lerum Solkatten
+                                    console.log("It's a match! just like tinder!");
+                                    store.push(result.ButikArtikel[0].Butik[i]);
+                                }
+                            }
+
+                            //                                console.log(store[0].ArtikelNr.length);
+                            //                                console.log(store[0].ArtikelNr)
+                            loopIt(beerNumbers, store);
+                        })
+
+
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+                }
+            }
+
+
+            function loopIt(beer) {
+                for (let i = 0; i < store[0].ArtikelNr.length; i++) {
+                    for (let y = 0; y < beer.length; y++) {
+                        if (store[0].ArtikelNr[i]._text == beer[y].nr) {
+                            console.log("another match, you dawg! ;)");
+                            console.log(beer[y].nr);
+                        }
+                    }
+                }
+            }
+
+            container.addEventListener("click", function(e) {
+                let beerToFind = [];
+                let parentNodeForBeer = e.target.parentNode.childNodes[5].id;
+                let parentNodeBeerName = e.target.parentNode.childNodes[1].innerText;
+                let favoriteId = e.target.id;
+                //                console.log(parentNodeForBeer)
+                //                console.log(favoriteId);
+                fetch("https://bolaget.io/v1/products?search=" + parentNodeBeerName)
+                    .then(function(reqBeer) {
+                        return reqBeer.json();
+                        //                    console.log(reqBeer.json())
+                    })
+                    .then(function(json) {
+                        beerToFind = json;
+                                            console.log("Array of beerNames", beerToFind);
+                        //                    console.log(beerToFind.length);
+                        if (beerToFind != 0) {
+                            doesBeerExist(favoriteId, parentNodeForBeer, beerToFind);
+                        }
+
+                    }).catch(function(error) {
+                        console.log(error)
+                    })
+            })
+        })
+
+    </script>
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light bg-faded">
+            <a class="navbar-brand" href="untappd.html">
+                <img src='beerLogo7.png' alt='logo' height="60" width="60" class="logotype">
+                <h3>Bring My Beer Bro</h3>
+            </a>
+            <div id='profilePic'></div>
+        </nav>
+    </header>
+    <div class="favorites">
+        <h1>Mina favoriter</h1>
+    </div>
+
+    <br>
+    <div class="container card">
+        
+        <div class="loading">
+            <div class="lds-ripple">
+                <div></div>
+                <div></div>
+            </div>
+            <br>
+            <h3>Fetching your beers...</h3>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

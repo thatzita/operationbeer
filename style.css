@@ -1,0 +1,425 @@
+        /*Bootstrap CSS*/
+
+        .card {
+          position: relative;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+          flex-direction: column;
+          min-width: 0;
+          word-wrap: break-word;
+        }
+
+        .card-body {
+          -webkit-box-flex: 1;
+          -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+          padding: 1.25rem;
+        }
+
+        .navbar {
+          position: relative;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+          justify-content: space-between;
+          padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+          display: inline-block;
+          padding-top: 0.3125rem;
+          padding-bottom: 0.3125rem;
+          margin-right: 1rem;
+          font-size: 1.25rem;
+          line-height: inherit;
+          white-space: nowrap;
+        }
+
+        .btn {
+          display: inline-block;
+          font-weight: 400;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          border: 1px solid transparent;
+          padding: 0.375rem 0.75rem;
+          font-size: 1rem;
+          line-height: 1.5;
+          border-radius: 0.25rem;
+          transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .btn:hover, .btn:focus {
+          text-decoration: none;
+        }
+
+        .btn:focus, .btn.focus {
+          outline: 0;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .btn.disabled, .btn:disabled {
+          opacity: 0.65;
+        }
+
+        .btn:not(:disabled):not(.disabled) {
+          cursor: pointer;
+        }
+
+        .btn:not(:disabled):not(.disabled):active, .btn:not(:disabled):not(.disabled).active {
+          background-image: none;
+        }
+
+        .btn-outline-light {
+          color: #f8f9fa;
+          background-color: transparent;
+          background-image: none;
+          border-color: #f8f9fa;
+        }
+
+        .btn-outline-light:hover {
+          color: #212529;
+          background-color: #f8f9fa;
+          border-color: #f8f9fa;
+        }
+
+        .btn-outline-light:focus, .btn-outline-light.focus {
+          box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
+        }
+
+        .btn-outline-light.disabled, .btn-outline-light:disabled {
+          color: #f8f9fa;
+          background-color: transparent;
+        }
+
+        .btn-outline-light:not(:disabled):not(.disabled):active, .btn-outline-light:not(:disabled):not(.disabled).active,
+        .show > .btn-outline-light.dropdown-toggle {
+          color: #212529;
+          background-color: #f8f9fa;
+          border-color: #f8f9fa;
+        }
+
+        .btn-outline-light:not(:disabled):not(.disabled):active:focus, .btn-outline-light:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-outline-light.dropdown-toggle:focus {
+          box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
+        }
+
+        .btn-outline-warning {
+          color: #ffc107;
+          background-color: transparent;
+          background-image: none;
+          border-color: #ffc107;
+        }
+
+        .btn-outline-warning:hover {
+          color: #212529;
+          background-color: #ffc107;
+          border-color: #ffc107;
+        }
+
+        .btn-outline-warning:focus, .btn-outline-warning.focus {
+          box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+        }
+
+        .btn-outline-warning.disabled, .btn-outline-warning:disabled {
+          color: #ffc107;
+          background-color: transparent;
+        }
+
+        .btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:not(:disabled):not(.disabled).active,
+        .show > .btn-outline-warning.dropdown-toggle {
+          color: #212529;
+          background-color: #ffc107;
+          border-color: #ffc107;
+        }
+
+        .btn-outline-warning:not(:disabled):not(.disabled):active:focus, .btn-outline-warning:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-outline-warning.dropdown-toggle:focus {
+          box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+        }
+
+        /*Bootstrap CSS ends*/        
+
+        body {
+            background: url(1oelglas.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 5);
+            margin: 0;
+            padding: 0;
+        }
+
+        .arrowUp {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid white;
+            float: right;
+            top: 0;
+        }
+
+        .arrowDown {
+            top: 0;
+            float: right;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+
+            border-top: 20px solid white;
+        }
+
+        /* unvisited link */
+
+        a:link {
+            color: ghostwhite;
+        }
+
+        /* visited link */
+
+        a:visited {
+            color: ghostwhite;
+        }
+
+        /* mouse over link */
+
+        a:hover {
+            color: antiquewhite;
+            text-decoration: none;
+        }
+
+        /* selected link */
+
+        a:active {
+            color: white;
+        }
+
+        .beer {
+            margin: 0 auto;
+            margin-top: 30px;
+            box-shadow: 5px 5px black;
+            padding: 20px;
+            width: 700px;
+            height: auto;
+            background-color: rgba(61, 100, 61, 0.7);
+        }
+
+        .beer:last-child {
+            margin-bottom: 30px;
+        }
+
+        .btn-outline-light {
+            float: right;
+        }
+
+
+        .details,
+        .show,
+        .hide:target {
+            display: none;
+        }
+
+        .hide:target+.show,
+        .hide:target~.details {
+            display: block;
+        }
+
+        .container {
+            position: absolute;
+            margin-top: 10px;
+            right: 0;
+
+        }
+
+        .container>div.beer {
+            background-color: rgba(57, 77, 55, 0.8);
+            color: rgb(250, 250, 245);
+
+        }
+
+        header {
+            top: 0;
+            left: 0;
+            width: 100vw;
+            background: rgba(134, 49, 12, 1);
+            height: 80px;
+        }
+
+        .searchbar {
+            margin-left: 1vw;
+        }
+
+        .searchbar>#searchBeerBtn {
+            margin-top: 1vw;
+        }
+
+        nav>a>h3 {
+            margin-top: 15px;
+            margin-left: 10px;
+            color: ghostwhite;
+            float: left;
+        }
+
+        .searchField {    
+            padding-top: 2vw;
+            /*            border: 1px solid black;*/
+            display: inline-block;
+            width: 20vw;
+            height: 30vw;
+            background-color: rgba(91, 35, 25, 0.9)
+        }
+        .searchTitle {
+            padding-top:1vw;
+            margin-top: 50px;
+            top:6.2vw;
+            color: rgb(20,5,5);
+        }
+        .hejsan {
+            display: none;
+        }
+        
+        .logotype {
+            background-color: white;
+            border-radius: 30px;
+            margin-left: 10px;
+            float: left;
+        }
+
+        .searchBeer {
+            height: 25px;
+            width: 140px;
+            border-style: none;
+            border-radius: 10px;
+            float: right;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-right: 10px;
+        }
+
+        .btn-outline-light,
+        .btn-outline-danger {
+            float: right;
+            margin-left: 10px;
+        }
+
+        .favorites {
+            padding-top: 1vw;
+            top: 2vw;
+            left: 12.5vw;
+            color: rgb(20, 5, 5);
+        }
+
+        #profilePic {
+            height: 60px;
+            width: 60px;
+            border-radius: 30px;
+            background-color: white;
+            float: right;
+        }
+
+        .container {
+          width: 100%;
+          padding-right: 15px;
+          padding-left: 15px;
+          margin-right: auto;
+          margin-left: auto;
+        }
+
+        .lds-ripple {
+            display: inline-block;
+            position: relative;
+            left: 45%;
+            top: 30%;
+            width: 64px;
+            height: 64px;
+        }
+        .lds-ripple div {
+            position: absolute;
+            border: 4px solid #fff;
+            opacity: 1;
+            border-radius: 50%;
+            animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+        .lds-ripple div:nth-child(2) {
+            animation-delay: -0.5s;
+        }
+        @keyframes lds-ripple {
+            0% {
+                top: 56px;
+                left: 56px;
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                top: -1px;
+                left: -1px;
+                width: 116px;
+                height: 116px;
+                opacity: 0;
+            }
+        }
+        .loading h3 {
+            position: relative;
+            text-align: center;
+            top: 65px;
+            
+        }
+
+        
+        
+        @media (max-width: 700px) {
+            
+            .searchField {
+              width: 100vw;  
+            }
+            .searchTitle {
+              text-align:center;
+            }
+            
+            .container {
+               padding: 0;
+               margin: 0;
+            }
+            
+            .beer {
+                padding: 0;
+                width: 100%;
+            }
+            .card-body {
+              padding: 0;
+            }
+            #profilePic {
+                display:none;
+            }
+            
+            .header {
+                font-size: 12pt;
+            }
+            .navbar-brand {
+                font-size: 12pt;
+            }
+            .logotype {
+                height: 30px;
+                width: 30px;
+                margin-top: 10px;
+                margin-left: 0;
+            }
+        }
