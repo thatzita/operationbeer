@@ -7,7 +7,7 @@
     <title>Untappd API</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
     <script>
@@ -29,7 +29,13 @@
         let loaded = function() {
             // Initialize Firebase
             const db = firebase.database();
+
             // AuthSpinner object
+
+            
+            // Autentisering börjar här
+            // AuthSpinner object  
+
             let authSpinner = {
                 ifUser : false,
                 myStorage: window.localStorage,
@@ -206,6 +212,9 @@
                 var email = error.email;
                 var credential = error.credential; // The firebase.auth.AuthCredential type that was used.
             })
+
+            // Autentisering slutar här
+
             
             let clientId = "153D83356A0B65CE0BDB2F2058AA09CEE92F165D";
             let clientSecret = "7B480C43412EF225E1E7E6F802A05FEE835B016B";
@@ -215,6 +224,7 @@
             let beerArray = [];
 
             function printOut(array) {
+
                 container.innerHTML = "";
                 let increment = 0;
                 for (let i = 0; i < array.length; i++) {
@@ -314,6 +324,8 @@
         };
         window.addEventListener("load", loaded);
     </script>
+        
+    
     <style>
         body {
             background: url(1oelglas.jpg) no-repeat center center fixed;
@@ -557,28 +569,35 @@
 </head>
 
 <body>
-
     <header>
         <nav class="navbar navbar-light bg-faded">
             <a class="navbar-brand" href="untappd.html">
-                <h3>BMBB</h3>
-                <i class="fas fa-beer fa-3x"></i>
+
+                <img src='./beerLogo7.png' alt='logo' height="60" width="60" class="logotype"> 
+                <h3>Bring My Beer Bro</h3>
             </a>
+            <!--<div id='profilePic'></div>  SLäckte ner denna och implementerar min kod // Jonte-->
         </nav>
     </header>
     <main>
         <div class="logged">
-            <div class="searchbar">
-                <input id="searchBeerInput" type="search" placeholder="Search for a beer">
-                <button id="searchBeerBtn" class="btn btn-secondary">Search beer!</button>
+            <div class="searchField">
+                <div class="searchbar">
+                    <input id="searchBeerInput" type="search" placeholder="Search for a beer">
+                    <button id="searchBeerBtn" class="btn btn-outline-warning">Search beer!</button>
+                </div>
             </div>
-            <br>
+            <div class="searchTitle">
+                <h1>Beers to bring</h1>
+            </div>
             <div class="container card">
             </div>
         </div>
         <div class="loaderContainer">
             <div class="loader"></div>
         </div>
+
+
         <div class="notLogged">
             <div class="logContainer">
                 <div class="logInSection">
@@ -588,6 +607,4 @@
             </div>
         </div>
     </main>
-</body>
-
 </html>
