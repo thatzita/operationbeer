@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Knewave" rel="stylesheet">
 
     <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
     <script>
@@ -31,8 +32,6 @@
             const db = firebase.database();
 
             // AuthSpinner object
-
-            
             // Autentisering börjar här
             // AuthSpinner object  
 
@@ -54,8 +53,10 @@
                 },
                 spinner: function(aUser) {
                     let container = document.getElementsByClassName("loaderContainer")[0];
-                    let lSpinner = document.getElementsByClassName("loader")[0];
+                    let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
+                    let loadText = document.getElementsByClassName("loadText")[0];
                     let body = document.getElementsByTagName("body")[0];
+                    container.appendChild(loadText);
                     container.appendChild(lSpinner);
                     body.appendChild(container);
                     
@@ -114,6 +115,7 @@
             }; // getUsers ends here
             getUsers(); // Activate function
             
+            let id ="";
             function getUserInfo(uList) {
                 firebase.auth().onAuthStateChanged(function(user) {
                     let elements = {
@@ -128,8 +130,11 @@
                     };
                     if (user) {
                         // User is signed in.
+                        console.log(uList);
                         authSpinner.ifUser = true;
                         authSpinner.spinner(authSpinner.ifUser);
+                        
+                       
                         
                         var displayName = user.displayName;
                         var email = user.email;
@@ -150,6 +155,7 @@
                         console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
+                        elements.logOutBtn.setAttribute("class" , "btn btn-outline-warning");
                         elements.logOutBtn.innerText = "Sign out";
                         elements.name.innerText = `${displayName}`;
                         elements.imgcontainer.setAttribute("class", "userInfo");
@@ -177,11 +183,14 @@
                                 })
                         };
                         loggedOut.addEventListener('click', logOut); // Logoutlistener
+                        
                         function checkUsers(list) {
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
                                     console.log("Match = " + userList[i].uId);
+                                    id = userList[i].dbId;
+                                    console.log(id);
                                     userExist = true;
                                     break; // Isf bryt loopen
                                 } else { // Annars ingen match, och userExist är false
@@ -199,7 +208,7 @@
                     }
                 })
             }; // getUserInfo ends
-
+            
             firebase.auth().getRedirectResult().then(function(result) {
                 if (result.credential) { // authSpinner gives you a Facebook Access Token. You can use it to access the Facebook API.  
                     var token = result.credential.accessToken;
@@ -213,8 +222,8 @@
                 var credential = error.credential; // The firebase.auth.AuthCredential type that was used.
             })
 
-            // Autentisering slutar här
 
+            // Autentisering slutar här
             
             let clientId = "153D83356A0B65CE0BDB2F2058AA09CEE92F165D";
             let clientSecret = "7B480C43412EF225E1E7E6F802A05FEE835B016B";
@@ -305,6 +314,7 @@
                         console.log(error);
                     })
             })
+           
             container.addEventListener("click", function(e) {
                 let toNumber = parseInt(e.target.id);
                 //                console.log(beerArray)
@@ -317,255 +327,15 @@
                         beerObj.description = beerArray[i].beer.beer_description;
                         beerObj.brewery = beerArray[i].brewery.brewery_name;
                         beerObj.img = beerArray[i].beer.beer_label;
-                        db.ref("users/carl/favorites/").push(beerObj);
+                        db.ref(`users/${id}/favorites/`).push(beerObj);
                     }
                 }
-            });
+            })
+            
         };
         window.addEventListener("load", loaded);
     </script>
-        
-    
-    <style>
-        body {
-            background: url(1oelglas.jpg) no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            background-color: rgba(0, 0, 0, 1)
-        }
 
-        .arrowUp {
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 20px solid white;
-            float: right;
-            top: 0;
-        }
-
-        .arrowDown {
-            top: 0;
-            float: right;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 20px solid white;
-        }
-
-        /* unvisited link */
-
-        a:link {
-            color: ghostwhite;
-        }
-
-        /* visited link */
-
-        a:visited {
-            color: ghostwhite;
-        }
-
-        /* mouse over link */
-
-        a:hover {
-            color: antiquewhite;
-            text-decoration: none;
-        }
-
-        /* selected link */
-
-        a:active {
-            color: white;
-        }
-
-        /*img {
-            float: left;
-            margin-right: 15px;
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
-*/
-
-        .beer {
-            margin: 0 auto;
-            margin-top: 30px;
-            box-shadow: 5px 5px black;
-            padding: 20px;
-            width: 700px;
-            height: auto;
-        }
-
-        .beer:last-child {
-            margin-bottom: 30px;
-        }
-
-        .btn-outline-light {
-            float: right;
-        }
-
-        .details,
-        .show,
-        .hide:target {
-            display: none;
-        }
-
-        .hide:target+.show,
-        .hide:target~.details {
-            display: block;
-        }
-
-        .container {
-            background: rgba(0, 0, 0, 0.3);
-            float: right;
-        }
-
-        .container>div.beer {
-            background-color: rgba(61, 100, 61, 0.7);
-            color: rgb(250, 250, 245);
-        }
-
-        header {
-            width: 100vw;
-            height: 11vh;
-            background: rgba(134, 49, 12, 1);
-        }
-
-        nav>a>h3 {
-            float: right;
-            margin-left: 1vw;
-            margin-top: 0.5vw;
-        }
-
-        /* Authenticate classes and ids */
-
-        .userDiv {
-            position: absolute;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            top: 2.3vh;
-            right: 2vw;
-            width: 70vw;
-        }
-
-        #logOut {
-            height: 50%;
-        }
-
-        .userDiv span {
-            margin: 0 30px;
-            font-size: 1.2rem;
-        }
-
-        .userInfo {
-            width: 50px;
-            height: 50px;
-            border: 2px solid black;
-            border-radius: 50%;
-        }
-
-        .userImg {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-        }
-
-        .logged {
-            display: none;
-        }
-
-        .notLogged {
-            display: block;
-            width: 100%;
-        }
-
-        .logContainer {
-            display: flex;
-            justify-content: center;
-            flex-direction: row;
-            width: 100%;
-            height: 89vh;
-        }
-
-        .logInSection {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 30%;
-            width: 400px;
-            height: 200px;
-            background-color: saddlebrown;
-            border: 2px solid black;
-        }
-
-        .logInSection button {
-            width: 50%;
-            height: 20%;
-            margin-top: 2%;
-            font-weight: bold;
-            color: black;
-            align-self: center;
-            border-radius: 8px;
-            border-style: none;
-        }
-
-        .logInSection button:hover {
-            cursor: pointer;
-            background-color: goldenrod;
-            opacity: 0.8;
-        }
-
-        .loaderContainer {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1;
-        }
-
-        .loader {
-            position: relative;
-            margin: auto;
-            top: 35%;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #DAA520;
-            width: 120px;
-            height: 120px;
-            display: none;
-            -webkit-animation: spin 2s linear infinite;
-            /* Safari */
-            animation: spin 2s linear infinite;
-        }
-
-        /* Safari */
-
-        @-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .searchbar {}
-    </style>
 </head>
 
 <body>
@@ -576,7 +346,6 @@
                 <img src='./beerLogo7.png' alt='logo' height="60" width="60" class="logotype"> 
                 <h3>Bring My Beer Bro</h3>
             </a>
-            <!--<div id='profilePic'></div>  SLäckte ner denna och implementerar min kod // Jonte-->
         </nav>
     </header>
     <main>
@@ -594,7 +363,13 @@
             </div>
         </div>
         <div class="loaderContainer">
-            <div class="loader"></div>
+            <h1 class ="loadText"> Loading beers . . .</h1>
+            <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+    </div>
         </div>
 
 
