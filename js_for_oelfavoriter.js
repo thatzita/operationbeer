@@ -27,6 +27,9 @@
             let user = {};
             let userList = [];
 
+            let beerOnly = [];
+            let storeOnly = [];
+
             let userLoggedIn;
             let id = "";
 
@@ -50,7 +53,7 @@
                         }
                         userList.push(user);
                     }
-                    console.log(userList);
+//                    console.log(userList);
                     getUserInfo(userList);
                 })
             }; // getUsers ends here
@@ -91,7 +94,7 @@
 
 
 
-                        console.log('onAuthStateChanged: user is signed in', user);
+//                        console.log('onAuthStateChanged: user is signed in', user);
                         console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
@@ -111,7 +114,6 @@
                             firebase.auth().signOut().then(function (result) {
                                     console.log('User signed out');
                                     elements.userDiv.style.display = "none";
-
                                 })
                                 .catch(function (error) {
                                     console.log('Signout failed');
@@ -122,23 +124,13 @@
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-                                    console.log("Match = " + userList[i].uId);
+//                                    console.log("Match = " + userList[i].uId);
                                     userExist = true;
                                     id = userList[i].dbId;
-
                                     addToFavorites()
-
-
-
-
-
-
-
-
-
                                     break; // Isf bryt loopen
                                 } else { // Annars ingen match, och userExist är false
-                                    console.log("No Match");
+//                                    console.log("No Match");
                                     userExist = false;
 
                                 }
@@ -174,20 +166,6 @@
                 })
             }
 
-
-
-
-
-
-
-
-
-            //carl är bara ett exempel, key för riktiga användaren ska vara där
-
-
-
-
-
             //Hämtar hem alla produkter som finns på systembolaget
             fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/products/xml")
                 .then(function (requestProducts) {
@@ -196,12 +174,13 @@
                 .then(function (json) {
                     beerToFind = json;
                     resultProducts = xmlToJSON.parseString(beerToFind);
+                    beerOnlyList(resultProducts)
 
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
-
+            //
             //Hämtar hem butiker och deras sortiment
             fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
                 .then(function (requestInStock) {
@@ -211,12 +190,38 @@
                     let beerDB = json;
                     result = xmlToJSON.parseString(beerDB);
                     loading.style.display = "none";
+                    specificStore(result);
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
 
 
+
+            function beerOnlyList(outputFromFetch) {
+                beerOnly = [];
+                for (let i = 0; i < outputFromFetch.artiklar[0].artikel.length; i++) {
+                    if (outputFromFetch.artiklar[0].artikel[i].Varugrupp[0]._text === "Öl") {
+                        beerOnly.push(outputFromFetch.artiklar[0].artikel[i])
+                    }
+
+                }
+                console.log(beerOnly.length);
+            }
+            
+            
+            let myStore = 1410; //Ska vara vald butik när vi kommer till sidan
+            function specificStore(outputfromStoreFetch) {
+                storeOnly = [];
+//                console.log(outputfromStoreFetch)
+//                console.log(outputfromStoreFetch.ButikArtikel[0].Butik.length)
+                for (let i = 0; i < outputfromStoreFetch.ButikArtikel[0].Butik.length; i++) {
+                    if (outputfromStoreFetch.ButikArtikel[0].Butik[i]._attr.ButikNr._value === myStore) {
+                        storeOnly.push(outputfromStoreFetch.ButikArtikel[0].Butik[i])
+                    }
+                }
+                console.log(storeOnly.length)
+            }
 
 
             //Skriver ut lista på sidan över favoriter
@@ -303,10 +308,10 @@
             function loopIt(beer) {
                 let bool;
                 if (beer[0].nr[0]._text !== undefined) {
-                    for (let i = 0; i < store[0].ArtikelNr.length; i++) {
+                    for (let i = 0; i < storeOnly[0].ArtikelNr.length; i++) {
                         for (let y = 0; y < beer.length; y++) {
-                            if (store[0].ArtikelNr[i]._text == beer[y].nr[0]._text) { // 154803 Brooklyn lager
-                                console.log("match!")
+                            if (storeOnly[0].ArtikelNr[i]._text == beer[y].nr[0]._text) { // 154803 Brooklyn lager
+                                console.log("store match!")
                                 bool = true;
                                 break;
                             }
@@ -324,22 +329,22 @@
             //Matchar knapp id vid tryck med childnode id för att se om array ska sökas igenom och matchas mot artiklarna i butik (om den finns)
             function doesBeerExist(favoriteId, idOfBeer, inputArray) {
                 let beerNumbers = [];
-                store = [];
+//                store = [];
                 for (let i = 0; i < inputArray.length; i++) {
                     beerNumbers[i] = {
                         nr: inputArray[i],
                     }
                 }
                 if (favoriteId === idOfBeer && inputArray.length !== 0) {
-                    for (let i = 0; i < result.ButikArtikel[0].Butik.length; i++) {
-                        if (result.ButikArtikel[0].Butik[i]._attr.ButikNr._value == 1508) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
-                            console.log("Store exists, moving on");
-                            store.push(result.ButikArtikel[0].Butik[i]);
-                        }
-                    }
+//                    for (let i = 0; i < storeOnly[0].length; i++) {
+//                        if (storeOnly[0]._attr.ButikNr._value == myStore) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
+//                            console.log("Store exists, moving on");
+////                            store.push(result.ButikArtikel[0].Butik[i]);
+//                        }
+//                    }
                     loopIt(beerNumbers);
                 } else {
-                    console.log("Your beer seem to be lost in space or something");
+                    console.log("Can't find your beer, sorry mate");
                 }
             }
 
@@ -352,11 +357,11 @@
                     })
                     .then(function (json) {
                         bolagetSearch = json;
-                        for (let i = 0; i < resultProducts.artiklar[0].artikel.length; i++) {
+                        for (let i = 0; i < beerOnly.length; i++) {
                             for (let y = 0; y < bolagetSearch.length; y++) {
-                                if (resultProducts.artiklar[0].artikel[i].nr[0]._text == bolagetSearch[y].nr && resultProducts.artiklar[0].artikel[i].Varugrupp[0]._text == "Öl") {
+                                if (beerOnly[i].nr[0]._text == bolagetSearch[y].nr) {
                                     console.log("Beer exists - found it through bolaget.io");
-                                    yourBeer.push(resultProducts.artiklar[0].artikel[i].nr);
+                                    yourBeer.push(beerOnly[i].nr);
                                     break;
                                 }
                             }
@@ -370,29 +375,30 @@
                 let parentNodeForBeer = e.target.parentNode.childNodes[5].id;
                 let parentNodeBeerName = e.target.parentNode.childNodes[1].innerText;
                 let favoriteId = e.target.id;
+//                console.log(e.target.className)
                 yourBeer = [];
 
                 //Systembolaget använder två namn, kan endast matcha på en av dom, slutar leta om den matchar
-                for (let i = 0; i < resultProducts.artiklar[0].artikel.length; i++) {
-                    if (resultProducts.artiklar[0].artikel[i].Namn[0]._text == parentNodeBeerName && resultProducts.artiklar[0].artikel[i].Varugrupp[0]._text == "Öl") {
+                for (let i = 0; i < beerOnly.length; i++) {
+                    if (beerOnly[i].Namn[0]._text == parentNodeBeerName) {
                         console.log("Beer exists - found it through 'Namn'");
-                        yourBeer.push(resultProducts.artiklar[0].artikel[i].nr);
+                        yourBeer.push(beerOnly[i].nr);
                         break;
-                    } else if (resultProducts.artiklar[0].artikel[i].Namn2[0]._text == parentNodeBeerName && resultProducts.artiklar[0].artikel[i].Varugrupp[0]._text == "Öl") {
+                    } else if (beerOnly[i].Namn2[0]._text == parentNodeBeerName) {
                         console.log("Beer exists - found it through 'Namn2'");
-                        yourBeer.push(resultProducts.artiklar[0].artikel[i].nr);
+                        yourBeer.push(beerOnly[i].nr);
                         break;
                     }
                 }
 
                 //Om listan är tom har vi inte matchat via systembolagets API, då kollar vi bolaget.io om en mindre sträng sökning kan hjälpa
-                if (yourBeer.length === 0) {
-                    console.log(parentNodeBeerName);
+                if (yourBeer.length === 0 && e.target.className === "btn btn-outline-light") {
+//                    console.log(parentNodeBeerName);
                     fetchFromBolagetIO(favoriteId, parentNodeForBeer, parentNodeBeerName);
 
                     //Är listan inte tom har vi hittat något, då anropar vi funktion som kollar om ölen finns i vald butik
-                } else if (yourBeer.length !== 0) {
-                    console.log(yourBeer);
+                } else if (yourBeer.length !== 0  && e.target.className === "btn btn-outline-light") {
+//                    console.log(yourBeer);
                     doesBeerExist(favoriteId, parentNodeForBeer, yourBeer);
                 }
             })

@@ -550,3 +550,19 @@
                 transform: rotate(360deg);
             }
         }
+
+#main-wrapper {
+    padding: 0 0 50px;
+    position: relative;
+}
+
+#showMoreBackground {
+    padding: 1vw;
+    background: rgba(134, 49, 12, 1);
+}
+#showMore {
+    bottom: 0;
+    left: 45%;
+    position: sticky;
+    width: 100%;
+}
