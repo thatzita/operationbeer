@@ -23,7 +23,7 @@
             let beerToFind;
             let result;
 
-            let loading = document.getElementsByClassName("loading")[0];
+//             let loading = document.getElementsByClassName("loading")[0];
             let user = {};
             let userList = [];
 
@@ -194,7 +194,7 @@
                 .then(function (json) {
                     let beerDB = json;
                     result = xmlToJSON.parseString(beerDB);
-                    loading.style.display = "none";
+//                     loading.style.display = "none";
                     specificStore(result);
                 })
                 .catch(function (error) {
@@ -272,7 +272,7 @@
                     container.appendChild(content.div);
 
                     increment++;
-                    loading.style.display = "none";
+//                     loading.style.display = "none";
                 }
             }
 
