@@ -432,9 +432,6 @@
             .card-body {
               padding: 0;
             }
-            #profilePic {
-                display:none;
-            }
             
             .header {
                 font-size: 12pt;
@@ -472,8 +469,8 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            top: 2.3vw;
-            right: 2vw;
+            top: 15px;
+            right:15px;
             width: 70vw;
         }
 
@@ -522,7 +519,6 @@
             width: 400px;
             height: 200px;
             background-color: saddlebrown;
-            border: 2px solid black;
         }
 
         .logInSection button {
@@ -553,51 +549,6 @@
             z-index: 1;
         }
 
-        .loader {
-            position: relative;
-            margin: auto;
-            top: 35%;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #DAA520;
-            width: 120px;
-            height: 120px;
-            display: none;
-            -webkit-animation: spin 2s linear infinite;
-            /* Safari */
-            animation: spin 2s linear infinite;
-        }
-
-        /* Safari */
-
-        @-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-.loaderContainer {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 1;
-}
 
 .loadText {
     color: white;
@@ -643,7 +594,7 @@
     }
 }
 
-}
+
 
 .sk-folding-cube {
     margin: auto;
@@ -751,7 +702,7 @@
         transform: perspective(140px) rotateY(180deg);
         opacity: 0;
     }
-    
+}
     /* Authentication ends here */
 
     #main-wrapper {
