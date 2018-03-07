@@ -31,22 +31,24 @@
                  }
              }
          },
-         spinner: function (aUser) {
-             let container = document.getElementsByClassName("loaderContainer")[0];
-             let lSpinner = document.getElementsByClassName("loader")[0];
-             let body = document.getElementsByTagName("body")[0];
-             container.appendChild(lSpinner);
-             body.appendChild(container);
+         spinner: function(aUser) {
+                    let container = document.getElementsByClassName("loaderContainer")[0];
+                    let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
+                    let loadText = document.getElementsByClassName("loadText")[0];
+                    let body = document.getElementsByTagName("body")[0];
+                    container.appendChild(loadText);
+                    container.appendChild(lSpinner);
+                    body.appendChild(container);
 
-             if (aUser === false) {
-                 container.style.display = "block";
-                 lSpinner.style.display = "block";
-             } else {
-                 lSpinner.style.display = "none";
-                 container.style.display = "none";
-             }
-         }
-     };
+                    if (aUser === false) {
+                        container.style.display = "block";
+                        lSpinner.style.display = "block";
+                    } else {
+                        lSpinner.style.display = "none";
+                        container.style.display = "none";
+                    }
+                }
+            };
      authSpinner.activateSpinner(); // Kör igång spinner funktionen
 
      // Providers

@@ -5,15 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Untappd API</title>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
-    
-
-
+    <link href="https://fonts.googleapis.com/css?family=Knewave" rel="stylesheet">
     <script src="./js_for_untappd.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
-
+   
 </head>
 
 <body>
@@ -24,7 +22,6 @@
                 <img src='./beerLogo7.png' alt='logo' height="60" width="60" class="logotype"> 
                 <h3>Bring My Beer Bro</h3>
             </a>
-            <!--<div id='profilePic'></div>  SLäckte ner denna och implementerar min kod // Jonte-->
         </nav>
     </header>
     <main>
@@ -38,17 +35,20 @@
             <div class="searchTitle">
                 <h1>Beers to bring</h1>
             </div>
-            <div class="container card"  id="main-wrapper">
-           
+            <div class="container card" id="main-wrapper">
+
             </div>
-            
-                
-        </div>
-        
-        <div class="loaderContainer">
-            <div class="loader"></div>
         </div>
 
+        <div class="loaderContainer">
+            <h1 class="loadText"> Loading beers . . .</h1>
+            <div class="sk-folding-cube">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+        </div>
 
         <div class="notLogged">
             <div class="logContainer">
@@ -58,12 +58,16 @@
                 </div>
             </div>
         </div>
-        
     </main>
-        <div id="showMoreBackground">
+    <div id="showMoreBackground">
         <button id="showMore" class="btn btn-outline-warning">more beers</button>
-        </div>
-    
+    </div>
+
 </body>
+
+
+
+
+
 
 </html>
