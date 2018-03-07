@@ -70,7 +70,7 @@
 
 
             //Hämtar hem alla produkter som finns på systembolaget
-            fetch("https://www.systembolaget.se/api/assortment/products/xml")
+            fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/products/xml")
                 .then(function(requestProducts) {
                     return requestProducts.text();
                 })
@@ -84,7 +84,7 @@
                 })
 
             //Hämtar hem butiker och deras sortiment
-            fetch("https://www.systembolaget.se/api/assortment/stock/xml")
+            fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
                 .then(function(requestInStock) {
                     return requestInStock.text();
                 })
@@ -288,7 +288,7 @@
         <nav class="navbar navbar-light bg-faded">
             <a class="navbar-brand" href="untappd.html">
 
-                <img src='beerLogo7.png' alt='logo' height="60" width="60" class="logotype">
+                <img src='./beerLogo7.png' alt='logo' height="60" width="60" class="logotype">
                 <h3>Bring My Beer Bro</h3>
             </a>
             <div id='profilePic'></div>
@@ -301,8 +301,8 @@
     <br>
     <div class="container card">
 
-        <div class="loading">
-            <div class="lds-ripple">
+        <div class="loaderContainer">
+            <div class="loader">
                 <div></div>
                 <div></div>
             </div>
