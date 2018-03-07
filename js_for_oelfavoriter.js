@@ -215,7 +215,7 @@
             }
             
             
-            let myStore = 1410; //Ska vara vald butik när vi kommer till sidan
+            let myStore = butikNr; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
                 storeOnly = [];
 //                console.log(outputfromStoreFetch)
@@ -341,12 +341,12 @@
                     }
                 }
                 if (favoriteId === idOfBeer && inputArray.length !== 0) {
-//                    for (let i = 0; i < storeOnly[0].length; i++) {
-//                        if (storeOnly[0]._attr.ButikNr._value == myStore) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
-//                            console.log("Store exists, moving on");
-////                            store.push(result.ButikArtikel[0].Butik[i]);
-//                        }
-//                    }
+                    for (let i = 0; i < storeOnly[0].length; i++) {
+                        if (storeOnly[0]._attr.ButikNr._value == myStore) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
+                            console.log("Store exists, moving on");
+                            store.push(result.ButikArtikel[0].Butik[i]);
+                        }
+                    }
                     loopIt(beerNumbers);
                 } else {
                     console.log("Can't find your beer, sorry mate");
@@ -431,21 +431,20 @@
                         city = document.getElementById('göteborg').value;
                         if(document.getElementById('nordstan').checked) {
                             butik = document.getElementById('nordstan').value;
-                            butikNr = 1410;
+                            myStore = 1410;
                         }
                     }
                     if(document.getElementById('lerum').checked) {
                         city = document.getElementById('lerum').value;
                         if(document.getElementById('solkatten').checked) {
                             butik = document.getElementById('solkatten').value;
-                            butikNr = 1508;
+                            myStore = 1508;
                         }
                     }
-                    console.log('Stad: ' + city + " Butik: " + butik + " ButikNr: " + butikNr);
+                    console.log('Stad: ' + city + " Butik: " + butik + " MyStore: " + myStore);
                     document.getElementById('city').innerText = city;
                     document.getElementById('store').innerText = butik;
                     document.getElementById('popUp').style.display = 'none';
                 });
             }
-
         })
