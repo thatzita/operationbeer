@@ -441,7 +441,7 @@
                             butikNr = 1508;
                         }
                     }
-                    console.log('Stad: ' + city + " Butik: " + store + " ButikNr: " + butikNr);
+                    console.log('Stad: ' + city + " Butik: " + butik + " ButikNr: " + butikNr);
                     document.getElementById('city').innerText = city;
                     document.getElementById('store').innerText = butik;
                     document.getElementById('popUp').style.display = 'none';
