@@ -768,15 +768,15 @@
         background-color: red;
         border-radius: 10px;
         color: white;
-        top: 25px;
-        right: 10px;
+        top: 30px;
+        right: 900px;
     }
     #currentStore {
         position: absolute;
         width: 200px;
         height: 85px;
         top: 0;
-        right: 100px;
+        right: 1000px;
         color: white;
         top: 30px;
     }
