@@ -23,7 +23,7 @@
             let beerToFind;
             let result;
 
-            let loading = document.getElementsByClassName("loading")[0];
+//             let loading = document.getElementsByClassName("loading")[0];
             let user = {};
             let userList = [];
 
@@ -32,6 +32,11 @@
 
             let userLoggedIn;
             let id = "";
+
+            let city = "";
+            let butik = "";
+            let butikNr = undefined;
+            initPopUp();
 
 
             function getUsers() {
@@ -189,7 +194,7 @@
                 .then(function (json) {
                     let beerDB = json;
                     result = xmlToJSON.parseString(beerDB);
-                    loading.style.display = "none";
+//                     loading.style.display = "none";
                     specificStore(result);
                 })
                 .catch(function (error) {
@@ -267,7 +272,7 @@
                     container.appendChild(content.div);
 
                     increment++;
-                    loading.style.display = "none";
+//                     loading.style.display = "none";
                 }
             }
 
@@ -402,5 +407,45 @@
                     doesBeerExist(favoriteId, parentNodeForBeer, yourBeer);
                 }
             })
+
+            function initPopUp() {
+                document.getElementById('popUpButton').addEventListener('click', function() {
+                    document.getElementById('popUp').style.display = 'block';
+                });
+                document.getElementById('solkatten').checked = 'true';
+                document.getElementById('nordstan').checked = 'true';
+                document.getElementById('storesLerum').style.display = 'none';
+                document.getElementById('göteborg').checked = 'true';
+                document.getElementById('listOfCitiesContent').addEventListener('click', function() {
+                    if(document.getElementById('göteborg').checked) {
+                        document.getElementById('storesLerum').style.display = 'none';
+                        document.getElementById('storesGöteborg').style.display = 'block';
+                    }
+                    if(document.getElementById('lerum').checked) {
+                        document.getElementById('storesGöteborg').style.display = 'none';
+                        document.getElementById('storesLerum').style.display = 'block';
+                    }
+                });
+                document.getElementById('confirmButton').addEventListener('click', function() {
+                    if(document.getElementById('göteborg').checked) {
+                        city = document.getElementById('göteborg').value;
+                        if(document.getElementById('nordstan').checked) {
+                            butik = document.getElementById('nordstan').value;
+                            butikNr = 1410;
+                        }
+                    }
+                    if(document.getElementById('lerum').checked) {
+                        city = document.getElementById('lerum').value;
+                        if(document.getElementById('solkatten').checked) {
+                            butik = document.getElementById('solkatten').value;
+                            butikNr = 1508;
+                        }
+                    }
+                    console.log('Stad: ' + city + " Butik: " + butik + " ButikNr: " + butikNr);
+                    document.getElementById('city').innerText = city;
+                    document.getElementById('store').innerText = butik;
+                    document.getElementById('popUp').style.display = 'none';
+                });
+            }
 
         })
