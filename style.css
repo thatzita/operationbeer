@@ -68,10 +68,7 @@
           text-decoration: none;
         }
 
-        .btn:focus, .btn.focus {
-          outline: 0;
-          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
+        
 
         .btn.disabled, .btn:disabled {
           opacity: 0.65;
@@ -98,9 +95,7 @@
           border-color: #f8f9fa;
         }
 
-        .btn-outline-light:focus, .btn-outline-light.focus {
-          box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
-        }
+        
 
         .btn-outline-light.disabled, .btn-outline-light:disabled {
           color: #f8f9fa;
@@ -114,11 +109,7 @@
           border-color: #f8f9fa;
         }
 
-        .btn-outline-light:not(:disabled):not(.disabled):active:focus, .btn-outline-light:not(:disabled):not(.disabled).active:focus,
-        .show > .btn-outline-light.dropdown-toggle:focus {
-          box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
-        }
-
+       
         .btn-outline-warning {
           color: #ffc107;
           background-color: transparent;
@@ -132,9 +123,7 @@
           border-color: #ffc107;
         }
 
-        .btn-outline-warning:focus, .btn-outline-warning.focus {
-          box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
-        }
+    
 
         .btn-outline-warning.disabled, .btn-outline-warning:disabled {
           color: #ffc107;
@@ -148,10 +137,7 @@
           border-color: #ffc107;
         }
 
-        .btn-outline-warning:not(:disabled):not(.disabled):active:focus, .btn-outline-warning:not(:disabled):not(.disabled).active:focus,
-        .show > .btn-outline-warning.dropdown-toggle:focus {
-          box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
-        }
+        
 
         /*Bootstrap CSS ends*/        
 
@@ -174,6 +160,7 @@
             border-bottom: 20px solid white;
             float: right;
             top: 0;
+            margin-right: 20px;
         }
 
         .arrowDown {
@@ -181,15 +168,19 @@
             margin-top: 20px;
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
-
             border-top: 20px solid white;
+            margin-right: 20px;
         }
 
         h4 {
             float: right;
+            margin-top: 10px;
+            font-size: 16pt;
         }
         h5 {
             float: right;
+            margin-top: 10px;
+            font-size: 14pt;
         }
 
         /* unvisited link */
@@ -226,6 +217,7 @@
             width: 700px;
             height: auto;
             background-color: rgba(61, 100, 61, 0.7);
+            border-radius: 5px;
         }
 
         .beer:last-child {
@@ -265,7 +257,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            background: rgba(134, 49, 12, 1);
+            background: rgba(91, 35, 25, 0.8);
             height: 80px;
         }
 
@@ -289,7 +281,7 @@
             background-color: rgba(91, 35, 25, 0.6);
             margin:auto;
             margin-top: 50px;
-            border-radius: 10px;
+            border-radius: 5px;
             display: flex;
         }
         .searchTitle {
@@ -400,6 +392,51 @@
             top: 65px;
             
         }
+
+
+        #main-wrapper {
+            padding: 0 0 50px;
+            position: relative;
+        }
+
+        #showMoreBackground {
+            padding: 1vw;
+            width: 350px;
+            margin: auto;
+        }
+        #showMore {
+            bottom: 0;
+            left: 45%;
+            position: sticky;
+            width: 100%;
+            background-color: rgba(1, 1, 1, 0.3)
+        }
+        
+        #showMore:hover {
+            color: #212529;
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .infoDiv {
+            width: 300px;
+            float: right;
+            margin-right: 10px;
+        }
+
+        h2 {
+            font-size: 22pt;
+            margin-left: 20px;
+        }
+
+        p {
+            font-size: 14pt;
+        }
+
+        .details {
+            padding: 20px;
+        }
+
         
         @media (max-width: 700px) {
             
@@ -432,9 +469,6 @@
             .card-body {
               padding: 0;
             }
-            #profilePic {
-                display:none;
-            }
             
             .header {
                 font-size: 12pt;
@@ -454,13 +488,47 @@
                 border-color: #ffc107;
             }
             
-            .arrowDown {
-                margin-top: 4vw;
+            .arrowDown, .arrowUp {
                 margin-right: 10px;
             }
             
+            
             h2 {
                 margin-left: 20px;
+                font-size: 18pt;
+            }
+            
+            h4 {
+                font-size: 16pt;
+            }
+            h5 {
+                font-size: 14pt;
+            }
+            p {
+                font-size: 12pt;
+            }
+            
+            .details .favoriteBtn {
+                margin-bottom: 10px;
+                margin-right: 10px;
+                color: #212529;
+                background-color: #f8f9fa;
+                border-color: #f8f9fa;
+            }
+            
+            #showMoreBackground {
+                padding: 0;
+                background: rgba(1, 1, 1, 0.2);
+                width: 40%;
+                margin: auto;
+                border-radius: 10px;
+            }
+            #showMore {
+                margin-left: auto;
+                margin-right: auto;
+                bottom: 0;
+                position: sticky;
+                background-color: #ffc107;
             }
         }
         
@@ -472,8 +540,8 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            top: 2.3vw;
-            right: 2vw;
+            top: 15px;
+            right:15px;
             width: 70vw;
         }
 
@@ -522,7 +590,6 @@
             width: 400px;
             height: 200px;
             background-color: saddlebrown;
-            border: 2px solid black;
         }
 
         .logInSection button {
@@ -553,51 +620,6 @@
             z-index: 1;
         }
 
-        .loader {
-            position: relative;
-            margin: auto;
-            top: 35%;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #DAA520;
-            width: 120px;
-            height: 120px;
-            display: none;
-            -webkit-animation: spin 2s linear infinite;
-            /* Safari */
-            animation: spin 2s linear infinite;
-        }
-
-        /* Safari */
-
-        @-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-.loaderContainer {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 1;
-}
 
 .loadText {
     color: white;
@@ -643,7 +665,7 @@
     }
 }
 
-}
+
 
 .sk-folding-cube {
     margin: auto;
@@ -751,22 +773,5 @@
         transform: perspective(140px) rotateY(180deg);
         opacity: 0;
     }
-    
+}
     /* Authentication ends here */
-
-    #main-wrapper {
-        padding: 0 0 50px;
-        position: relative;
-    }
-
-    #showMoreBackground {
-        padding: 1vw;
-        background: rgba(134, 49, 12, 1);
-    }
-    #showMore {
-        bottom: 0;
-        left: 45%;
-        position: sticky;
-        width: 100%;
-    }
-

@@ -235,6 +235,7 @@
                  img: document.createElement("img"),
                  beerNameShow: document.createElement("h2"),
                  beerNameHide: document.createElement("h2"),
+                 infoDiv: document.createElement('div'),
                  style: document.createElement("h4"),
                  brewery: document.createElement("h5"),
                  description: document.createElement("p"),
@@ -260,15 +261,17 @@
              content.img.setAttribute("src", array[i].beer.beer_label);
              content.img.setAttribute("height", "140px");
 
-             content.favorite.setAttribute("class", "btn btn-outline-light");
+             content.favorite.setAttribute("class", "btn btn-outline-light favoriteBtn");
              content.favorite.setAttribute("id", array[i].beer.bid);
 
              content.favorite.innerText = "Favorite";
              content.beerNameShow.innerText = array[i].beer.beer_name;
              content.beerNameHide.innerText = array[i].beer.beer_name;
-             content.style.innerText = array[i].beer.beer_style;
-             content.brewery.innerText = array[i].brewery.brewery_name;
+             content.style.innerText = 'Type of beer: ' + array[i].beer.beer_style;
+             content.brewery.innerText = 'Brewery: ' + array[i].brewery.brewery_name;
              content.description.innerText = array[i].beer.beer_description;
+             
+             content.infoDiv.setAttribute('class', 'infoDiv')
 
              content.hide.appendChild(content.arrowDown);
              content.hide.appendChild(content.beerNameHide);
@@ -280,8 +283,9 @@
 
 
              content.moreInfo.appendChild(content.img);
-             content.moreInfo.appendChild(content.style);
-             content.moreInfo.appendChild(content.brewery);
+             content.moreInfo.appendChild(content.infoDiv);
+             content.infoDiv.appendChild(content.style);
+             content.infoDiv.appendChild(content.brewery);
              content.moreInfo.appendChild(content.description);
              content.moreInfo.appendChild(content.favorite);
 
