@@ -769,7 +769,7 @@
         border-radius: 10px;
         color: white;
         top: 30px;
-        right: 800px;
+        right: 500px;
     }
     #currentStore {
         position: absolute;
@@ -779,5 +779,14 @@
         right: 1000px;
         color: white;
         top: 30px;
+    }
+
+    #listOfCities, #listOfCounties, #listOfStores {
+        position: relative;
+        width: 50%;
+        left: 25%;
+        right: 25%;
+        text-align: center;
+        border-radius: 5px;
     }
 

@@ -194,6 +194,7 @@
                 .then(function (json) {
                     let beerDB = json;
                     result = xmlToJSON.parseString(beerDB);
+                    //console.log(result);
 //                     loading.style.display = "none";
                     specificStore(result);
                 })
@@ -201,6 +202,83 @@
                     console.log(error);
                 })
 
+
+                fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stores/xml")
+                    .then(function (req) {
+                        return req.text();
+                    })
+                    .then(function (xml) {
+                        let json = xmlToJSON.parseString(xml);
+                        let counties = createCountiesList(json);
+                        let cities = createCitiesList(json);
+                        let stores = createStoresList(json);
+                        addToListOfCounties(counties);
+                        addToListOfCities(cities);
+                        addToListOfStores(stores);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+
+                function addToListOfCounties(countyList) {
+                    let dropDown = document.getElementById('listOfCounties');
+                    countyList.forEach( county =>  {
+                        let newCounty = document.createElement('option');
+                        newCounty.setAttribute('value', county);
+                        newCounty.innerText = county;
+                        dropDown.appendChild(newCounty);
+                    })
+                }
+
+                function createCountiesList(json) {
+                    let newList = [];
+                    json.ButikerOmbud[0].ButikOmbud.forEach( store => {
+                        let county = store.Address5[0]._text;
+                        newList[county] = county;
+                    });
+                    return Object.keys(newList).sort();
+                }
+
+                function addToListOfCities(cityList) {
+                    let dropDown = document.getElementById('listOfCities');
+                    cityList.forEach( city =>  {
+                        let newCity = document.createElement('option');
+                        newCity.setAttribute('value', city);
+                        newCity.innerText = city;
+                        dropDown.appendChild(newCity);
+                    })
+                }
+
+                function createCitiesList(json) {
+                    let newList = [];
+                    json.ButikerOmbud[0].ButikOmbud.forEach( store => {
+                        let city = store.Address4[0]._text;
+                        newList[city] = city;
+                    });
+                    return Object.keys(newList).sort();
+                }
+                
+                function addToListOfStores(storeList) {
+                    let dropDown = document.getElementById('listOfStores');
+                    storeList.forEach( butik =>  {
+                        let newStore = document.createElement('option');
+                        newStore.setAttribute('value', butik);
+                        newStore.innerText = butik;
+                        dropDown.appendChild(newStore);
+                    })
+                }
+
+                function createStoresList(json) {
+                    let newList = [];
+                    json.ButikerOmbud[0].ButikOmbud.forEach( store => {
+                        let butik = store.Address4[0]._text;
+                        //console.log(store.Nr[0]._text);
+                        if(typeof(store.Nr[0]._text) === "number") {
+                            newList[butik] = butik;
+                        }
+                    });
+                    //return Object.keys(newList).sort();
+                }
 
 
             function beerOnlyList(outputFromFetch) {
@@ -341,12 +419,12 @@
                     }
                 }
                 if (favoriteId === idOfBeer && inputArray.length !== 0) {
-                    for (let i = 0; i < storeOnly[0].length; i++) {
-                        if (storeOnly[0]._attr.ButikNr._value == myStore) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
-                            console.log("Store exists, moving on");
-                            store.push(result.ButikArtikel[0].Butik[i]);
-                        }
-                    }
+//                    for (let i = 0; i < storeOnly[0].length; i++) {
+//                        if (storeOnly[0]._attr.ButikNr._value == myStore) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
+//                            console.log("Store exists, moving on");
+////                            store.push(result.ButikArtikel[0].Butik[i]);
+//                        }
+//                    }
                     loopIt(beerNumbers);
                 } else {
                     console.log("Can't find your beer, sorry mate");
@@ -412,6 +490,7 @@
                 document.getElementById('popUpButton').addEventListener('click', function() {
                     document.getElementById('popUp').style.display = 'block';
                 });
+                /*
                 document.getElementById('solkatten').checked = 'true';
                 document.getElementById('nordstan').checked = 'true';
                 document.getElementById('storesLerum').style.display = 'none';
@@ -431,20 +510,27 @@
                         city = document.getElementById('göteborg').value;
                         if(document.getElementById('nordstan').checked) {
                             butik = document.getElementById('nordstan').value;
-                            myStore = 1410;
+                            butikNr = 1410;
+                            console.log(butikNr);
                         }
                     }
                     if(document.getElementById('lerum').checked) {
                         city = document.getElementById('lerum').value;
                         if(document.getElementById('solkatten').checked) {
                             butik = document.getElementById('solkatten').value;
-                            myStore = 1508;
+                            butikNr = 1508;
+                            console.log(butikNr);
                         }
                     }
-                    console.log('Stad: ' + city + " Butik: " + butik + " MyStore: " + myStore);
+                    console.log('Stad: ' + city + " Butik: " + butik + " ButikNr: " + butikNr);
                     document.getElementById('city').innerText = city;
                     document.getElementById('store').innerText = butik;
                     document.getElementById('popUp').style.display = 'none';
                 });
+                */
+               document.getElementById('confirmButton').addEventListener('click', function() {
+                   document.getElementById('popUp').style.display = "none";
+               })
             }
+
         })
