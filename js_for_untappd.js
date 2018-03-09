@@ -369,7 +369,8 @@
 
      container.addEventListener("click", function (e) {
          let toNumber = parseInt(e.target.id);
-         //                console.log(beerArray)
+         let disableBtn = e.target;
+         
          let beerObj = {}
          for (let i = 0; i < beerArray.length; i++) {
              if (toNumber == beerArray[i].beer.bid) {
@@ -378,9 +379,11 @@
                  beerObj.description = beerArray[i].beer.beer_description;
                  beerObj.brewery = beerArray[i].brewery.brewery_name;
                  beerObj.img = beerArray[i].beer.beer_label;
+                 beerObj.bid = beerArray[i].beer.bid;
                  db.ref(`users/${id}/favorites/`).push(beerObj);
                  console.log(id);
                  console.log("ok")
+                 disableBtn.disabled = true;
              }
          }
      })
