@@ -69,6 +69,7 @@
      let user = {};
      let userList = [];
      let id;
+  let footer =  document.getElementsByTagName("footer")[0];
      
      
 
@@ -299,7 +300,6 @@
 
 
      searchBeerBtn.addEventListener("click", function () {
-         let footer =  document.getElementsByTagName("footer")[0];
          
          offset = 0;
          beerArray = [];
