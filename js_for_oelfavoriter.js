@@ -124,7 +124,7 @@
                             id: uid
                         };
 
-
+                        
 
                         //                        console.log('onAuthStateChanged: user is signed in', user);
                         console.log("User logged in..");
@@ -173,6 +173,7 @@
 
                         }; // End of checkUsers
                         checkUsers(uList);
+                        getProducts();
                     } else {
                         spinnerObject.spinner(spinnerObject.notFetching);
                         console.log("No User");
@@ -218,7 +219,7 @@
                     })
             }
             //Kör fetchen
-            getProducts();
+            
             
             //Hämtar hem butiker och deras sortiment
             function getStores() {
