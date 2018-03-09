@@ -70,8 +70,7 @@
      let userList = [];
      let id;
      
-     let showMoreBackground = document.getElementById("showMoreBackground");
-     showMoreBackground.style.display = "none";
+     
 
      //används av showMore funktionen för att se nästkommande 5 öl
      let counter = 5;
@@ -81,6 +80,7 @@
      
      
      let showMore = document.getElementById("showMore");
+     showMore.style.display = "none";
 
      function getUsers() {
          db.ref("users/").once("value", function (snapshot) {
@@ -143,6 +143,7 @@
                  console.log("User logged in..");
                  elements.userDiv.setAttribute("class", "userDiv");
                  elements.logOutBtn.setAttribute("id", "logOut");
+                 elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                  elements.logOutBtn.innerText = "Sign out";
                  elements.name.innerText = `${displayName}`;
                  elements.imgcontainer.setAttribute("class", "userInfo");
@@ -298,10 +299,12 @@
 
 
      searchBeerBtn.addEventListener("click", function () {
+         let footer =  document.getElementsByTagName("footer")[0];
+         
          offset = 0;
          beerArray = [];
          value = searchBeerInput.value;
-         showMoreBackground.style.display = "none";
+         showMore.style.display = "none";
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -313,11 +316,12 @@
                  }
 
                  printOut(beerArray);
+             footer.style.position = "sticky";
              console.log(beerArray)
              if(beerArray.length >= 4)
-             showMoreBackground.style.display = "block";
+             showMore.style.display = "block";
              else
-                 showMoreBackground.style.display = "none";
+                 showMore.style.display = "none";
              })
              .catch(function (error) {
                  console.log(error);
@@ -347,9 +351,9 @@
              
              console.log(beerArray)
              if(beerArray.length >= 4)
-             showMoreBackground.style.display = "block";
+             showMore.style.display = "block";
              else
-                 showMoreBackground.style.display = "none";
+                 showMore.style.display = "none";
              
              })
              .catch(function (error) {

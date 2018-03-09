@@ -38,6 +38,34 @@
             initPopUp();
 
 
+            let spinnerObject = {
+                fetching: true,
+                notFetching: false,
+                loadText1: "Loading beers . . .",
+                loadText2: "Fetching stores . . .",
+                spinner: function (getData, textVal) {
+
+                    let body = document.getElementsByTagName("body")[0];
+                    let spinContainer = document.getElementsByClassName("loaderContainer")[0];
+                    let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
+                    let text = document.createElement("h1");
+
+                    text.innerText = textVal;
+                    text.setAttribute("class", "spinnerText");
+                    spinContainer.appendChild(text);
+                    spinContainer.appendChild(lSpinner);
+                    body.appendChild(spinContainer);
+
+                    if (getData === true) {
+                        spinContainer.style.display = "block";
+                        lSpinner.style.display = "block";
+                    } else {
+                        lSpinner.style.display = "none";
+                        spinContainer.style.display = "none";
+                    }
+                }
+            };
+
             function getUsers() {
                 db.ref("users/").once("value", function (snapshot) {
                     let data = snapshot.val();
@@ -102,6 +130,7 @@
                         console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
+                        elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                         elements.logOutBtn.innerText = "Sign out";
                         elements.name.innerText = `${displayName}`;
                         elements.imgcontainer.setAttribute("class", "userInfo");
@@ -145,7 +174,9 @@
                         }; // End of checkUsers
                         checkUsers(uList);
                     } else {
+                        spinnerObject.spinner(spinnerObject.notFetching);
                         console.log("No User");
+                        window.location.href = "untappd.html";
                     }
                 })
             }; // getUserInfo ends
@@ -169,35 +200,46 @@
             }
 
             //Hämtar hem alla produkter som finns på systembolaget
-            fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/products/xml")
-                .then(function (requestProducts) {
-                    return requestProducts.text();
-                })
-                .then(function (json) {
-                    beerToFind = json;
-                    resultProducts = xmlToJSON.parseString(beerToFind);
-                    beerOnlyList(resultProducts)
+            function getProducts() {
+                spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText1);
+                fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/products/xml")
+                    .then(function (requestProducts) {
+                        return requestProducts.text();
+                    })
+                    .then(function (json) {
+                        getStores();
+                        beerToFind = json;
+                        resultProducts = xmlToJSON.parseString(beerToFind);
+                        beerOnlyList(resultProducts)
 
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+            //Kör fetchen
+            getProducts();
+            
             //Hämtar hem butiker och deras sortiment
-            fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
-                .then(function (requestInStock) {
-                    return requestInStock.text();
-                })
-                .then(function (json) {
-                    let beerDB = json;
-                    result = xmlToJSON.parseString(beerDB);
-                    specificStore(result);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+            function getStores() {
+                spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText2);
+                let loadCont = document.getElementsByClassName("loaderContainer")[0];
+                loadCont.removeChild(loadCont.children[0]);
+                fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
+                    .then(function (requestInStock) {
+                        return requestInStock.text();
+                    })
+                    .then(function (json) {
+                        spinnerObject.spinner(spinnerObject.notFetching);
+                        let beerDB = json;
+                        result = xmlToJSON.parseString(beerDB);
+                        specificStore(result);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
 
-
+            }
 
             function beerOnlyList(outputFromFetch) {
                 beerOnly = [];
