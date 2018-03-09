@@ -590,6 +590,7 @@
             width: 400px;
             height: 200px;
             background: rgba(91, 35, 25, 0.8);
+            box-shadow: 5px 5px 10px black;
         }
 
         .logInSection button {
