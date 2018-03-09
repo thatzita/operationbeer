@@ -889,6 +889,7 @@
         color: white;
         top: 30px;
         right: 500px;
+        z-index: 1;
     }
     #currentStore {
         position: absolute;
