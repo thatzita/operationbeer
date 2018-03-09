@@ -210,15 +210,34 @@
                     .then(function (xml) {
                         let json = xmlToJSON.parseString(xml);
                         let counties = createCountiesList(json);
-                        let cities = createCitiesList(json);
-                        let stores = createStoresList(json);
                         addToListOfCounties(counties);
-                        addToListOfCities(cities);
-                        addToListOfStores(stores);
+                        document.getElementById('listOfCounties').addEventListener('click', function() {
+                            let cities = createCitiesList(json, document.getElementById('listOfCounties').value);
+                            clearCities(); 
+                            clearStores();
+                            addToListOfCities(cities);
+                        })
+                        document.getElementById('listOfCities').addEventListener('click', function() {
+                            let stores = createStoresList(json, document.getElementById('listOfCities').value);
+                            clearStores();
+                            addToListOfStores(stores);
+                        })
                     })
                     .catch(function (error) {
                         console.log(error);
                     })
+
+                function clearCities(){
+                    while(document.getElementById('listOfCities').firstChild) {
+                        document.getElementById('listOfCities').removeChild(document.getElementById('listOfCities').firstChild);
+                    }
+                }
+
+                function clearStores(){
+                    while(document.getElementById('listOfStores').firstChild) {
+                        document.getElementById('listOfStores').removeChild(document.getElementById('listOfStores').firstChild);
+                    }
+                }
 
                 function addToListOfCounties(countyList) {
                     let dropDown = document.getElementById('listOfCounties');
@@ -239,9 +258,9 @@
                     return Object.keys(newList).sort();
                 }
 
-                function addToListOfCities(cityList) {
+                function addToListOfCities(citiesList) {
                     let dropDown = document.getElementById('listOfCities');
-                    cityList.forEach( city =>  {
+                    citiesList.forEach( city =>  {
                         let newCity = document.createElement('option');
                         newCity.setAttribute('value', city);
                         newCity.innerText = city;
@@ -249,11 +268,13 @@
                     })
                 }
 
-                function createCitiesList(json) {
+                function createCitiesList(json, county) {
                     let newList = [];
                     json.ButikerOmbud[0].ButikOmbud.forEach( store => {
-                        let city = store.Address4[0]._text;
-                        newList[city] = city;
+                        if(store.Address5[0]._text === county && typeof(store.Nr[0]._text) == "number") {
+                            let city = store.Address4[0]._text;
+                            newList[city] = city;
+                        }
                     });
                     return Object.keys(newList).sort();
                 }
@@ -262,22 +283,25 @@
                     let dropDown = document.getElementById('listOfStores');
                     storeList.forEach( butik =>  {
                         let newStore = document.createElement('option');
-                        newStore.setAttribute('value', butik);
-                        newStore.innerText = butik;
+                        newStore.setAttribute('value', butik.nr);
+                        newStore.innerText = butik.address;
                         dropDown.appendChild(newStore);
                     })
                 }
 
-                function createStoresList(json) {
+                function createStoresList(json, city) {
                     let newList = [];
+                    function NewStore(address, nr) {
+                        this.address = address,
+                        this.nr = nr
+                    }
                     json.ButikerOmbud[0].ButikOmbud.forEach( store => {
-                        let butik = store.Address4[0]._text;
-                        //console.log(store.Nr[0]._text);
-                        if(typeof(store.Nr[0]._text) === "number") {
-                            newList[butik] = butik;
+                        if(store.Address4[0]._text == city && typeof(store.Nr[0]._text) == 'number') {
+                            newList.push(new NewStore(store.Address1[0]._text, store.Nr[0]._text));
                         }
                     });
                     //return Object.keys(newList).sort();
+                    return newList;
                 }
 
 
@@ -289,7 +313,7 @@
                     }
 
                 }
-                console.log(beerOnly.length);
+                //console.log(beerOnly.length);
             }
             
             
@@ -303,7 +327,7 @@
                         storeOnly.push(outputfromStoreFetch.ButikArtikel[0].Butik[i])
                     }
                 }
-                console.log(storeOnly.length)
+                //console.log(storeOnly.length)
             }
 
 
@@ -490,46 +514,10 @@
                 document.getElementById('popUpButton').addEventListener('click', function() {
                     document.getElementById('popUp').style.display = 'block';
                 });
-                /*
-                document.getElementById('solkatten').checked = 'true';
-                document.getElementById('nordstan').checked = 'true';
-                document.getElementById('storesLerum').style.display = 'none';
-                document.getElementById('göteborg').checked = 'true';
-                document.getElementById('listOfCitiesContent').addEventListener('click', function() {
-                    if(document.getElementById('göteborg').checked) {
-                        document.getElementById('storesLerum').style.display = 'none';
-                        document.getElementById('storesGöteborg').style.display = 'block';
-                    }
-                    if(document.getElementById('lerum').checked) {
-                        document.getElementById('storesGöteborg').style.display = 'none';
-                        document.getElementById('storesLerum').style.display = 'block';
-                    }
-                });
-                document.getElementById('confirmButton').addEventListener('click', function() {
-                    if(document.getElementById('göteborg').checked) {
-                        city = document.getElementById('göteborg').value;
-                        if(document.getElementById('nordstan').checked) {
-                            butik = document.getElementById('nordstan').value;
-                            butikNr = 1410;
-                            console.log(butikNr);
-                        }
-                    }
-                    if(document.getElementById('lerum').checked) {
-                        city = document.getElementById('lerum').value;
-                        if(document.getElementById('solkatten').checked) {
-                            butik = document.getElementById('solkatten').value;
-                            butikNr = 1508;
-                            console.log(butikNr);
-                        }
-                    }
-                    console.log('Stad: ' + city + " Butik: " + butik + " ButikNr: " + butikNr);
-                    document.getElementById('city').innerText = city;
-                    document.getElementById('store').innerText = butik;
-                    document.getElementById('popUp').style.display = 'none';
-                });
-                */
                document.getElementById('confirmButton').addEventListener('click', function() {
                    document.getElementById('popUp').style.display = "none";
+                   butikNr = document.getElementById('listOfStores').value;
+                   console.log(butikNr);
                })
             }
 

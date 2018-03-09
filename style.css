@@ -780,13 +780,12 @@
         color: white;
         top: 30px;
     }
-
-    #listOfCities, #listOfCounties, #listOfStores {
+    
+    #listOfCounties, #listOfCities, #listOfStores {
         position: relative;
         width: 50%;
         left: 25%;
         right: 25%;
-        text-align: center;
         border-radius: 5px;
     }
 
