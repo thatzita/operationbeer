@@ -348,7 +348,7 @@
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
                  printOut(beerArray);
-             
+             footer.style.position = "sticky";
              console.log(beerArray)
              if(beerArray.length >= 4)
              showMore.style.display = "block";
