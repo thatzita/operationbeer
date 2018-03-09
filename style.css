@@ -839,7 +839,7 @@
         width: 100%;
     }
 
-    #popUp {
+#popUp {
         position: fixed;
         width: 50%;
         height: 50%;
@@ -887,7 +887,7 @@
         border-radius: 10px;
         color: white;
         top: 30px;
-        right: 900px;
+        right: 500px;
     }
     #currentStore {
         position: absolute;
@@ -897,6 +897,14 @@
         right: 1000px;
         color: white;
         top: 30px;
+    }
+    
+    #listOfCounties, #listOfCities, #listOfStores {
+        position: relative;
+        width: 50%;
+        left: 25%;
+        right: 25%;
+        border-radius: 5px;
     }
 
  footer {
