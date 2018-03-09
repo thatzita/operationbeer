@@ -331,7 +331,8 @@
 
 
      showMore.addEventListener("click", function (e) {
-         console.log("clicked showMore");
+      
+      console.log("clicked showMore");
          console.log(e.target.id);
 
          offset = offset + 5;
@@ -348,7 +349,7 @@
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
                  printOut(beerArray);
-             footer.style.position = "sticky";
+             
              console.log(beerArray)
              if(beerArray.length >= 4)
              showMore.style.display = "block";
