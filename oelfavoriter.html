@@ -9,33 +9,21 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 
     <script type="text/javascript" src="xmltoJS/lib/xmlToJSON.js"></script>
-
+    <script src="./elasticlunr/elasticlunr.js"></script>
     <script src="./js_for_oelfavoriter.js"></script>
-    
 
-    
+
+
     <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
-    
+
 </head>
 
 <body>
-    <div id = "popUp">
+<div id = "popUp">
         <div id = "popUpContent">
-        <!-- <div id = "listOfCitiesContent">
-                <form id = "cities">
-                    <input type="radio" name="city" value="Göteborg" id = "göteborg">Göteborg
-                    <input type="radio" name="city" value="Lerum" id = "lerum">Lerum
-                </form>
-                <form id = "storesGöteborg">
-                    <input type = "radio" name = "butik" value = "Nordstan" id = "nordstan">Nordstan
-                </form>
-                <form id = "storesLerum">
-                    <input type = "radio" name = "butik" value = "Solkatten" id = "solkatten">Solkatten
-                </form>
-            </div>
-        -->
         <form id = "dropdowns">
             <select id = "listOfCounties">
+                <option style = "display:none"; selected>Välj län</option>
             </select>
             <select id = "listOfCities">
             </select>
@@ -44,7 +32,7 @@
         </form>
         </div>
         <button id = "confirmButton">Välj</button>
-    </div>
+</div>
     <header>
         <nav class="navbar navbar-light bg-faded">
             <a class="navbar-brand" href="untappd.html">
@@ -53,29 +41,30 @@
                 <h3>Bring My Beer Bro</h3>
             </a>
             <div id='profilePic'></div>
-            <div id = "currentStore">
-                <label id = "city"></label>
-                <label id = "store"></label>
+            <button id="popUpButton">Byt Butik</button>
+            <div id="currentStore">
+                <label id="city"></label>
+                <label id="store"></label>
             </div>
         </nav>
     </header>
     <div class="favorites">
         <h1>Mina favoriter</h1>
-        <button id = "popUpButton">Byt Butik</button>
     </div>
 
     <br>
     <div class="container card">
 
-        <div class="loaderContainer">
-            <div class="loader">
-                <div></div>
-                <div></div>
-            </div>
-            <br>
-            <h3>Fetching your beers...</h3>
-        </div>
     </div>
+        <div class="loaderContainer">
+            <div class="sk-folding-cube">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+        </div>
+    <footer></footer>
 
 </body>
 
