@@ -69,9 +69,9 @@
      let user = {};
      let userList = [];
      let id;
-  let footer =  document.getElementsByTagName("footer")[0];
+     let footer =  document.getElementsByTagName("footer")[0];
      
-     
+     let beersToBring = document.getElementById("beersToBring");
 
      //används av showMore funktionen för att se nästkommande 5 öl
      let counter = 5;
@@ -298,13 +298,22 @@
          }
      }
 
-
+     
+     
+     searchBeerInput.addEventListener("keydown", function(e){
+         if(e.keyCode == 13){
+             searchBeerBtn.click();
+             searchBeerInput.value = "";
+         }
+     })
+     
+     
      searchBeerBtn.addEventListener("click", function () {
-         
          offset = 0;
          beerArray = [];
          value = searchBeerInput.value;
          showMore.style.display = "none";
+         beersToBring.innerText = `Beer to bring is ${value}`
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -326,6 +335,8 @@
              .catch(function (error) {
                  console.log(error);
              })
+         
+         
      })
 
 
