@@ -250,13 +250,16 @@
                         let json = xmlToJSON.parseString(xml);
                         let counties = createCountiesList(json);
                         addToListOfCounties(counties);
-                        document.getElementById('listOfCounties').addEventListener('click', function() {
+                        document.getElementById('listOfCounties').addEventListener('change', function() {
                             let cities = createCitiesList(json, document.getElementById('listOfCounties').value);
-                            clearCities(); 
+                            clearCities();
                             clearStores();
                             addToListOfCities(cities);
+                            let stores = createStoresList(json, document.getElementById('listOfCities').value);
+                            clearStores();
+                            addToListOfStores(stores);
                         })
-                        document.getElementById('listOfCities').addEventListener('click', function() {
+                        document.getElementById('listOfCities').addEventListener('change', function() {
                             let stores = createStoresList(json, document.getElementById('listOfCities').value);
                             clearStores();
                             addToListOfStores(stores);
@@ -300,9 +303,11 @@
                 function addToListOfCities(citiesList) {
                     let dropDown = document.getElementById('listOfCities');
                     citiesList.forEach( city =>  {
+                        let cityName = "";
                         let newCity = document.createElement('option');
                         newCity.setAttribute('value', city);
-                        newCity.innerText = city;
+                        cityName = city.substring(0, 1).toUpperCase() + city.substring(1).toLowerCase();
+                        newCity.innerText = cityName;
                         dropDown.appendChild(newCity);
                     })
                 }
@@ -317,7 +322,7 @@
                     });
                     return Object.keys(newList).sort();
                 }
-                
+
                 function addToListOfStores(storeList) {
                     let dropDown = document.getElementById('listOfStores');
                     storeList.forEach( butik =>  {
@@ -335,8 +340,16 @@
                         this.nr = nr
                     }
                     json.ButikerOmbud[0].ButikOmbud.forEach( store => {
+                        let place = "";
                         if(store.Address4[0]._text == city && typeof(store.Nr[0]._text) == 'number') {
-                            newList.push(new NewStore(store.Address1[0]._text, store.Nr[0]._text));
+                            if(typeof(store.Namn[0]._text) == "string") {
+                                place = store.Namn[0]._text + ", " + store.Address1[0]._text;
+                            }
+                            else {
+                                place = store.Address1[0]._text;
+                            }
+                            
+                            newList.push(new NewStore(place, store.Nr[0]._text));
                         }
                     });
                     //return Object.keys(newList).sort();
