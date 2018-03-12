@@ -31,24 +31,24 @@
                  }
              }
          },
-         spinner: function(aUser) {
-                    let container = document.getElementsByClassName("loaderContainer")[0];
-                    let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
-                    let loadText = document.getElementsByClassName("loadText")[0];
-                    let body = document.getElementsByTagName("body")[0];
-                    container.appendChild(loadText);
-                    container.appendChild(lSpinner);
-                    body.appendChild(container);
+         spinner: function (aUser) {
+             let container = document.getElementsByClassName("loaderContainer")[0];
+             let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
+             let loadText = document.getElementsByClassName("loadText")[0];
+             let body = document.getElementsByTagName("body")[0];
+             container.appendChild(loadText);
+             container.appendChild(lSpinner);
+             body.appendChild(container);
 
-                    if (aUser === false) {
-                        container.style.display = "block";
-                        lSpinner.style.display = "block";
-                    } else {
-                        lSpinner.style.display = "none";
-                        container.style.display = "none";
-                    }
-                }
-            };
+             if (aUser === false) {
+                 container.style.display = "block";
+                 lSpinner.style.display = "block";
+             } else {
+                 lSpinner.style.display = "none";
+                 container.style.display = "none";
+             }
+         }
+     };
      authSpinner.activateSpinner(); // Kör igång spinner funktionen
 
      // Providers
@@ -69,17 +69,17 @@
      let user = {};
      let userList = [];
      let id;
-  let footer =  document.getElementsByTagName("footer")[0];
-     
-     
+     let footer = document.getElementsByTagName("footer")[0];
+
+
 
      //används av showMore funktionen för att se nästkommande 5 öl
      let counter = 5;
      let offset;
      let value;
 
-     
-     
+
+
      let showMore = document.getElementById("showMore");
      showMore.style.display = "none";
 
@@ -224,7 +224,6 @@
          let increment = 0;
 
          for (let i = 0; i < array.length; i++) {
-             //                        console.log(db[i].id)
              let content = {
                  div: document.createElement("div"),
 
@@ -243,6 +242,7 @@
                  description: document.createElement("p"),
                  favorite: document.createElement("button"),
              }
+
 
              content.div.setAttribute("class", "card-body beer");
 
@@ -272,7 +272,7 @@
              content.style.innerText = 'Type of beer: ' + array[i].beer.beer_style;
              content.brewery.innerText = 'Brewery: ' + array[i].brewery.brewery_name;
              content.description.innerText = array[i].beer.beer_description;
-             
+
              content.infoDiv.setAttribute('class', 'infoDiv')
 
              content.hide.appendChild(content.arrowDown);
@@ -300,7 +300,7 @@
 
 
      searchBeerBtn.addEventListener("click", function () {
-         
+
          offset = 0;
          beerArray = [];
          value = searchBeerInput.value;
@@ -316,12 +316,16 @@
                  }
 
                  printOut(beerArray);
-             footer.style.position = "sticky";
-             console.log(beerArray)
-             if(beerArray.length >= 4)
-             showMore.style.display = "block";
-             else
-                 showMore.style.display = "none";
+                 if (container.children.length === 0) {
+                     footer.style.position = "fixed";
+                 } else {
+                     footer.style.position = "sticky";
+                     console.log(beerArray)
+                 }
+                 if (beerArray.length >= 4)
+                     showMore.style.display = "block";
+                 else
+                     showMore.style.display = "none";
              })
              .catch(function (error) {
                  console.log(error);
@@ -331,8 +335,8 @@
 
 
      showMore.addEventListener("click", function (e) {
-      
-      console.log("clicked showMore");
+
+         console.log("clicked showMore");
          console.log(e.target.id);
 
          offset = offset + 5;
@@ -349,28 +353,41 @@
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
                  printOut(beerArray);
-             
-             console.log(beerArray)
-             if(beerArray.length >= 4)
-             showMore.style.display = "block";
-             else
-                 showMore.style.display = "none";
-             
+
+                 console.log(beerArray)
+                 if (beerArray.length >= 4)
+                     showMore.style.display = "block";
+                 else
+                     showMore.style.display = "none";
+
              })
              .catch(function (error) {
                  console.log(error);
              })
-
-
-
-
-
      })
+
+     function checkedAndLoved(Event) {
+         let parent = Event.target.parentElement;
+         let bid = Event.target.id;
+         let checked = document.createElement("svg");
+         
+         checked.setAttribute("class", "fas fa-check-square fa-3x");
+         checked.setAttribute("id", bid);
+         checked.setAttribute("style", "float:right; margin-bottom:10px;" ); 
+
+         let replaced = parent.replaceChild(checked, Event.target);
+     }
+
+
+
+
+
+
 
      container.addEventListener("click", function (e) {
          let toNumber = parseInt(e.target.id);
          let disableBtn = e.target;
-         
+
          let beerObj = {}
          for (let i = 0; i < beerArray.length; i++) {
              if (toNumber == beerArray[i].beer.bid) {
@@ -384,8 +401,9 @@
                  console.log(id);
                  console.log("ok")
                  disableBtn.disabled = true;
+                 checkedAndLoved(e);
+
              }
          }
      })
  })
-
