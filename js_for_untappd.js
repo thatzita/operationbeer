@@ -69,9 +69,11 @@
      let user = {};
      let userList = [];
      let id;
+
      let footer =  document.getElementsByTagName("footer")[0];
      
      let beersToBring = document.getElementById("beersToBring");
+
 
      //används av showMore funktionen för att se nästkommande 5 öl
      let counter = 5;
@@ -117,8 +119,10 @@
                  userDiv: document.createElement("div"),
                  logOutBtn: document.createElement("button"),
                  imgcontainer: document.createElement("div"),
+                 menu: document.createElement('div'),
                  img: document.createElement("img"),
                  name: document.createElement("span"),
+                 linkFavorites: document.createElement('a'),
              };
              if (user) {
                  // User is signed in.
@@ -142,21 +146,45 @@
 
                  console.log('onAuthStateChanged: user is signed in', user);
                  console.log("User logged in..");
+                 elements.menu.setAttribute('id', 'menuDiv')
                  elements.userDiv.setAttribute("class", "userDiv");
                  elements.logOutBtn.setAttribute("id", "logOut");
                  elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                  elements.logOutBtn.innerText = "Sign out";
                  elements.name.innerText = `${displayName}`;
-                 elements.imgcontainer.setAttribute("class", "userInfo");
+                 elements.imgcontainer.setAttribute("id", "userInfo");
                  elements.img.setAttribute("class", "userImg");
                  elements.img.setAttribute("src", photoURL);
                  elements.imgcontainer.appendChild(elements.img);
-                 elements.userDiv.appendChild(elements.logOutBtn);
-                 elements.userDiv.appendChild(elements.name);
+                 
                  elements.userDiv.appendChild(elements.imgcontainer);
+
+                 elements.userDiv.appendChild(elements.menu);
+                 elements.menu.appendChild(elements.name);
+                 elements.menu.appendChild(elements.logOutBtn);
+                 
                  elements.header.appendChild(elements.userDiv);
                  elements.logged.style.display = "block";
                  elements.notLogged.style.display = "none";
+                 
+                 
+                 //Menu
+                 let menuBtn = document.getElementById('userInfo'); 
+
+                 menuBtn.addEventListener('click', function() {
+
+                    let menu = document.getElementById('menuDiv');
+                    
+                    if(menu.style.display === "none") {
+                        menu.style.display = 'inline-block';    
+                    }
+                    else {
+                        menu.style.display = 'none';
+                    }
+                    
+
+                 });
+                 
                  // Log-out function
                  let loggedOut = document.getElementById('logOut');
                  let logOut = function (event) {
@@ -210,6 +238,9 @@
          var credential = error.credential; // The firebase.auth.AuthCredential type that was used.
      })
      // Autentisering slutar här
+     
+     
+     
 
      let clientId = "153D83356A0B65CE0BDB2F2058AA09CEE92F165D";
      let clientSecret = "7B480C43412EF225E1E7E6F802A05FEE835B016B";
@@ -309,11 +340,14 @@
      
      
      searchBeerBtn.addEventListener("click", function () {
+         
          offset = 0;
          beerArray = [];
          value = searchBeerInput.value;
          showMore.style.display = "none";
+
          beersToBring.innerText = `Beer to bring is ${value}`
+
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();

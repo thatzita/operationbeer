@@ -239,6 +239,7 @@
                     .catch(function (error) {
                         console.log(error);
                     })
+
             }
             
             fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stores/xml")
@@ -279,6 +280,7 @@
                         document.getElementById('listOfStores').removeChild(document.getElementById('listOfStores').firstChild);
                     }
                 }
+
 
                 function addToListOfCounties(countyList) {
                     let dropDown = document.getElementById('listOfCounties');
@@ -506,11 +508,9 @@
                    document.getElementById('popUp').style.display = "none";
                    butikNr = document.getElementById('listOfStores').value;
                    console.log(butikNr);
-//                   doesItExistInStore();
+
                })
             }
-
-            
 
             //function för att söka igenom document över all öl som finns på systemet
             //http://elasticlunr.com/
