@@ -120,7 +120,7 @@
                  menu: document.createElement('div'),
                  img: document.createElement("img"),
                  name: document.createElement("span"),
-                 linkFavorites: document.createElement('a'),
+//                  linkFavorites: document.createElement('a'),
              };
              if (user) {
                  // User is signed in.
@@ -155,7 +155,7 @@
                  elements.img.setAttribute("src", photoURL);
                  elements.imgcontainer.appendChild(elements.img);
                  
-                 elements.linkFavorites()
+//                  elements.linkFavorites()
                  
                  elements.userDiv.appendChild(elements.imgcontainer);
 
