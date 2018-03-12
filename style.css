@@ -221,7 +221,8 @@
         }
 
         .beer:last-child {
-            margin-bottom: 30px;
+            margin-bottom: 80px;
+            position: relative;
         }
 
         .btn-outline-light {
@@ -259,6 +260,7 @@
             width: 100vw;
             background: rgba(91, 35, 25, 0.8);
             height: 80px;
+            box-shadow: 0 3px 15px 0 black
         }
 
         .searchbar {
@@ -283,6 +285,7 @@
             margin-top: 50px;
             border-radius: 5px;
             display: flex;
+            box-shadow: 5px 5px 10px black;
         }
         .searchTitle {
             padding-top:1vw;
@@ -545,9 +548,6 @@
             width: 70vw;
         }
 
-        #logOut {
-            height: 50%;
-        }
 
         .userDiv span {
             margin: 0 30px;
@@ -589,7 +589,8 @@
             top: 30%;
             width: 400px;
             height: 200px;
-            background-color: saddlebrown;
+            background: rgba(91, 35, 25, 0.8);
+            box-shadow: 5px 5px 10px black;
         }
 
         .logInSection button {
@@ -616,54 +617,106 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: 1;
         }
 
+ .spinnerText {
+            position: relative;
+            text-align: center;
+            margin: 0 auto;
+            font-family: 'Knewave', cursive;
+            padding-bottom: 20px;
+            top: 30%;
+            width: 400px;
+            color: white;
+            letter-spacing: 3.5px;
+            -webkit-animation: fadein 4s;
+            /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadein 4s;
+            /* Firefox < 16 */
+            -ms-animation: fadein 4s;
+            /* Internet Explorer */
+            -o-animation: fadein 4s;
+            /* Opera < 12.1 */
+            animation: fadein 4s;
+        }
 
-.loadText {
-    color: white;
-    font-family: 'Knewave', cursive;
-    position: relative;
-    text-align: center;
-    top: 30%;
-    width: 40%;
-    overflow: hidden;
-    /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid orange;
-    /* The typwriter cursor */
-    white-space: nowrap;
-    /* Keeps the content on a single line */
-    margin: 0 auto;
-    /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .15em;
-    /* Adjust as needed */
-    animation: typing 5s steps(50, end),
-    blink-caret 0.6s step-end infinite;
-}
+        @keyframes fadein {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-/* The typing effect */
+        /* Firefox < 16 */
 
-@keyframes typing {
-    from {
-        width: 0
-    }
-    to {
-        width: 40%;
-    }
-}
+        @-moz-keyframes fadein {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-/* The typewriter cursor effect */
+        /* Safari, Chrome and Opera > 12.1 */
 
-@keyframes blink-caret {
-    from,
-    to {
-        border-color: transparent
-    }
-    50% {
-        border-color: orange;
-    }
-}
+        @-webkit-keyframes fadein {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+ .loadText {
+            color: white;
+            font-family: 'Knewave', cursive;
+            position: relative;
+            text-align: center;
+            top: 30%;
+            width: 300px;
+            letter-spacing: 3.5px;
+            overflow: hidden;
+            /* Ensures the content is not revealed until the animation */
+            border-right: .15em solid orange;
+            /* The typwriter cursor */
+            white-space: nowrap;
+            /* Keeps the content on a single line */
+            margin: 0 auto;
+            /* Gives that scrolling effect as the typing happens */
+            letter-spacing: .15em;
+            /* Adjust as needed */
+            animation: typing 2.3s steps(50, end),
+            blink-caret 0.6s step-end infinite;
+        }
+
+        /* The typing effect */
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+            to {
+                width: 280px;
+            }
+        }
+
+        /* The typewriter cursor effect */
+
+        @keyframes blink-caret {
+            from,
+            to {
+                border-color: transparent
+            }
+            50% {
+                border-color: orange;
+            }
+        }
 
 
 
@@ -780,19 +833,14 @@
         padding: 0 0 50px;
         position: relative;
     }
-
-    #showMoreBackground {
-        padding: 1vw;
-        background: rgba(134, 49, 12, 1);
-    }
     #showMore {
-        bottom: 0;
+        bottom: 5em;
         left: 45%;
         position: sticky;
         width: 100%;
     }
 
-    #popUp {
+#popUp {
         position: fixed;
         width: 50%;
         height: 50%;
@@ -840,7 +888,8 @@
         border-radius: 10px;
         color: white;
         top: 30px;
-        right: 900px;
+        right: 500px;
+        z-index: 1;
     }
     #currentStore {
         position: absolute;
@@ -851,4 +900,23 @@
         color: white;
         top: 30px;
     }
+    
+    #listOfCounties, #listOfCities, #listOfStores {
+        position: relative;
+        width: 50%;
+        left: 25%;
+        right: 25%;
+        border-radius: 5px;
+    }
 
+ footer {
+            width: 100vw;
+            z-index: 1;
+            background: rgba(91, 35, 25, 0.8);
+            height: 40px;
+            position: fixed;
+            bottom: 0;
+            -moz-box-shadow: 0 -3px 15px 0 black;
+            -webkit-box-shadow: 0 -3px 15px 0 black;
+            box-shadow: 0 -3px 15px 0 black;
+        }

@@ -281,6 +281,7 @@
                     }
                 }
 
+
                 function addToListOfCounties(countyList) {
                     let dropDown = document.getElementById('listOfCounties');
                     countyList.forEach( county =>  {
@@ -507,9 +508,9 @@
                    document.getElementById('popUp').style.display = "none";
                    butikNr = document.getElementById('listOfStores').value;
                    console.log(butikNr);
+
                })
             }
-
 
             //function för att söka igenom document över all öl som finns på systemet
             //http://elasticlunr.com/
