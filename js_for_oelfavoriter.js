@@ -23,7 +23,6 @@
             let beerToFind;
             let result;
 
-//             let loading = document.getElementsByClassName("loading")[0];
             let user = {};
             let userList = [];
 
@@ -38,6 +37,34 @@
             let butikNr = undefined;
             initPopUp();
 
+
+            let spinnerObject = {
+                fetching: true,
+                notFetching: false,
+                loadText1: "Loading beers . . .",
+                loadText2: "Fetching stores . . .",
+                spinner: function (getData, textVal) {
+
+                    let body = document.getElementsByTagName("body")[0];
+                    let spinContainer = document.getElementsByClassName("loaderContainer")[0];
+                    let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
+                    let text = document.createElement("h1");
+
+                    text.innerText = textVal;
+                    text.setAttribute("class", "spinnerText");
+                    spinContainer.appendChild(text);
+                    spinContainer.appendChild(lSpinner);
+                    body.appendChild(spinContainer);
+
+                    if (getData === true) {
+                        spinContainer.style.display = "block";
+                        lSpinner.style.display = "block";
+                    } else {
+                        lSpinner.style.display = "none";
+                        spinContainer.style.display = "none";
+                    }
+                }
+            };
 
             function getUsers() {
                 db.ref("users/").once("value", function (snapshot) {
@@ -58,7 +85,7 @@
                         }
                         userList.push(user);
                     }
-//                    console.log(userList);
+                    //                    console.log(userList);
                     getUserInfo(userList);
                 })
             }; // getUsers ends here
@@ -97,12 +124,13 @@
                             id: uid
                         };
 
+                        
 
-
-//                        console.log('onAuthStateChanged: user is signed in', user);
+                        //                        console.log('onAuthStateChanged: user is signed in', user);
                         console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
+                        elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                         elements.logOutBtn.innerText = "Sign out";
                         elements.name.innerText = `${displayName}`;
                         elements.imgcontainer.setAttribute("class", "userInfo");
@@ -129,13 +157,13 @@
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-//                                    console.log("Match = " + userList[i].uId);
+                                    //                                    console.log("Match = " + userList[i].uId);
                                     userExist = true;
                                     id = userList[i].dbId;
                                     addToFavorites()
                                     break; // Isf bryt loopen
                                 } else { // Annars ingen match, och userExist är false
-//                                    console.log("No Match");
+                                    //                                    console.log("No Match");
                                     userExist = false;
 
                                 }
@@ -145,8 +173,11 @@
 
                         }; // End of checkUsers
                         checkUsers(uList);
+                        getProducts();
                     } else {
+                        spinnerObject.spinner(spinnerObject.notFetching);
                         console.log("No User");
+                        window.location.href = "untappd.html";
                     }
                 })
             }; // getUserInfo ends
@@ -163,76 +194,214 @@
                         img: database.img,
                         id: snapshot.key,
                     }
-
                     favoriteArray.push(beerFavorites);
-
                     //Skickas till funktionen output för att visas på sidan
                     output(beerFavorites);
                 })
             }
 
             //Hämtar hem alla produkter som finns på systembolaget
-            fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/products/xml")
-                .then(function (requestProducts) {
-                    return requestProducts.text();
-                })
-                .then(function (json) {
-                    beerToFind = json;
-                    resultProducts = xmlToJSON.parseString(beerToFind);
-                    beerOnlyList(resultProducts)
+            function getProducts() {
+                spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText1);
+                fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/products/xml")
+                    .then(function (requestProducts) {
+                        return requestProducts.text();
+                    })
+                    .then(function (json) {
+                        getStores();
+                        beerToFind = json;
+                        resultProducts = xmlToJSON.parseString(beerToFind);
+                        beerOnlyList(resultProducts)
 
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-            //
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+            //Kör fetchen
+            
+            
             //Hämtar hem butiker och deras sortiment
-            fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
-                .then(function (requestInStock) {
-                    return requestInStock.text();
-                })
-                .then(function (json) {
-                    let beerDB = json;
-                    result = xmlToJSON.parseString(beerDB);
-//                     loading.style.display = "none";
-                    specificStore(result);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+            function getStores() {
+                spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText2);
+                let loadCont = document.getElementsByClassName("loaderContainer")[0];
+                loadCont.removeChild(loadCont.children[0]);
+                fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
+                    .then(function (requestInStock) {
+                        return requestInStock.text();
+                    })
+                    .then(function (json) {
+                        spinnerObject.spinner(spinnerObject.notFetching);
+                        let beerDB = json;
+                        result = xmlToJSON.parseString(beerDB);
+                        specificStore(result);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
 
+            }
+            
+            fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stores/xml")
+                    .then(function (req) {
+                        return req.text();
+                    })
+                    .then(function (xml) {
+                        let json = xmlToJSON.parseString(xml);
+                        let counties = createCountiesList(json);
+                        addToListOfCounties(counties);
+                        document.getElementById('listOfCounties').addEventListener('change', function() {
+                            let cities = createCitiesList(json, document.getElementById('listOfCounties').value);
+                            clearCities();
+                            clearStores();
+                            addToListOfCities(cities);
+                            let stores = createStoresList(json, document.getElementById('listOfCities').value);
+                            clearStores();
+                            addToListOfStores(stores);
+                        })
+                        document.getElementById('listOfCities').addEventListener('change', function() {
+                            let stores = createStoresList(json, document.getElementById('listOfCities').value);
+                            clearStores();
+                            addToListOfStores(stores);
+                        })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
 
+                function clearCities(){
+                    while(document.getElementById('listOfCities').firstChild) {
+                        document.getElementById('listOfCities').removeChild(document.getElementById('listOfCities').firstChild);
+                    }
+                }
+
+                function clearStores(){
+                    while(document.getElementById('listOfStores').firstChild) {
+                        document.getElementById('listOfStores').removeChild(document.getElementById('listOfStores').firstChild);
+                    }
+                }
+
+                function addToListOfCounties(countyList) {
+                    let dropDown = document.getElementById('listOfCounties');
+                    countyList.forEach( county =>  {
+                        let newCounty = document.createElement('option');
+                        newCounty.setAttribute('value', county);
+                        newCounty.innerText = county;
+                        dropDown.appendChild(newCounty);
+                    })
+                }
+
+                function createCountiesList(json) {
+                    let newList = [];
+                    json.ButikerOmbud[0].ButikOmbud.forEach( store => {
+                        let county = store.Address5[0]._text;
+                        newList[county] = county;
+                    });
+                    return Object.keys(newList).sort();
+                }
+
+                function addToListOfCities(citiesList) {
+                    let dropDown = document.getElementById('listOfCities');
+                    citiesList.forEach( city =>  {
+                        let cityName = "";
+                        let newCity = document.createElement('option');
+                        newCity.setAttribute('value', city);
+                        cityName = city.substring(0, 1).toUpperCase() + city.substring(1).toLowerCase();
+                        newCity.innerText = cityName;
+                        dropDown.appendChild(newCity);
+                    })
+                }
+
+                function createCitiesList(json, county) {
+                    let newList = [];
+                    json.ButikerOmbud[0].ButikOmbud.forEach( store => {
+                        if(store.Address5[0]._text === county && typeof(store.Nr[0]._text) == "number") {
+                            let city = store.Address4[0]._text;
+                            newList[city] = city;
+                        }
+                    });
+                    return Object.keys(newList).sort();
+                }
+
+                function addToListOfStores(storeList) {
+                    let dropDown = document.getElementById('listOfStores');
+                    storeList.forEach( butik =>  {
+                        let newStore = document.createElement('option');
+                        newStore.setAttribute('value', butik.nr);
+                        newStore.innerText = butik.address;
+                        dropDown.appendChild(newStore);
+                    })
+                }
+
+                function createStoresList(json, city) {
+                    let newList = [];
+                    function NewStore(address, nr) {
+                        this.address = address,
+                        this.nr = nr
+                    }
+                    json.ButikerOmbud[0].ButikOmbud.forEach( store => {
+                        let place = "";
+                        if(store.Address4[0]._text == city && typeof(store.Nr[0]._text) == 'number') {
+                            if(typeof(store.Namn[0]._text) == "string") {
+                                place = store.Namn[0]._text + ", " + store.Address1[0]._text;
+                            }
+                            else {
+                                place = store.Address1[0]._text;
+                            }
+                            
+                            newList.push(new NewStore(place, store.Nr[0]._text));
+                        }
+                    });
+                    //return Object.keys(newList).sort();
+                    return newList;
+                }
 
             function beerOnlyList(outputFromFetch) {
                 beerOnly = [];
                 for (let i = 0; i < outputFromFetch.artiklar[0].artikel.length; i++) {
-                    if (outputFromFetch.artiklar[0].artikel[i].Varugrupp[0]._text === "Öl") {
-                        beerOnly.push(outputFromFetch.artiklar[0].artikel[i])
+                    try {
+                        if (outputFromFetch.artiklar[0].artikel[i].Varugrupp[0]._text === "Öl") {
+                            beerOnly = {
+                                nr: outputFromFetch.artiklar[0].artikel[i].nr[0]._text,
+                                namn: outputFromFetch.artiklar[0].artikel[i].Namn[0]._text,
+                                namn2: outputFromFetch.artiklar[0].artikel[i].Namn2[0]._text,
+                                producent: outputFromFetch.artiklar[0].artikel[i].Producent[0]._text,
+                            }
+                        }
+                        index.addDoc(beerOnly);
+                    } catch (error) {
+                        //catch om producer inte finns, då lägger vi till i beerOnly utan producent
+                        beerOnly = {
+                            nr: outputFromFetch.artiklar[0].artikel[i].nr[0]._text,
+                            namn: outputFromFetch.artiklar[0].artikel[i].Namn[0]._text,
+                            namn2: outputFromFetch.artiklar[0].artikel[i].Namn2[0]._text,
+                        }
+                        index.addDoc(beerOnly);
                     }
-
                 }
-                console.log(beerOnly.length);
             }
-            
-            
+
+
             let myStore = 1410; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
                 storeOnly = [];
-//                console.log(outputfromStoreFetch)
-//                console.log(outputfromStoreFetch.ButikArtikel[0].Butik.length)
                 for (let i = 0; i < outputfromStoreFetch.ButikArtikel[0].Butik.length; i++) {
                     if (outputfromStoreFetch.ButikArtikel[0].Butik[i]._attr.ButikNr._value === myStore) {
                         storeOnly.push(outputfromStoreFetch.ButikArtikel[0].Butik[i])
                     }
                 }
-                console.log(storeOnly.length)
             }
 
+            //Optimera sökning med lightweight elasticlunr function
+            var index = elasticlunr(function () {
+                this.addField('namn');
+                this.addField('namn2');
+                this.addField('producent');
+                this.setRef('nr');
+            })
 
             //Skriver ut lista på sidan över favoriter
             function output(favoriteArray) {
-                //                console.log(favoriteArray)
-
                 let content = {
                     div: document.createElement("div"),
                     img: document.createElement("img"),
@@ -272,7 +441,6 @@
                     container.appendChild(content.div);
 
                     increment++;
-//                     loading.style.display = "none";
                 }
             }
 
@@ -305,106 +473,29 @@
                     let removeParent = e.target.parentNode;
                     removeBeerFromDb(removeId, removeParent)
                 }
-            })
-
-            ///////////////////////////////////////////////////////////////
-
-            //Loopar igenom numret på ölen och kollar om match finns mellan öl och sortiment i butik
-            function loopIt(beer) {
-                let bool;
-                if (beer[0].nr[0]._text !== undefined) {
-                    for (let i = 0; i < storeOnly[0].ArtikelNr.length; i++) {
-                        for (let y = 0; y < beer.length; y++) {
-                            if (storeOnly[0].ArtikelNr[i]._text == beer[y].nr[0]._text) { // 154803 Brooklyn lager
-                                console.log("store match!")
-                                bool = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (bool == true)
-                    console.log("Beer exists in store, now go and pick up that beer bro! ;)");
-                else
-                    console.log("Beer exists but not in store, been searching everywhere");
-            }
-
-
-            //Matchar knapp id vid tryck med childnode id för att se om array ska sökas igenom och matchas mot artiklarna i butik (om den finns)
-            function doesBeerExist(favoriteId, idOfBeer, inputArray) {
-                let beerNumbers = [];
-//                store = [];
-                for (let i = 0; i < inputArray.length; i++) {
-                    beerNumbers[i] = {
-                        nr: inputArray[i],
-                    }
-                }
-                if (favoriteId === idOfBeer && inputArray.length !== 0) {
-//                    for (let i = 0; i < storeOnly[0].length; i++) {
-//                        if (storeOnly[0]._attr.ButikNr._value == myStore) { //1410 - Nordstan | 1508 - Solkatten | 1423 - Angered
-//                            console.log("Store exists, moving on");
-////                            store.push(result.ButikArtikel[0].Butik[i]);
-//                        }
-//                    }
-                    loopIt(beerNumbers);
-                } else {
-                    console.log("Can't find your beer, sorry mate");
-                }
-            }
-
-            //Söker med hjälp av bolaget.io efter produkt och sparar ner numret på ölen och skickar till doesBeerExists
-            function fetchFromBolagetIO(favoriteId, parentNodeForBeer, name) {
-                let bolagetSearch;
-                fetch("https://bolaget.io/v1/products?search=" + name)
-                    .then(function (search) {
-                        return search.json();
-                    })
-                    .then(function (json) {
-                        bolagetSearch = json;
-                        for (let i = 0; i < beerOnly.length; i++) {
-                            for (let y = 0; y < bolagetSearch.length; y++) {
-                                if (beerOnly[i].nr[0]._text == bolagetSearch[y].nr) {
-                                    console.log("Beer exists - found it through bolaget.io");
-                                    yourBeer.push(beerOnly[i].nr);
-                                    break;
-                                }
-                            }
-                        }
-                        doesBeerExist(favoriteId, parentNodeForBeer, yourBeer);
-                    })
-            }
+            });
 
             //Klick på "does it exist?" kollar target.id mot id på child om de matchar så söker vi igenom systembolagets produkter med namnet vi fått från Untappd
             container.addEventListener("click", function (e) {
                 let parentNodeForBeer = e.target.parentNode.childNodes[5].id;
                 let parentNodeBeerName = e.target.parentNode.childNodes[1].innerText;
+                let parentNodeBrewery = e.target.parentNode.childNodes[3].innerText;
                 let favoriteId = e.target.id;
-//                console.log(e.target.className)
+                //                console.log(e.target.className)
                 yourBeer = [];
 
-                //Systembolaget använder två namn, kan endast matcha på en av dom, slutar leta om den matchar
-                for (let i = 0; i < beerOnly.length; i++) {
-                    if (beerOnly[i].Namn[0]._text == parentNodeBeerName) {
-                        console.log("Beer exists - found it through 'Namn'");
-                        yourBeer.push(beerOnly[i].nr);
-                        break;
-                    } else if (beerOnly[i].Namn2[0]._text == parentNodeBeerName) {
-                        console.log("Beer exists - found it through 'Namn2'");
-                        yourBeer.push(beerOnly[i].nr);
-                        break;
+                //tar namn och producent, skickar det till elasticlunr för att få score om produkt finns i sortiment
+                if (e.target.className === "btn btn-outline-light") {
+                    index.search(parentNodeBeerName + " " + parentNodeBrewery)
+                    yourBeer = index.search(parentNodeBeerName + " " + parentNodeBrewery);
+                    console.log(yourBeer[0]);
+                    //ändra score kan behövas samt tweak av paramaterar till document
+                    if (yourBeer[0].score > 4.9) {
+                        console.log("this should exist in store! " + yourBeer[0].doc.namn);
+                        console.log("the nr is: " + yourBeer[0].doc.nr);
+                    } else {
+                        console.log("I doubt you will find what you are looking for " + yourBeer[0].doc.namn);
                     }
-                }
-
-                //Om listan är tom har vi inte matchat via systembolagets API, då kollar vi bolaget.io om en mindre sträng sökning kan hjälpa
-                if (yourBeer.length === 0 && e.target.className === "btn btn-outline-light") {
-//                    console.log(parentNodeBeerName);
-                    fetchFromBolagetIO(favoriteId, parentNodeForBeer, parentNodeBeerName);
-
-                    //Är listan inte tom har vi hittat något, då anropar vi funktion som kollar om ölen finns i vald butik
-                } else if (yourBeer.length !== 0  && e.target.className === "btn btn-outline-light") {
-//                    console.log(yourBeer);
-                    doesBeerExist(favoriteId, parentNodeForBeer, yourBeer);
                 }
             })
 
@@ -412,40 +503,21 @@
                 document.getElementById('popUpButton').addEventListener('click', function() {
                     document.getElementById('popUp').style.display = 'block';
                 });
-                document.getElementById('solkatten').checked = 'true';
-                document.getElementById('nordstan').checked = 'true';
-                document.getElementById('storesLerum').style.display = 'none';
-                document.getElementById('göteborg').checked = 'true';
-                document.getElementById('listOfCitiesContent').addEventListener('click', function() {
-                    if(document.getElementById('göteborg').checked) {
-                        document.getElementById('storesLerum').style.display = 'none';
-                        document.getElementById('storesGöteborg').style.display = 'block';
-                    }
-                    if(document.getElementById('lerum').checked) {
-                        document.getElementById('storesGöteborg').style.display = 'none';
-                        document.getElementById('storesLerum').style.display = 'block';
-                    }
-                });
-                document.getElementById('confirmButton').addEventListener('click', function() {
-                    if(document.getElementById('göteborg').checked) {
-                        city = document.getElementById('göteborg').value;
-                        if(document.getElementById('nordstan').checked) {
-                            butik = document.getElementById('nordstan').value;
-                            butikNr = 1410;
-                        }
-                    }
-                    if(document.getElementById('lerum').checked) {
-                        city = document.getElementById('lerum').value;
-                        if(document.getElementById('solkatten').checked) {
-                            butik = document.getElementById('solkatten').value;
-                            butikNr = 1508;
-                        }
-                    }
-                    console.log('Stad: ' + city + " Butik: " + butik + " ButikNr: " + butikNr);
-                    document.getElementById('city').innerText = city;
-                    document.getElementById('store').innerText = butik;
-                    document.getElementById('popUp').style.display = 'none';
-                });
+               document.getElementById('confirmButton').addEventListener('click', function() {
+                   document.getElementById('popUp').style.display = "none";
+                   butikNr = document.getElementById('listOfStores').value;
+                   console.log(butikNr);
+               })
             }
+
+
+            //function för att söka igenom document över all öl som finns på systemet
+            //http://elasticlunr.com/
+            var index = elasticlunr(function () {
+                this.addField('namn');
+                this.addField('namn2');
+                this.addField('producent');
+                this.setRef('nr');
+            });
 
         })
