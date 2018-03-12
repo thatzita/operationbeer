@@ -289,7 +289,7 @@
              content.show.setAttribute("class", "show");
              content.arrowDown.setAttribute("class", "arrowDown");
 
-             content.moreInfo.setAttribute("class", "details");
+             content.moreInfo.setAttribute("class", "details ease");
 
              content.img.setAttribute("src", array[i].beer.beer_label);
              content.img.setAttribute("height", "140px");
@@ -369,7 +369,6 @@
          offset = offset + 5;
          console.log(counter);
          console.log(offset)
-         //                beerArray = [];
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -391,11 +390,6 @@
              .catch(function (error) {
                  console.log(error);
              })
-
-
-
-
-
      })
 
      container.addEventListener("click", function (e) {
