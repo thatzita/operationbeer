@@ -328,6 +328,14 @@
              increment++;
          }
      }
+  
+       searchBeerInput.addEventListener("keydown", function(e){
+         if(e.keyCode == 13){
+             searchBeerBtn.click();
+             searchBeerInput.value = "";
+         }
+     })
+  
 
 
      searchBeerBtn.addEventListener("click", function () {
@@ -336,6 +344,7 @@
          beerArray = [];
          value = searchBeerInput.value;
          showMore.style.display = "none";
+         beersToBring.innerText = `Beer to bring is ${value}`
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
