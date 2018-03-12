@@ -281,6 +281,7 @@
                     }
                 }
 
+
                 function addToListOfCounties(countyList) {
                     let dropDown = document.getElementById('listOfCounties');
                     countyList.forEach( county =>  {
@@ -486,14 +487,28 @@
 
                 //tar namn och producent, skickar det till elasticlunr för att få score om produkt finns i sortiment
                 if (e.target.className === "btn btn-outline-light") {
-                    index.search(parentNodeBeerName + " " + parentNodeBrewery)
-                    yourBeer = index.search(parentNodeBeerName + " " + parentNodeBrewery);
+//                    index.search(parentNodeBeerName + " " + parentNodeBrewery);
+                    yourBeer = index.search(parentNodeBeerName + " " + parentNodeBrewery, {
+                        fields: {
+                            namn: {
+                                boost: 4,
+                            },
+                            namn2: {
+                                boost:2,
+                            },
+                            producer: {
+                                boost: 1.5,
+                            }
+                        }
+                    });
+                   
                     console.log(yourBeer[0]);
                     //ändra score kan behövas samt tweak av paramaterar till document
-                    if (yourBeer[0].score > 4.9) {
+                    if (yourBeer[0].score > 10) {
                         console.log("this should exist in store! " + yourBeer[0].doc.namn);
                         console.log("the nr is: " + yourBeer[0].doc.nr);
-                    } else {
+                    } 
+                    else {
                         console.log("I doubt you will find what you are looking for " + yourBeer[0].doc.namn);
                     }
                 }
@@ -507,9 +522,9 @@
                    document.getElementById('popUp').style.display = "none";
                    butikNr = document.getElementById('listOfStores').value;
                    console.log(butikNr);
+
                })
             }
-
 
             //function för att söka igenom document över all öl som finns på systemet
             //http://elasticlunr.com/
