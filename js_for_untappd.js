@@ -31,24 +31,24 @@
                  }
              }
          },
-         spinner: function(aUser) {
-                    let container = document.getElementsByClassName("loaderContainer")[0];
-                    let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
-                    let loadText = document.getElementsByClassName("loadText")[0];
-                    let body = document.getElementsByTagName("body")[0];
-                    container.appendChild(loadText);
-                    container.appendChild(lSpinner);
-                    body.appendChild(container);
+         spinner: function (aUser) {
+             let container = document.getElementsByClassName("loaderContainer")[0];
+             let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
+             let loadText = document.getElementsByClassName("loadText")[0];
+             let body = document.getElementsByTagName("body")[0];
+             container.appendChild(loadText);
+             container.appendChild(lSpinner);
+             body.appendChild(container);
 
-                    if (aUser === false) {
-                        container.style.display = "block";
-                        lSpinner.style.display = "block";
-                    } else {
-                        lSpinner.style.display = "none";
-                        container.style.display = "none";
-                    }
-                }
-            };
+             if (aUser === false) {
+                 container.style.display = "block";
+                 lSpinner.style.display = "block";
+             } else {
+                 lSpinner.style.display = "none";
+                 container.style.display = "none";
+             }
+         }
+     };
      authSpinner.activateSpinner(); // Kör igång spinner funktionen
 
      // Providers
@@ -69,18 +69,19 @@
      let user = {};
      let userList = [];
      let id;
-     
-     let showMoreBackground = document.getElementById("showMoreBackground");
-     showMoreBackground.style.display = "none";
+     let footer = document.getElementsByTagName("footer")[0];
+
+
 
      //används av showMore funktionen för att se nästkommande 5 öl
      let counter = 5;
      let offset;
      let value;
 
-     
-     
+
+
      let showMore = document.getElementById("showMore");
+     showMore.style.display = "none";
 
      function getUsers() {
          db.ref("users/").once("value", function (snapshot) {
@@ -116,8 +117,10 @@
                  userDiv: document.createElement("div"),
                  logOutBtn: document.createElement("button"),
                  imgcontainer: document.createElement("div"),
+                 menu: document.createElement('div'),
                  img: document.createElement("img"),
                  name: document.createElement("span"),
+//                  linkFavorites: document.createElement('a'),
              };
              if (user) {
                  // User is signed in.
@@ -141,20 +144,47 @@
 
                  console.log('onAuthStateChanged: user is signed in', user);
                  console.log("User logged in..");
+                 elements.menu.setAttribute('id', 'menuDiv')
                  elements.userDiv.setAttribute("class", "userDiv");
                  elements.logOutBtn.setAttribute("id", "logOut");
+                 elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                  elements.logOutBtn.innerText = "Sign out";
                  elements.name.innerText = `${displayName}`;
-                 elements.imgcontainer.setAttribute("class", "userInfo");
+                 elements.imgcontainer.setAttribute("id", "userInfo");
                  elements.img.setAttribute("class", "userImg");
                  elements.img.setAttribute("src", photoURL);
                  elements.imgcontainer.appendChild(elements.img);
-                 elements.userDiv.appendChild(elements.logOutBtn);
-                 elements.userDiv.appendChild(elements.name);
+                 
+//                  elements.linkFavorites()
+                 
                  elements.userDiv.appendChild(elements.imgcontainer);
+
+                 elements.userDiv.appendChild(elements.menu);
+                 elements.menu.appendChild(elements.name);
+                 elements.menu.appendChild(elements.logOutBtn);
+                 
                  elements.header.appendChild(elements.userDiv);
                  elements.logged.style.display = "block";
                  elements.notLogged.style.display = "none";
+                 
+                 
+                 //Menu
+                 let menuBtn = document.getElementById('userInfo'); 
+
+                 menuBtn.addEventListener('click', function() {
+
+                    let menu = document.getElementById('menuDiv');
+                    
+                    if(menu.style.display === "none") {
+                        menu.style.display = 'inline-block';    
+                    }
+                    else {
+                        menu.style.display = 'none';
+                    }
+                    
+
+                 });
+                 
                  // Log-out function
                  let loggedOut = document.getElementById('logOut');
                  let logOut = function (event) {
@@ -208,6 +238,9 @@
          var credential = error.credential; // The firebase.auth.AuthCredential type that was used.
      })
      // Autentisering slutar här
+     
+     
+     
 
      let clientId = "153D83356A0B65CE0BDB2F2058AA09CEE92F165D";
      let clientSecret = "7B480C43412EF225E1E7E6F802A05FEE835B016B";
@@ -222,7 +255,6 @@
          let increment = 0;
 
          for (let i = 0; i < array.length; i++) {
-             //                        console.log(db[i].id)
              let content = {
                  div: document.createElement("div"),
 
@@ -235,11 +267,13 @@
                  img: document.createElement("img"),
                  beerNameShow: document.createElement("h2"),
                  beerNameHide: document.createElement("h2"),
+                 infoDiv: document.createElement('div'),
                  style: document.createElement("h4"),
                  brewery: document.createElement("h5"),
                  description: document.createElement("p"),
                  favorite: document.createElement("button"),
              }
+
 
              content.div.setAttribute("class", "card-body beer");
 
@@ -255,20 +289,22 @@
              content.show.setAttribute("class", "show");
              content.arrowDown.setAttribute("class", "arrowDown");
 
-             content.moreInfo.setAttribute("class", "details");
+             content.moreInfo.setAttribute("class", "details ease");
 
              content.img.setAttribute("src", array[i].beer.beer_label);
              content.img.setAttribute("height", "140px");
 
-             content.favorite.setAttribute("class", "btn btn-outline-light");
+             content.favorite.setAttribute("class", "btn btn-outline-light favoriteBtn");
              content.favorite.setAttribute("id", array[i].beer.bid);
 
              content.favorite.innerText = "Favorite";
              content.beerNameShow.innerText = array[i].beer.beer_name;
              content.beerNameHide.innerText = array[i].beer.beer_name;
-             content.style.innerText = array[i].beer.beer_style;
-             content.brewery.innerText = array[i].brewery.brewery_name;
+             content.style.innerText = 'Type of beer: ' + array[i].beer.beer_style;
+             content.brewery.innerText = 'Brewery: ' + array[i].brewery.brewery_name;
              content.description.innerText = array[i].beer.beer_description;
+
+             content.infoDiv.setAttribute('class', 'infoDiv')
 
              content.hide.appendChild(content.arrowDown);
              content.hide.appendChild(content.beerNameHide);
@@ -280,8 +316,9 @@
 
 
              content.moreInfo.appendChild(content.img);
-             content.moreInfo.appendChild(content.style);
-             content.moreInfo.appendChild(content.brewery);
+             content.moreInfo.appendChild(content.infoDiv);
+             content.infoDiv.appendChild(content.style);
+             content.infoDiv.appendChild(content.brewery);
              content.moreInfo.appendChild(content.description);
              content.moreInfo.appendChild(content.favorite);
 
@@ -291,13 +328,23 @@
              increment++;
          }
      }
+  
+       searchBeerInput.addEventListener("keydown", function(e){
+         if(e.keyCode == 13){
+             searchBeerBtn.click();
+             searchBeerInput.value = "";
+         }
+     })
+  
 
 
      searchBeerBtn.addEventListener("click", function () {
+
          offset = 0;
          beerArray = [];
          value = searchBeerInput.value;
-         showMoreBackground.style.display = "none";
+         showMore.style.display = "none";
+         beersToBring.innerText = `Beer to bring is ${value}`
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -309,11 +356,16 @@
                  }
 
                  printOut(beerArray);
-             console.log(beerArray)
-             if(beerArray.length >= 4)
-             showMoreBackground.style.display = "block";
-             else
-                 showMoreBackground.style.display = "none";
+                 if (container.children.length === 0) {
+                     footer.style.position = "fixed";
+                 } else {
+                     footer.style.position = "sticky";
+                     console.log(beerArray)
+                 }
+                 if (beerArray.length >= 4)
+                     showMore.style.display = "block";
+                 else
+                     showMore.style.display = "none";
              })
              .catch(function (error) {
                  console.log(error);
@@ -323,13 +375,13 @@
 
 
      showMore.addEventListener("click", function (e) {
+
          console.log("clicked showMore");
          console.log(e.target.id);
 
          offset = offset + 5;
          console.log(counter);
          console.log(offset)
-         //                beerArray = [];
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -340,27 +392,36 @@
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
                  printOut(beerArray);
-             
-             console.log(beerArray)
-             if(beerArray.length >= 4)
-             showMoreBackground.style.display = "block";
-             else
-                 showMoreBackground.style.display = "none";
-             
+
+                 console.log(beerArray)
+                 if (beerArray.length >= 4)
+                     showMore.style.display = "block";
+                 else
+                     showMore.style.display = "none";
+
              })
              .catch(function (error) {
                  console.log(error);
              })
-
-
-
-
-
      })
+
+     function checkedAndLoved(Event) {
+         let parent = Event.target.parentElement;
+         let bid = Event.target.id;
+         let checked = document.createElement("svg");
+         
+         checked.setAttribute("class", "fas fa-check-square fa-3x");
+         checked.setAttribute("id", bid);
+         checked.setAttribute("style", "float:right; margin-bottom:10px;" ); 
+
+         let replaced = parent.replaceChild(checked, Event.target);
+     }
+
 
      container.addEventListener("click", function (e) {
          let toNumber = parseInt(e.target.id);
-         //                console.log(beerArray)
+         let disableBtn = e.target;
+
          let beerObj = {}
          for (let i = 0; i < beerArray.length; i++) {
              if (toNumber == beerArray[i].beer.bid) {
@@ -369,11 +430,14 @@
                  beerObj.description = beerArray[i].beer.beer_description;
                  beerObj.brewery = beerArray[i].brewery.brewery_name;
                  beerObj.img = beerArray[i].beer.beer_label;
+                 beerObj.bid = beerArray[i].beer.bid;
                  db.ref(`users/${id}/favorites/`).push(beerObj);
                  console.log(id);
                  console.log("ok")
+                 disableBtn.disabled = true;
+                 checkedAndLoved(e);
+
              }
          }
      })
  })
-

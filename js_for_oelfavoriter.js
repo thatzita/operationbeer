@@ -124,7 +124,7 @@
                             id: uid
                         };
 
-
+                        
 
                         //                        console.log('onAuthStateChanged: user is signed in', user);
                         console.log("User logged in..");
@@ -155,7 +155,7 @@
                         loggedOut.addEventListener('click', logOut); // Logoutlistener
                         function checkUsers(list) {
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
-                            for (i = 0; i < userList.length; i++) { // Går igenom listan
+                            for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
                                     //                                    console.log("Match = " + userList[i].uId);
                                     userExist = true;
@@ -219,8 +219,8 @@
                     })
             }
             //Kör fetchen
-
-
+            
+            
             //Hämtar hem butiker och deras sortiment
             function getStores() {
                 spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText2);
@@ -241,7 +241,7 @@
                     })
 
             }
-
+            
             fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stores/xml")
                     .then(function (req) {
                         return req.text();
@@ -280,6 +280,7 @@
                         document.getElementById('listOfStores').removeChild(document.getElementById('listOfStores').firstChild);
                     }
                 }
+
 
                 function addToListOfCounties(countyList) {
                     let dropDown = document.getElementById('listOfCounties');
@@ -444,8 +445,8 @@
                 }
             }
 
-            ///////////////////////////////////////////////////////////////
-            //Ta bort öl från databasen, arrayen och output
+            ///////////////////////////////////////////////////////////////            
+            //Ta bort öl från databasen, arrayen och output 
             function removeBeerFromDb(remove, node) {
                 for (let i = 0; i < favoriteArray.length; i++) {
                     if (remove === favoriteArray[i].id) {
@@ -486,14 +487,28 @@
 
                 //tar namn och producent, skickar det till elasticlunr för att få score om produkt finns i sortiment
                 if (e.target.className === "btn btn-outline-light") {
-                    index.search(parentNodeBeerName + " " + parentNodeBrewery)
-                    yourBeer = index.search(parentNodeBeerName + " " + parentNodeBrewery);
+//                    index.search(parentNodeBeerName + " " + parentNodeBrewery);
+                    yourBeer = index.search(parentNodeBeerName + " " + parentNodeBrewery, {
+                        fields: {
+                            namn: {
+                                boost: 4,
+                            },
+                            namn2: {
+                                boost:2,
+                            },
+                            producer: {
+                                boost: 1.5,
+                            }
+                        }
+                    });
+                   
                     console.log(yourBeer[0]);
                     //ändra score kan behövas samt tweak av paramaterar till document
-                    if (yourBeer[0].score > 4.9) {
+                    if (yourBeer[0].score > 10) {
                         console.log("this should exist in store! " + yourBeer[0].doc.namn);
                         console.log("the nr is: " + yourBeer[0].doc.nr);
-                    } else {
+                    } 
+                    else {
                         console.log("I doubt you will find what you are looking for " + yourBeer[0].doc.namn);
                     }
                 }
@@ -507,9 +522,9 @@
                    document.getElementById('popUp').style.display = "none";
                    butikNr = document.getElementById('listOfStores').value;
                    console.log(butikNr);
+
                })
             }
-
 
             //function för att söka igenom document över all öl som finns på systemet
             //http://elasticlunr.com/
