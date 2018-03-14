@@ -142,7 +142,7 @@
         /*Bootstrap CSS ends*/        
 
         body {
-            background: url(1oelglas.png) no-repeat center center fixed;
+            background: url(test.jpg) no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -260,7 +260,7 @@
             width: 100vw;
             background: rgba(91, 35, 25, 0.8);
             height: 80px;
-            box-shadow: 0 3px 15px 0 black
+            box-shadow: 0 3px 15px 0 black;
         }
 
         .searchbar {
@@ -840,18 +840,19 @@
         position: sticky;
         width: 100%;
     }
-
-#popUp {
+    
+    #popUp {
         position: fixed;
-        width: 50%;
-        height: 50%;
-        left: 25%;
-        right: 25%;
+        width: 40%;
+        height: 25%;
+        left: 30%;
+        right: 30%;
         top: 25%;
-        bottom: 25%;
-        background-color: brown;
+        bottom: 37.5%;
+        background-color: rgba(91, 35, 25, 1);
         border-radius: 5px;
         z-index: 1;
+        border: solid black 3px;
     }
     #popUpContent {
         position: relative;
@@ -862,6 +863,13 @@
         top: 5%;
         bottom: 5%;
         font-size: 1.5em;
+    }
+    #dropdowns select {
+        margin-top: 20px;
+        width: 70%;
+        left: 15%;
+        right: 15%;
+        border: solid black 2px;
     }
     #confirmButton {
         position: absolute;
@@ -889,19 +897,18 @@
         border-radius: 10px;
         color: white;
         top: 30px;
-        right: 500px;
+        right: 100px;
         z-index: 1;
     }
     #currentStore {
         position: absolute;
-        width: 200px;
+        width: 240px;
         height: 85px;
         top: 0;
-        right: 1000px;
+        right: 150px;
         color: white;
         top: 30px;
-    }
-    
+    }   
     #listOfCounties, #listOfCities, #listOfStores {
         position: relative;
         width: 50%;
@@ -909,15 +916,52 @@
         right: 25%;
         border-radius: 5px;
     }
+    #popUpErrorMessage {
+        position: absolute;
+        color: white;
+        width: 50%;
+        left: 25%;
+        right: 25%;
+        bottom: 40px;
+        text-align: center;
+    }
+    footer {
+        width: 100vw;
+        z-index: 1;
+        background: rgba(91, 35, 25, 0.8);
+        height: 40px;
+        position: fixed;
+        bottom: 0;
+        -moz-box-shadow: 0 -3px 15px 0 black;
+        -webkit-box-shadow: 0 -3px 15px 0 black;
+        box-shadow: 0 -3px 15px 0 black;
+    }
 
- footer {
-            width: 100vw;
-            z-index: 1;
-            background: rgba(91, 35, 25, 0.8);
-            height: 40px;
-            position: fixed;
-            bottom: 0;
-            -moz-box-shadow: 0 -3px 15px 0 black;
-            -webkit-box-shadow: 0 -3px 15px 0 black;
-            box-shadow: 0 -3px 15px 0 black;
-        }
+    #menuDiv {
+        position: absolute;
+        top: 65px;
+        right: -15px;
+        height: 200px;
+        width: 250px;
+        background-color:rgba(91, 35, 25, .8);
+        color: white;
+        border-radius: 0 0 5px 5px;
+        text-align: center;
+        font-size: 1.3em;
+        padding-top: 10px;
+        box-shadow: 0 3px 0 0 black;
+    }
+
+    #link {
+        margin: 0;
+        position: absolute;
+        top: 33%;
+        width: 50%;
+        left: 25%;
+        right: 25%;
+    }
+
+    #logOut {
+        position: relative;
+        top: 100px;
+    }
