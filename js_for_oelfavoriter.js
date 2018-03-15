@@ -102,7 +102,8 @@
                         logOutBtn: document.createElement("button"),
                         imgcontainer: document.createElement("div"),
                         img: document.createElement("img"),
-                        name: document.createElement("span"),
+                        name: document.createElement("div"),
+                        link: document.createElement('a')
                     };
 
                     if (user) {
@@ -124,8 +125,7 @@
                             id: uid
                         };
 
-                        
-
+                        let profileMenu = document.getElementById('menuDiv');
                         //                        console.log('onAuthStateChanged: user is signed in', user);
                         console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
@@ -133,12 +133,21 @@
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                         elements.logOutBtn.innerText = "Sign out";
                         elements.name.innerText = `${displayName}`;
+                        profileMenu.appendChild(elements.name);
                         elements.imgcontainer.setAttribute("class", "userInfo");
                         elements.img.setAttribute("class", "userImg");
                         elements.img.setAttribute("src", photoURL);
+                        elements.img.addEventListener('click', profileMenuEvent);
+                        elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/untappd.html");
+                        elements.link.setAttribute('id', "link");
+                        elements.link.innerText = "Sök öl";
+
                         elements.imgcontainer.appendChild(elements.img);
-                        elements.userDiv.appendChild(elements.logOutBtn);
-                        elements.userDiv.appendChild(elements.name);
+                        //elements.userDiv.appendChild(elements.logOutBtn);
+                        profileMenu.appendChild(elements.logOutBtn);
+                        profileMenu.appendChild(elements.link);
+                        
+                        //elements.userDiv.appendChild(elements.name);
                         elements.userDiv.appendChild(elements.imgcontainer);
                         elements.header.appendChild(elements.userDiv);
                         // Log-out function
@@ -328,7 +337,7 @@
                     let dropDown = document.getElementById('listOfStores');
                     storeList.forEach( butik =>  {
                         let newStore = document.createElement('option');
-                        newStore.setAttribute('value', butik.nr);
+                        newStore.setAttribute('data-value', butik);
                         newStore.innerText = butik.address;
                         dropDown.appendChild(newStore);
                     })
@@ -344,7 +353,7 @@
                         let place = "";
                         if(store.Address4[0]._text == city && typeof(store.Nr[0]._text) == 'number') {
                             if(typeof(store.Namn[0]._text) == "string") {
-                                place = store.Namn[0]._text + ", " + store.Address1[0]._text;
+                                place = store.Namn[0]._text;
                             }
                             else {
                                 place = store.Address1[0]._text;
@@ -519,11 +528,31 @@
                     document.getElementById('popUp').style.display = 'block';
                 });
                document.getElementById('confirmButton').addEventListener('click', function() {
-                   document.getElementById('popUp').style.display = "none";
-                   butikNr = document.getElementById('listOfStores').value;
-                   console.log(butikNr);
-
+                   if(document.getElementById('listOfStores').value === "") {
+                       document.getElementById('popUpErrorMessage').innerText = "Du måste välja butik!";
+                   }
+                   else {
+                       console.log(document.getElementById('listOfStores').value);
+                       document.getElementById('popUp').style.display = "none";
+                       butikNr = document.getElementById('listOfStores').value.nr;
+                       let displayCity = document.getElementById('listOfCities').value;
+                       let displayAdress = document.getElementById('listOfStores').value;
+                       displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase(); 
+                       let displayStore = displayCity + ", " + displayAdress;
+                       document.getElementById('store').innerText = displayStore;
+                       document.getElementById('popUpErrorMessage').style.display = "none";
+                   }
                })
+            }
+
+            document.getElementById('menuDiv').style.display = "none";
+            function profileMenuEvent() {
+                if(document.getElementById('menuDiv').style.display == "none") {
+                    document.getElementById('menuDiv').style.display = "block";
+                }
+                else {
+                    document.getElementById('menuDiv').style.display = "none";
+                }
             }
 
             //function för att söka igenom document över all öl som finns på systemet

@@ -120,6 +120,7 @@
                  logOutBtn: document.createElement("button"),
                  imgcontainer: document.createElement("div"),
                  menu: document.createElement('div'),
+                 link: document.createElement('a'),
                  img: document.createElement("img"),
                  name: document.createElement("span"),
                  //                  linkFavorites: document.createElement('a'),
@@ -147,6 +148,9 @@
                  console.log('onAuthStateChanged: user is signed in', user);
                  console.log("User logged in..");
                  elements.menu.setAttribute('id', 'menuDiv')
+                 elements.link.setAttribute('id', 'link');
+                 elements.link.innerText = "Favoriter";
+                 elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/oelfavoriter.html");
                  elements.userDiv.setAttribute("class", "userDiv");
                  elements.logOutBtn.setAttribute("id", "logOut");
                  elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -161,6 +165,7 @@
 
                  elements.userDiv.appendChild(elements.menu);
                  elements.menu.appendChild(elements.name);
+                 elements.menu.appendChild(elements.link);
                  elements.menu.appendChild(elements.logOutBtn);
 
                  elements.header.appendChild(elements.userDiv);
@@ -171,17 +176,14 @@
                  //Menu
                  let menuBtn = document.getElementById('userInfo');
 
-                 menuBtn.addEventListener('click', function () {
-
-                     let menu = document.getElementById('menuDiv');
-
-                     if (menu.style.display === "none") {
-                         menu.style.display = 'inline-block';
-                     } else {
-                         menu.style.display = 'none';
-                     }
-
-
+                 document.getElementById('menuDiv').style.display = 'none';
+                 menuBtn.addEventListener('click', function() {
+                    if(document.getElementById('menuDiv').style.display === "none") {
+                        document.getElementById('menuDiv').style.display = 'block';    
+                    }
+                    else {
+                        document.getElementById('menuDiv').style.display = 'none';
+                    }
                  });
 
                  // Log-out function
