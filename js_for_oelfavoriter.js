@@ -337,7 +337,7 @@
                     let dropDown = document.getElementById('listOfStores');
                     storeList.forEach( butik =>  {
                         let newStore = document.createElement('option');
-                        newStore.setAttribute('data-value', butik);
+                        newStore.setAttribute('value', butik.nr);
                         newStore.innerText = butik.address;
                         dropDown.appendChild(newStore);
                     })
@@ -532,11 +532,11 @@
                        document.getElementById('popUpErrorMessage').innerText = "Du måste välja butik!";
                    }
                    else {
-                       console.log(document.getElementById('listOfStores').value);
                        document.getElementById('popUp').style.display = "none";
-                       butikNr = document.getElementById('listOfStores').value.nr;
+                       butikNr = document.getElementById('listOfStores').value;
+                       console.log(butikNr);
                        let displayCity = document.getElementById('listOfCities').value;
-                       let displayAdress = document.getElementById('listOfStores').value;
+                       let displayAdress = document.getElementById('listOfStores')[document.getElementById('listOfStores').selectedIndex].innerText;
                        displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase(); 
                        let displayStore = displayCity + ", " + displayAdress;
                        document.getElementById('store').innerText = displayStore;
