@@ -84,10 +84,12 @@
      showMore.style.display = "none";
 
      function getUsers() {
-         db.ref("users/").once("value", function (snapshot) {
+         db.ref("users/").on("value", function (snapshot) {
              let data = snapshot.val();
              let keys = Object.keys(data);
+             //             let favoiteKeys = Object.keys
              let keyNr = 0;
+
              for (let user in data) {
                  let userInfo = data[user];
                  let key = keys[keyNr];
@@ -121,7 +123,7 @@
                  link: document.createElement('a'),
                  img: document.createElement("img"),
                  name: document.createElement("span"),
-//                  linkFavorites: document.createElement('a'),
+                 //                  linkFavorites: document.createElement('a'),
              };
              if (user) {
                  // User is signed in.
@@ -158,23 +160,22 @@
                  elements.img.setAttribute("class", "userImg");
                  elements.img.setAttribute("src", photoURL);
                  elements.imgcontainer.appendChild(elements.img);
-                 
-//                  elements.linkFavorites()
-                 
+
                  elements.userDiv.appendChild(elements.imgcontainer);
 
                  elements.userDiv.appendChild(elements.menu);
                  elements.menu.appendChild(elements.name);
                  elements.menu.appendChild(elements.link);
                  elements.menu.appendChild(elements.logOutBtn);
-                 
+
                  elements.header.appendChild(elements.userDiv);
                  elements.logged.style.display = "block";
                  elements.notLogged.style.display = "none";
-                 
-                 
+
+
                  //Menu
                  let menuBtn = document.getElementById('userInfo');
+
                  document.getElementById('menuDiv').style.display = 'none';
                  menuBtn.addEventListener('click', function() {
                     if(document.getElementById('menuDiv').style.display === "none") {
@@ -184,7 +185,7 @@
                         document.getElementById('menuDiv').style.display = 'none';
                     }
                  });
-                 
+
                  // Log-out function
                  let loggedOut = document.getElementById('logOut');
                  let logOut = function (event) {
@@ -224,6 +225,7 @@
              }
          })
      }; // getUserInfo ends
+      
 
      firebase.auth().getRedirectResult().then(function (result) {
          if (result.credential) { // authSpinner gives you a Facebook Access Token. You can use it to access the Facebook API.  
@@ -238,9 +240,10 @@
          var credential = error.credential; // The firebase.auth.AuthCredential type that was used.
      })
      // Autentisering slutar här
-     
-     
-     
+
+
+
+
 
      let clientId = "153D83356A0B65CE0BDB2F2058AA09CEE92F165D";
      let clientSecret = "7B480C43412EF225E1E7E6F802A05FEE835B016B";
@@ -249,12 +252,14 @@
      let container = document.getElementsByClassName("container")[0];
      let beerArray = [];
 
-     function printOut(array) {
+     function printOut(array,favs) {
 
          container.innerHTML = "";
          let increment = 0;
-
+         
          for (let i = 0; i < array.length; i++) {
+             let beer = array[i].beer.bid;
+
              let content = {
                  div: document.createElement("div"),
 
@@ -273,7 +278,6 @@
                  description: document.createElement("p"),
                  favorite: document.createElement("button"),
              }
-
 
              content.div.setAttribute("class", "card-body beer");
 
@@ -326,16 +330,51 @@
              container.appendChild(content.div);
 
              increment++;
+
+             content.favorite.addEventListener("click", favoriteChecked);
+             compareBeer(beer, content.moreInfo , favs);
+         } // loop through array ends here
+     } // printout ends here
+
+     // Function that checks current user and returns list of favorites
+     function checkUserAndFavs(ulist) {
+         let loggedUser = firebase.auth().currentUser;
+         let favoriteIds = [];
+
+         for (let i = 0; i < ulist.length; i++) {
+             if (ulist[i].uId === loggedUser.uid) {
+                 for (let x in ulist[i].favorites) {
+                     favoriteIds.push(ulist[i].favorites[x].bid);
+                 }
+             }
+         }
+        return favoriteIds;
+     }
+     
+     // Function that compare printoutbeer with every single favorite
+     function compareBeer(beer, cardInfo , favoriteIds) {
+         for (let j = 0; j < favoriteIds.length; j++) {
+             if (beer === favoriteIds[j]) {
+                 console.log("Match is : " + beer);
+                 let heart = document.createElement("svg");
+                
+                 heart.setAttribute("class", "fas fa-heart fa-3x");
+                 heart.setAttribute("style", "float : right; margin-bottom:10px;")
+                 let aFavorite = cardInfo.replaceChild(heart, cardInfo.lastChild);
+                 
+                 break;
+             }
          }
      }
-  
-       searchBeerInput.addEventListener("keydown", function(e){
-         if(e.keyCode == 13){
+
+
+     searchBeerInput.addEventListener("keydown", function (e) {
+         if (e.keyCode == 13) {
              searchBeerBtn.click();
              searchBeerInput.value = "";
          }
      })
-  
+
 
 
      searchBeerBtn.addEventListener("click", function () {
@@ -354,8 +393,8 @@
                  for (let i = 0; i < beerDB.response.beers.items.length; i++) {
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
+                 printOut(beerArray, checkUserAndFavs(userList));
 
-                 printOut(beerArray);
                  if (container.children.length === 0) {
                      footer.style.position = "fixed";
                  } else {
@@ -391,7 +430,7 @@
                  for (let i = 0; i < beerDB.response.beers.items.length; i++) {
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
-                 printOut(beerArray);
+                 printOut(beerArray,checkUserAndFavs(userList));
 
                  console.log(beerArray)
                  if (beerArray.length >= 4)
@@ -405,16 +444,28 @@
              })
      })
 
-     function checkedAndLoved(Event) {
+     function favoriteChecked(Event) {
          let parent = Event.target.parentElement;
          let bid = Event.target.id;
+         let body = document.getElementsByTagName("body")[0];
          let checked = document.createElement("svg");
-         
+         let textBox = document.createElement("div");
+
+         textBox.setAttribute("class", "addedToFavorites");
+         textBox.innerText = "Added among your favorites";
+
          checked.setAttribute("class", "fas fa-check-square fa-3x");
          checked.setAttribute("id", bid);
-         checked.setAttribute("style", "float:right; margin-bottom:10px;" ); 
+         checked.setAttribute("style", "float:right; margin-bottom:10px;");
 
          let replaced = parent.replaceChild(checked, Event.target);
+         body.appendChild(textBox);
+         setTimeout(function(){
+             textBox.className = "textboxHided";
+             setTimeout(function(){
+                 body.removeChild(textBox);
+             },8000)
+         },6000)
      }
 
 
@@ -435,7 +486,8 @@
                  console.log(id);
                  console.log("ok")
                  disableBtn.disabled = true;
-                 checkedAndLoved(e);
+
+
 
              }
          }
