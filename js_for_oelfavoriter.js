@@ -576,7 +576,7 @@
                     document.getElementById('popUp').style.display = 'block';
                 });
                 document.getElementById('confirmButton').addEventListener('click', function () {
-                    
+
                     if (document.getElementById('listOfStores').value === "") {
                         document.getElementById('popUpErrorMessage').innerText = "Du måste välja butik!";
                     } else {
