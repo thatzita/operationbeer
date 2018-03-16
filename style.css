@@ -962,6 +962,9 @@
     }
 
     #popUp {
+        position: absolute;
+        width: 50%;
+        height: 25%;
         left: 25%;
         right: 25%;
         top: 25%;
@@ -970,13 +973,17 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        position: absolute;
-        width: 500px;
-        height: 300px;
-        background: rgba(91, 35, 25, 0.8);
+        background: rgba(91, 35, 25, 1);
         box-shadow: 5px 5px 10px black;
         border-radius: 5px;
         margin: auto;
+    }
+
+    #popUp select {
+        margin-top: 10px;
+        width: 70%;
+        left: 15%;
+        right: 15%;
     }
     
     #popUpContent {
@@ -1031,8 +1038,9 @@
         bottom: 25%;
     }
     #popUpButton {
+        position: absolute;
+        right: 15px;
         height: 100%;
-        float: right;
         background-color: rgba(91, 35, 25, 1);
         color: white;
         border-radius: 5px;
@@ -1190,11 +1198,11 @@
         #popUp {
             position: fixed;
             width: 80%;
-            height: 25%;
+            height: 40%;
             left: 10%;
             right: 10%;
-            top: 37.5%;
-            bottom: 37.5%;
+            top: 30%;
+            bottom: 30%;
         }
         #currentStore {
             font-size: .9em;
@@ -1202,6 +1210,14 @@
 
         #popUpErrorMessage {
             font-size: .6em;
+        }
+
+        #confirmButton {
+            font-size: .8em;
+        }
+
+        #popUp select {
+            margin-top: 15px;
         }
 
 
