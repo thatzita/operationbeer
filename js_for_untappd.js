@@ -486,7 +486,7 @@
 
 
          let replaced = parent.replaceChild(checked, Event.target);
-     }
+   
 
 
      container.addEventListener("click", function (e) {
