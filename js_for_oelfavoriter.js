@@ -474,6 +474,8 @@
                     description: document.createElement("p"),
                     favorite: document.createElement("button"),
                     remove: document.createElement("button"),
+                    moreInfo: document.createElement('div'),
+                    infoDiv: document.createElement('div'),
                 }
 
                 if (favoriteArray.length !== 0) {
@@ -481,25 +483,36 @@
                     content.div.setAttribute("class", "card-body beer");
                     content.img.setAttribute("src", favoriteArray.img);
                     content.img.setAttribute("height", "140px");
-                    content.favorite.setAttribute("class", "btn btn-outline-light");
+                    content.favorite.setAttribute("class", "btn btn-outline-light favBtns");
                     content.favorite.setAttribute("id", "favorite" + increment);
 
-                    content.remove.setAttribute("class", "btn btn-outline-danger");
+                    content.favorite.innerText = "Does it exist?";
+                    content.moreInfo.setAttribute("class", "detailsFav");
+                    content.infoDiv.setAttribute('class', 'infoDiv')
+
+
+                    content.remove.setAttribute("class", "btn btn-outline-danger favBtns removeBtn");
                     content.remove.setAttribute("id", favoriteArray.id);
                     content.remove.innerText = "Remove beer";
 
                     content.beerName.innerText = favoriteArray.name;
-                    content.style.innerText = favoriteArray.style;
-                    content.brewery.innerText = favoriteArray.brewery;
+                    content.style.innerText = 'Type of beer: ' + favoriteArray.style;
+                    content.brewery.innerText = 'Brewery: ' + favoriteArray.brewery;
                     content.description.innerText = favoriteArray.description;
 
-                    content.div.appendChild(content.img);
+                    content.moreInfo.appendChild(content.img);
+                    content.moreInfo.appendChild(content.infoDiv);
+
                     content.div.appendChild(content.beerName);
-                    content.div.appendChild(content.style);
-                    content.div.appendChild(content.brewery);
-                    content.div.appendChild(content.description);
+                    content.infoDiv.appendChild(content.style);
+                    content.infoDiv.appendChild(content.brewery);
+                
+                    content.moreInfo.appendChild(content.description);
+                    content.div.appendChild(content.moreInfo);
+                    
                     content.div.appendChild(content.favorite);
                     content.div.appendChild(content.remove);
+                    
                     container.appendChild(content.div);
 
                     increment++;
@@ -570,6 +583,7 @@
                     removeBeerFromDb(removeId, removeParent)
                 }
             });
+
 
             function initPopUp() {
                 document.getElementById('popUpButton').addEventListener('click', function () {

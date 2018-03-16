@@ -123,7 +123,9 @@
                  link: document.createElement('a'),
                  img: document.createElement("img"),
                  name: document.createElement("span"),
+
                  //                  linkFavorites: document.createElement('a'),
+               
              };
              if (user) {
                  // User is signed in.
@@ -258,6 +260,7 @@
          let increment = 0;
          
          for (let i = 0; i < array.length; i++) {
+
              let beer = array[i].beer.bid;
 
              let content = {
@@ -278,6 +281,7 @@
                  description: document.createElement("p"),
                  favorite: document.createElement("button"),
              }
+
 
              content.div.setAttribute("class", "card-body beer");
 
@@ -366,6 +370,14 @@
              }
          }
      }
+  
+       searchBeerInput.addEventListener("keydown", function(e){
+         if(e.keyCode == 13){
+             searchBeerBtn.click();
+             searchBeerInput.value = "";
+         }
+     })
+  
 
 
      searchBeerInput.addEventListener("keydown", function (e) {
@@ -394,6 +406,7 @@
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
                  printOut(beerArray, checkUserAndFavs(userList));
+
 
                  if (container.children.length === 0) {
                      footer.style.position = "fixed";
@@ -430,7 +443,9 @@
                  for (let i = 0; i < beerDB.response.beers.items.length; i++) {
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
+
                  printOut(beerArray,checkUserAndFavs(userList));
+
 
                  console.log(beerArray)
                  if (beerArray.length >= 4)
@@ -443,6 +458,7 @@
                  console.log(error);
              })
      })
+
 
      function favoriteChecked(Event) {
          let parent = Event.target.parentElement;
@@ -469,6 +485,10 @@
      }
 
 
+         let replaced = parent.replaceChild(checked, Event.target);
+     }
+
+
      container.addEventListener("click", function (e) {
          let toNumber = parseInt(e.target.id);
          let disableBtn = e.target;
@@ -486,7 +506,6 @@
                  console.log(id);
                  console.log("ok")
                  disableBtn.disabled = true;
-
 
 
              }
