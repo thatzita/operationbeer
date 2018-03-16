@@ -387,6 +387,10 @@
             box-shadow: 5px 5px 10px black;
         }
 
+        #beersToBring{
+                color:white;
+        }
+
         .searchTitle {
             padding-top: 1vw;
             margin-top: 50px;
