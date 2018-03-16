@@ -523,103 +523,6 @@
             padding: 20px;
         }
 
-
-        @media (max-width: 700px) {
-
-            .searchField {
-                width: 100vw;
-                height: 50px;
-                border-radius: 0px 0px 0px 0px;
-                padding: 0;
-            }
-            #searchBeerInput {
-                height: 38px;
-                border: 1px solid transparent;
-                padding: 0.375rem 0.75rem;
-                line-height: 1.5;
-                border-radius: 0.25rem;
-            }
-            .searchTitle {
-                text-align: center;
-            }
-
-            .container {
-                padding: 0;
-                margin: 0;
-            }
-
-            .beer {
-                padding: 0;
-                width: 100%;
-            }
-            .card-body {
-                padding: 0;
-            }
-
-            .header {
-                font-size: 12pt;
-            }
-            .navbar-brand {
-                font-size: 12pt;
-            }
-            .logotype {
-                height: 30px;
-                width: 30px;
-                margin-top: 10px;
-                margin-left: 0;
-            }
-            .btn {
-                color: #212529;
-                background-color: #ffc107;
-                border-color: #ffc107;
-            }
-
-            .arrowDown,
-            .arrowUp {
-                margin-right: 10px;
-            }
-
-
-            h2 {
-                margin-left: 20px;
-                font-size: 18pt;
-            }
-
-            h4 {
-                font-size: 16pt;
-            }
-            h5 {
-                font-size: 14pt;
-            }
-            p {
-                font-size: 12pt;
-            }
-
-            .details .favoriteBtn {
-                margin-bottom: 10px;
-                margin-right: 10px;
-                color: #212529;
-                background-color: #f8f9fa;
-                border-color: #f8f9fa;
-            }
-
-            #showMoreBackground {
-                padding: 0;
-                background: rgba(1, 1, 1, 0.2);
-                width: 40%;
-                margin: auto;
-                border-radius: 10px;
-            }
-            #showMore {
-                margin-left: auto;
-                margin-right: auto;
-                bottom: 0;
-                position: sticky;
-                background-color: #ffc107;
-            }
-        }
-
-
         /* Authenticate classes and ids */
 
         .userDiv {
@@ -956,15 +859,17 @@
     }
     #confirmButton {
         position: absolute;
-        width: 10%;
-        height: 10%;
-        left: 45%;
-        right: 45%;
+        width: 20%;
+        height: 20%;
+        left: 40%;
+        right: 40%;
         bottom: 10px;
         font-size: 1em;
-        background-color: red;
-        border-radius: 10px;
+        border-radius: 5px;
+
+        background-color: rgba(91, 35, 25, 1);
         color: white;
+        border: solid white 2px;
     }
     #listOfCitiesContent {
         position: relative;
@@ -974,23 +879,32 @@
         font-size: 2em;
         text-align: center;
     }
-    #popUpButton {
+    #popUpDiv {
         position: absolute;
-        background-color: red;
-        border-radius: 10px;
-        color: white;
-        top: 30px;
-        right: 100px;
-        z-index: 1;
+        width: 350px;
+        height: 80%;
+        top: 10%;
+        bottom: 10%;
+        right: 10px;
+        vertical-align: middle;
+        text-align: center;
     }
     #currentStore {
-        position: absolute;
-        width: 240px;
-        height: 85px;
-        top: 0;
-        right: 150px;
+        position: relative;
         color: white;
-        top: 30px;
+        font-size: 1em;
+        text-align: center;
+        height: 50%;
+        top: 25%;
+        bottom: 25%;
+    }
+    #popUpButton {
+        height: 100%;
+        float: right;
+        background-color: rgba(91, 35, 25, 1);
+        color: white;
+        border-radius: 5px;
+        border: solid white 2px;
     }   
     #listOfCounties, #listOfCities, #listOfStores {
         position: relative;
@@ -1026,13 +940,14 @@
         right: -15px;
         height: 200px;
         width: 250px;
-        background-color:rgba(91, 35, 25, .8);
+        background-color:rgba(91, 35, 25, 1);
         color: white;
         border-radius: 0 0 5px 5px;
         text-align: center;
         font-size: 1.3em;
         padding-top: 10px;
         box-shadow: 0 3px 0 0 black;
+        z-index: 1;
     }
 
     #link {
@@ -1047,4 +962,118 @@
     #logOut {
         position: relative;
         top: 100px;
+    }
+
+    @media (max-width: 700px) {
+
+        .searchField {
+            width: 100vw;
+            height: 50px;
+            border-radius: 0px 0px 0px 0px;
+            padding: 0;
+        }
+        #searchBeerInput {
+            height: 38px;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+        }
+        .searchTitle {
+            text-align: center;
+        }
+
+        .container {
+            padding: 0;
+            margin: 0;
+        }
+
+        .beer {
+            padding: 0;
+            width: 100%;
+        }
+        .card-body {
+            padding: 0;
+        }
+
+        .header {
+            font-size: 12pt;
+        }
+        .navbar-brand {
+            font-size: 12pt;
+        }
+        .logotype {
+            height: 30px;
+            width: 30px;
+            margin-top: 10px;
+            margin-left: 0;
+        }
+        .btn {
+            color: #212529;
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .arrowDown,
+        .arrowUp {
+            margin-right: 10px;
+        }
+
+
+        h2 {
+            margin-left: 20px;
+            font-size: 18pt;
+        }
+
+        h4 {
+            font-size: 16pt;
+        }
+        h5 {
+            font-size: 14pt;
+        }
+        p {
+            font-size: 12pt;
+        }
+
+        .details .favoriteBtn {
+            margin-bottom: 10px;
+            margin-right: 10px;
+            color: #212529;
+            background-color: #f8f9fa;
+            border-color: #f8f9fa;
+        }
+
+        #showMoreBackground {
+            padding: 0;
+            background: rgba(1, 1, 1, 0.2);
+            width: 40%;
+            margin: auto;
+            border-radius: 10px;
+        }
+        #showMore {
+            margin-left: auto;
+            margin-right: auto;
+            bottom: 0;
+            position: sticky;
+            background-color: #ffc107;
+        }
+
+        #popUp {
+            position: fixed;
+            width: 80%;
+            height: 25%;
+            left: 10%;
+            right: 10%;
+            top: 37.5%;
+            bottom: 37.5%;
+        }
+        #currentStore {
+            font-size: .9em;
+        }
+
+        #popUpErrorMessage {
+            font-size: .6em;
+        }
+
+
     }
