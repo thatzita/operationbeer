@@ -26,7 +26,7 @@
             let user = {};
             let userList = [];
 
-            let beerOnly = [];
+            let beer;
             let storeOnly = [];
 
             let userLoggedIn;
@@ -127,7 +127,7 @@
 
                         let profileMenu = document.getElementById('menuDiv');
                         //                        console.log('onAuthStateChanged: user is signed in', user);
-                        console.log("User logged in..");
+//                        console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -243,7 +243,7 @@
                         spinnerObject.spinner(spinnerObject.notFetching);
                         let beerDB = json;
                         result = xmlToJSON.parseString(beerDB);
-                        specificStore(result, butikNr);
+                        specificStore(result);
 
                     })
                     .catch(function (error) {
@@ -400,10 +400,11 @@
 
             function matchStore(stores, storeNr) {
                 let storeProducts = [];
+                console.log(storeNr)
+                console.log(stores)
                 for (let i = 0; i < stores.length; i++) {
                     let store = stores[i];
                     let products = store.ArtikelNr;
-
 
                     if (store._attr.ButikNr._value == storeNr) {
                         for (let z = 0; z < products.length; z++) {
@@ -415,38 +416,49 @@
                 return storeProducts;
             }
 
+
+            
+
             function compareListToStore(storeproducts, allBeers) {
-                beerOnly = [];
-                //                console.log(storeproducts);
-                //                console.log(allBeers);
+                beer = {};
+                index = elasticlunr(function () {
+                this.addField('namn');
+                this.addField('namn2');
+                this.addField('producent');
+                this.setRef('nr');
+            })
+            
                 for (let i = 0; i < storeproducts.length; i++) {
                     for (let j = 0; j < allBeers.length; j++) {
                         try {
                             if (allBeers[j].nr == storeproducts[i]._text) {
-                                beerOnly = {
+                                beer = {
                                     nr: allBeers[j].nr,
                                     namn: allBeers[j].namn,
                                     namn2: allBeers[j].namn2,
                                     producent: allBeers[j].producent,
                                 }
-
-                                index.addDoc(beerOnly);
+                                index.addDoc(beer);
 
                             }
                         } catch (error) {
-                            beerOnly = {
+                            beer = {
                                 namn: allBeers[j].namn,
                                 namn2: allBeers[j].namn2,
                                 producent: allBeers[j].producent,
                             }
-                            index.addDoc(beerOnly);
+                            index.addDoc(beer);
                         }
                     }
                 }
-
+                console.log(Object.keys(beer).length)
+                for(let x in beer){
+                    console.log(beer)
+                }
             }
-            let myStore = butikNr; //Ska vara vald butik när vi kommer till sidan
+            let myStore; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
+                myStore = butikNr;
                 storeOnly = [];
                 for (let i = 0; i < outputfromStoreFetch.ButikArtikel[0].Butik.length; i++) {
                     storeOnly.push(outputfromStoreFetch.ButikArtikel[0].Butik[i])
@@ -504,11 +516,10 @@
 
                     increment++;
 
-
                     let beerName = content.beerName.innerText;
                     let brewery = content.brewery.innerText;
 
-                    beerOnly = index.search(beerName + " " + brewery, {
+                    let beerOnly = index.search(beerName + " " + brewery, {
                         fields: {
                             namn: {
                                 boost: 4,
@@ -523,21 +534,22 @@
                     });
 
                     //                    ändra score kan behövas samt tweak av paramaterar till document
-                    if (beerOnly[0].score > 6) {
-                        console.log("this should exist in store! " + beerOnly[0].doc.namn);
-                        console.log("the nr is: " + beerOnly[0].doc.nr);
+                    if (beerOnly[0].score > 7) {
+//                        console.log("this should exist in store! " + beerOnly[0].doc.namn);
+//                        console.log("the nr is: " + beerOnly[0].doc.nr);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
 
                     } else {
-                        console.log("I doubt you will find what you are looking for " + beerOnly[0].doc.namn);
+//                        console.log("I doubt you will find what you are looking for " + beerOnly[0].doc.namn);
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
                         content.favorite.disabled = true;
                         content.favorite.innerText = "Not in store";
                     }
 
                 }
+
             }
 
             ///////////////////////////////////////////////////////////////            
@@ -581,17 +593,18 @@
                         document.getElementById('popUpErrorMessage').innerText = "Du måste välja butik!";
                     } else {
                         container.innerHTML = "";
-                        console.log(document.getElementById('listOfStores').value);
+                        //                        console.log(document.getElementById('listOfStores').value);
                         document.getElementById('popUp').style.display = "none";
                         butikNr = document.getElementById('listOfStores').value;
-                        console.log(butikNr);
+//                        console.log(butikNr);
                         let displayCity = document.getElementById('listOfCities').value;
                         let displayAdress = document.getElementById('listOfStores').value;
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
                         let displayStore = displayCity + ", " + displayAdress;
                         document.getElementById('store').innerText = displayStore;
                         document.getElementById('popUpErrorMessage').style.display = "none";
-                        //                                                matchStore(storeOnly, butikNr);
+                        //                        matchStore(storeOnly, butikNr); 
+
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         addToFavorites();
 
@@ -608,14 +621,5 @@
                     document.getElementById('menuDiv').style.display = "none";
                 }
             }
-
-            //function för att söka igenom document över all öl som finns på systemet
-            //http://elasticlunr.com/
-            var index = elasticlunr(function () {
-                this.addField('namn');
-                this.addField('namn2');
-                this.addField('producent');
-                this.setRef('nr');
-            });
 
         })
