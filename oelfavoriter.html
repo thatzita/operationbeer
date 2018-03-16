@@ -11,6 +11,8 @@
     <script type="text/javascript" src="xmltoJS/lib/xmlToJSON.js"></script>
     <script src="./elasticlunr/elasticlunr.js"></script>
     <script src="./js_for_oelfavoriter.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
 
 
 
@@ -23,7 +25,7 @@
         <div id = "popUpContent">
         <form id = "dropdowns">
             <select id = "listOfCounties">
-                <option style = "display:none"; selected>Välj län</option>
+                <option style = "display:none"; selected>Choose county</option>
             </select>
             <select id = "listOfCities">
             </select>
@@ -32,7 +34,7 @@
             <div id = "popUpErrorMessage"></div>
         </form>
         </div>
-        <button id = "confirmButton">Välj</button>
+        <button id = "confirmButton">Choose</button>
 </div>
     <header>
         <nav class="navbar navbar-light bg-faded">
@@ -42,27 +44,31 @@
                 <h3>Bring My Beer Bro</h3>
             </a>
             <div id='profilePic'></div>
+            <button id="popUpButton">Change store</button>
+            <div id="currentStore">
+                <label id="store"></label>
+            </div>
         </nav>
         <div id = "menuDiv" style = "top: 80px; right: 0;">
         </div>
     </header>
-
-    <div class="favorites">
-        <h1>Mina favoriter</h1>
-    </div>
-
-    <br>
-    <div class="container card">
-
-    </div>
-        <div class="loaderContainer">
-            <div class="sk-folding-cube">
-                <div class="sk-cube1 sk-cube"></div>
-                <div class="sk-cube2 sk-cube"></div>
-                <div class="sk-cube4 sk-cube"></div>
-                <div class="sk-cube3 sk-cube"></div>
-            </div>
+    <main>
+        <div class="favorites">
+            <h1>My favorites</h1>
         </div>
+
+        <div class="container card">
+
+        </div>
+            <div class="loaderContainer">
+                <div class="sk-folding-cube">
+                    <div class="sk-cube1 sk-cube"></div>
+                    <div class="sk-cube2 sk-cube"></div>
+                    <div class="sk-cube4 sk-cube"></div>
+                    <div class="sk-cube3 sk-cube"></div>
+                </div>
+            </div>
+    </main>
     <footer>
         <div id="currentStore">
             <label id="store"></label>
