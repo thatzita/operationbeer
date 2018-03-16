@@ -167,6 +167,7 @@
                      elements.logOutBtn.innerText = "Sign out";
                      elements.name.innerText = `${displayName}`;
                      elements.imgcontainer.setAttribute("id", "userInfo");
+                     elements.imgcontainer.setAttribute("style", "cursor:pointer;");
                      elements.img.setAttribute("class", "userImg");
                      elements.img.setAttribute("src", photoURL);
                      elements.imgcontainer.appendChild(elements.img);
