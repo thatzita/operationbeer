@@ -41,8 +41,8 @@
             let spinnerObject = {
                 fetching: true,
                 notFetching: false,
-                loadText1: "Loading beers . . .",
-                loadText2: "Fetching stores . . .",
+                loadText1: "Loading beers",
+                loadText2: "Fetching stores",
                 spinner: function (getData, textVal) {
 
                     let body = document.getElementsByTagName("body")[0];
