@@ -390,17 +390,6 @@
              searchBeerInput.value = "";
          }
      })
-  
-
-
-     searchBeerInput.addEventListener("keydown", function (e) {
-         if (e.keyCode == 13) {
-             searchBeerBtn.click();
-             searchBeerInput.value = "";
-         }
-     })
-
-
 
      searchBeerBtn.addEventListener("click", function () {
          offset = 0;
