@@ -127,7 +127,7 @@
 
                         let profileMenu = document.getElementById('menuDiv');
                         //                        console.log('onAuthStateChanged: user is signed in', user);
-//                        console.log("User logged in..");
+                        //                        console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -417,17 +417,17 @@
             }
 
 
-            
+
 
             function compareListToStore(storeproducts, allBeers) {
                 beer = {};
                 index = elasticlunr(function () {
-                this.addField('namn');
-                this.addField('namn2');
-                this.addField('producent');
-                this.setRef('nr');
-            })
-            
+                    this.addField('namn');
+                    this.addField('namn2');
+                    this.addField('producent');
+                    this.setRef('nr');
+                })
+
                 for (let i = 0; i < storeproducts.length; i++) {
                     for (let j = 0; j < allBeers.length; j++) {
                         try {
@@ -451,10 +451,10 @@
                         }
                     }
                 }
-//                console.log(Object.keys(beer).length)
-//                for(let x in beer){
-//                    console.log(beer)
-//                }
+                //                console.log(Object.keys(beer).length)
+                //                for(let x in beer){
+                //                    console.log(beer)
+                //                }
             }
             let myStore; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
@@ -518,13 +518,13 @@
                     content.div.appendChild(content.beerName);
                     content.infoDiv.appendChild(content.style);
                     content.infoDiv.appendChild(content.brewery);
-                
+
                     content.moreInfo.appendChild(content.description);
                     content.div.appendChild(content.moreInfo);
-                    
+
                     content.div.appendChild(content.favorite);
                     content.div.appendChild(content.remove);
-                    
+
                     container.appendChild(content.div);
 
                     increment++;
@@ -535,27 +535,32 @@
                     let beerOnly = index.search(beerName + " " + brewery, {
                         fields: {
                             namn: {
-                                boost: 4,
+                                boost: 5,
                             },
                             namn2: {
-                                boost: 2,
-                            },
-                            producer: {
                                 boost: 1.5,
-                            }
+                            },
+//                            producer: {
+//                                boost: 1,
+//                            }
                         }
                     });
+//                    console.log(beerOnly);
 
-                    //                    ändra score kan behövas samt tweak av paramaterar till document
-                    if (beerOnly[0].score > 7) {
-//                        console.log("this should exist in store! " + beerOnly[0].doc.namn);
-//                        console.log("the nr is: " + beerOnly[0].doc.nr);
+                    if (beerOnly.length == 0) {
+                        content.favorite.setAttribute("style", "background-color: red; width: 108px")
+                        content.favorite.disabled = true;
+                        content.favorite.innerText = "Not in store";
+                    } else if (beerOnly[0].score > 8) {
+                        console.log("Score above 5.5", beerOnly);
+                        //                        console.log("this should exist in store! " + beerOnly[0].doc.namn);
+                        //                        console.log("the nr is: " + beerOnly[0].doc.nr);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-
                     } else {
-//                        console.log("I doubt you will find what you are looking for " + beerOnly[0].doc.namn);
+                        console.log(beerOnly);
+                        //                        console.log("I doubt you will find what you are looking for " + beerOnly[0].doc.namn);
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
                         content.favorite.disabled = true;
                         content.favorite.innerText = "Not in store";
@@ -565,6 +570,13 @@
 
             }
 
+            
+            
+            
+            
+            
+            
+            
             ///////////////////////////////////////////////////////////////            
             //Ta bort öl från databasen, arrayen och output 
             function removeBeerFromDb(remove, node) {
@@ -618,7 +630,6 @@
                         document.getElementById('store').innerText = displayStore;
                         document.getElementById('popUpErrorMessage').style.display = "none";
                         //                        matchStore(storeOnly, butikNr); 
-
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         addToFavorites();
 
