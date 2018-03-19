@@ -165,7 +165,7 @@
                      elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                      elements.logOutBtn.innerText = "Sign out";
                      elements.name.innerText = `${displayName}`;
-                     elements.imgcontainer.setAttribute("id", "userInfo");
+                     elements.imgcontainer.setAttribute("class", "userInfo");
                      elements.img.setAttribute("class", "userImg");
                      elements.img.setAttribute("src", photoURL);
                      elements.imgcontainer.appendChild(elements.img);
