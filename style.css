@@ -1053,7 +1053,7 @@
     }
 
     #popUp {
-        position: absolute;
+        position: fixed;
         width: 50%;
         height: 25%;
         left: 25%;
