@@ -85,7 +85,7 @@
                         }
                         userList.push(user);
                     }
-                    //                    console.log(userList);
+                    
                     getUserInfo(userList);
                 })
             }; // getUsers ends here
@@ -126,8 +126,7 @@
                         };
 
                         let profileMenu = document.getElementById('menuDiv');
-                        //                        console.log('onAuthStateChanged: user is signed in', user);
-                        //                        console.log("User logged in..");
+
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -167,12 +166,11 @@
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-                                    //                                    console.log("Match = " + userList[i].uId);
+                                    
                                     userExist = true;
                                     id = userList[i].dbId;
                                     break; // Isf bryt loopen
                                 } else { // Annars ingen match, och userExist är false
-                                    //                                    console.log("No Match");
                                     userExist = false;
 
                                 }
@@ -185,7 +183,6 @@
                         getProducts();
                     } else {
                         spinnerObject.spinner(spinnerObject.notFetching);
-                        console.log("No User");
                         window.location.href = "untappd.html";
                     }
                 })
@@ -400,8 +397,7 @@
 
             function matchStore(stores, storeNr) {
                 let storeProducts = [];
-                console.log(storeNr)
-                console.log(stores)
+
                 for (let i = 0; i < stores.length; i++) {
                     let store = stores[i];
                     let products = store.ArtikelNr;
@@ -422,11 +418,13 @@
             function compareListToStore(storeproducts, allBeers) {
                 beer = {};
                 index = elasticlunr(function () {
+
                     this.addField('namn');
                     this.addField('namn2');
                     this.addField('producent');
                     this.setRef('nr');
                 })
+
 
                 for (let i = 0; i < storeproducts.length; i++) {
                     for (let j = 0; j < allBeers.length; j++) {
@@ -545,7 +543,6 @@
 //                            }
                         }
                     });
-//                    console.log(beerOnly);
 
                     if (beerOnly.length == 0) {
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
@@ -553,14 +550,12 @@
                         content.favorite.innerText = "Not in store";
                     } else if (beerOnly[0].score > 8) {
                         console.log("Score above 5.5", beerOnly);
-                        //                        console.log("this should exist in store! " + beerOnly[0].doc.namn);
-                        //                        console.log("the nr is: " + beerOnly[0].doc.nr);
+
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
                     } else {
-                        console.log(beerOnly);
-                        //                        console.log("I doubt you will find what you are looking for " + beerOnly[0].doc.namn);
+
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
                         content.favorite.disabled = true;
                         content.favorite.innerText = "Not in store";
@@ -628,8 +623,7 @@
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
                         let displayStore = displayCity + ", " + displayAdress;
                         document.getElementById('store').innerText = displayStore;
-                        document.getElementById('popUpErrorMessage').style.display = "none";
-                        //                        matchStore(storeOnly, butikNr); 
+                        document.getElementById('popUpErrorMessage').style.display = "none"; 
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         addToFavorites();
 

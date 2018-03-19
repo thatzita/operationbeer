@@ -104,7 +104,6 @@
                  }
                  userList.push(user);
              }
-             console.log(userList);
              getUserInfo(userList);
          })
      }; // getUsers ends here
@@ -156,7 +155,7 @@
 
                  if (bool === false) {
                      console.log('onAuthStateChanged: user is signed in', user);
-                     console.log("User logged in..");
+
                      elements.menu.setAttribute('id', 'menuDiv')
                      elements.link.setAttribute('id', 'link');
                      elements.link.innerText = "My Favorites";
@@ -219,12 +218,10 @@
                      let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                      for (i = 0; i < userList.length; i++) { // Går igenom listan  
                          if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-                             console.log("Match = " + userList[i].uId);
                              userExist = true;
                              id = userList[i].dbId;
                              break; // Isf bryt loopen
                          } else { // Annars ingen match, och userExist är false
-                             console.log("No Match");
                              userExist = false;
                          }
                      }
@@ -234,7 +231,7 @@
                  }; // End of checkUsers
                  checkUsers(uList);
              } else {
-                 console.log("No User");
+
                  authSpinner.ifUser = true;
                  authSpinner.spinner(authSpinner.ifUser);
              }
@@ -372,7 +369,6 @@
      function compareBeer(beer, cardInfo, favoriteIds) {
          for (let j = 0; j < favoriteIds.length; j++) {
              if (beer === favoriteIds[j]) {
-                 console.log("Match is : " + beer);
                  let heart = document.createElement("svg");
 
                  heart.setAttribute("class", "fas fa-heart fa-3x");
@@ -413,7 +409,7 @@
                      footer.style.position = "fixed";
                  } else {
                      footer.style.position = "sticky";
-                     console.log(beerArray);
+
                  }
                  if (beerArray.length >= 4)
                      showMore.style.display = "block";
@@ -429,12 +425,10 @@
 
      showMore.addEventListener("click", function (e) {
 
-         console.log("clicked showMore");
-         console.log(e.target.id);
+
 
          offset = offset + 5;
-         console.log(counter);
-         console.log(offset)
+
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -449,7 +443,7 @@
 
 
 
-                 console.log(beerArray)
+
                  if (beerArray.length >= 4)
                      showMore.style.display = "block";
                  else
@@ -506,8 +500,6 @@
                  beerObj.img = beerArray[i].beer.beer_label;
                  beerObj.bid = beerArray[i].beer.bid;
                  db.ref(`users/${id}/favorites/`).push(beerObj);
-                 console.log(id);
-                 console.log("ok")
                  disableBtn.disabled = true;
 
 
