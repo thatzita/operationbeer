@@ -159,7 +159,7 @@
                      console.log("User logged in..");
                      elements.menu.setAttribute('id', 'menuDiv')
                      elements.link.setAttribute('id', 'link');
-                     elements.link.innerText = "Favoriter";
+                     elements.link.innerText = "My Favorites";
                      elements.link.setAttribute('href', "./oelfavoriter.html");
                      elements.userDiv.setAttribute("class", "userDiv");
                      elements.logOutBtn.setAttribute("id", "logOut");
