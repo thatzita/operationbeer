@@ -533,29 +533,43 @@
                     let beerOnly = index.search(beerName + " " + brewery, {
                         fields: {
                             namn: {
-                                boost: 5,
+                                boost: 1.2,
                             },
                             namn2: {
-                                boost: 1.5,
+                                boost: 1.4,
                             },
-//                            producer: {
-//                                boost: 1,
-//                            }
+                            producer: {
+                                boost: 0,
+                            }
                         }
                     });
+
 
                     if (beerOnly.length == 0) {
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
                         content.favorite.disabled = true;
                         content.favorite.innerText = "Not in store";
-                    } else if (beerOnly[0].score > 8) {
-                        console.log("Score above 5.5", beerOnly);
-
+                    } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-                    } else {
-
+                    } else if (beerOnly.length >= 10 && beerOnly[0].score > 6){
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
+                        content.favorite.disabled = true;
+                        content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                        content.favorite.innerText = "In store";
+                    }else if (beerOnly.length > 20 && beerOnly[0].score > 2){
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
+                        content.favorite.disabled = true;
+                        content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                        content.favorite.innerText = "In store";
+                    }else {
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
                         content.favorite.disabled = true;
                         content.favorite.innerText = "Not in store";
@@ -564,15 +578,7 @@
                 }
 
             }
-
-            
-            
-            
-            
-            
-            
-            
-            ///////////////////////////////////////////////////////////////            
+     
             //Ta bort öl från databasen, arrayen och output 
             function removeBeerFromDb(remove, node) {
                 for (let i = 0; i < favoriteArray.length; i++) {
