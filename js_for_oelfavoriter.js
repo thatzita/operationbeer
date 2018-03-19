@@ -598,13 +598,14 @@
 
 
             function initPopUp() {
+                document.getElementById('popUpMessage').innerText = "Choose a store.";
                 document.getElementById('popUpButton').addEventListener('click', function () {
                     document.getElementById('popUp').style.display = 'block';
                 });
                 document.getElementById('confirmButton').addEventListener('click', function () {
 
                     if (document.getElementById('listOfStores').value === "") {
-                        document.getElementById('popUpErrorMessage').innerText = "You must choose a store.";
+                        document.getElementById('popUpMessage').innerText = "You must choose a store.";
                     } else {
                         container.innerHTML = "";
                         document.getElementById('popUp').style.display = "none";
@@ -616,7 +617,7 @@
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
                         let displayStore = displayCity + ", " + displayAdress;
                         document.getElementById('store').innerText = displayStore;
-                        document.getElementById('popUpErrorMessage').style.display = "none";
+                        document.getElementById('popUpMessage').style.display = "none";
                         //                        matchStore(storeOnly, butikNr); 
 
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
