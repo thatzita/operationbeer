@@ -599,6 +599,17 @@
 
             function initPopUp() {
                 document.getElementById('popUpMessage').innerText = "Choose a store.";
+                document.getElementById('listOfCities').style.display = "none";
+                document.getElementById('listOfStores').style.display = "none";
+
+                document.getElementById('listOfCounties').addEventListener('click', function() {
+                    if(document.getElementById('listOfCounties').value !== "Choose county") {
+                        document.getElementById('popUpMessage').innerText = "Choose a store.";
+                        document.getElementById('listOfCities').style.display = "block";
+                        document.getElementById('listOfStores').style.display = "block";
+                    }  
+                })
+
                 document.getElementById('popUpButton').addEventListener('click', function () {
                     document.getElementById('popUp').style.display = 'block';
                 });
@@ -617,7 +628,7 @@
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
                         let displayStore = displayCity + ", " + displayAdress;
                         document.getElementById('store').innerText = displayStore;
-                        document.getElementById('popUpMessage').style.display = "none";
+                        document.getElementById('popUpMessage').innerText = "Choose a store.";
                         //                        matchStore(storeOnly, butikNr); 
 
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
