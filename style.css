@@ -259,56 +259,56 @@
 
 
         .addedToFavorites {
-            position: fixed;
+            position:relative;
             z-index: 2;
             background-color: white;
             text-align: center;
-            padding-top: 10px;
+            padding-top: 20px;
             color: rgba(0, 0, 0, 0.9);
-            top: 45%;
-            left: 41.5%;
+            bottom: 0;
+            left: 0;
             /*            margin: 0 auto;*/
             width: 250px;
             height: 50px;
             font-size: 1.3rem;
-            font-family: 'Knewave', cursive;
+            font-family: 'Muli', sans-serif;
             border-radius: 8px;
-            -webkit-animation: fadein 3s;
+            -webkit-animation: fadein 2s;
             /* Safari, Chrome and Opera > 12.1 */
-            -moz-animation: fadein 3s;
+            -moz-animation: fadein 2s;
             /* Firefox < 16 */
-            -ms-animation: fadein 3s;
+            -ms-animation: fadein 2s;
             /* Internet Explorer */
-            -o-animation: fadein 3s;
+            -o-animation: fadein 2s;
             /* Opera < 12.1 */
-            animation: fadein 3s;
+            animation: fadein 2s;
         }
 
         .textboxHided {
-            position: fixed;
+            position: relative;
             z-index: 2;
             background-color: white;
             text-align: center;
-            padding-top: 10px;
+            padding-top: 20px;
             color: rgba(0, 0, 0, 0.9);
-            top: 45%;
-            left: 41.5%;
+            bottom: 0;
+            left: 0;
             /*            margin: 0 auto;*/
             width: 250px;
             height: 50px;
             font-size: 1.3rem;
             opacity: 1;
-            font-family: 'Knewave', cursive;
+            font-family: 'Muli', sans-serif;
             border-radius: 8px;
-            -webkit-animation: fadeout linear forwards 3s;
+            -webkit-animation: fadeout linear forwards 2s;
             /* Safari, Chrome and Opera > 12.1 */
-            -moz-animation: fadeout linear forwards 3s;
+            -moz-animation: fadeout linear forwards 2s;
             /* Firefox < 16 */
-            -ms-animation: fadeout linear forwards 3s;
+            -ms-animation: fadeout linear forwards 2s;
             /* Internet Explorer */
-            -o-animation: fadeout linear forwards 3s;
+            -o-animation: fadeout linear forwards 2s;
             /* Opera < 12.1 */
-            animation: fadeout linear forwards 3s;
+            animation: fadeout linear forwards 2s;
         }
 
         @-webkit-keyframes fadeout {
