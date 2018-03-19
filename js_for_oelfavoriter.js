@@ -85,7 +85,7 @@
                         }
                         userList.push(user);
                     }
-                    //                    console.log(userList);
+                    
                     getUserInfo(userList);
                 })
             }; // getUsers ends here
@@ -126,8 +126,7 @@
                         };
 
                         let profileMenu = document.getElementById('menuDiv');
-                        //                        console.log('onAuthStateChanged: user is signed in', user);
-//                        console.log("User logged in..");
+
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -167,12 +166,11 @@
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-                                    //                                    console.log("Match = " + userList[i].uId);
+                                    
                                     userExist = true;
                                     id = userList[i].dbId;
                                     break; // Isf bryt loopen
                                 } else { // Annars ingen match, och userExist är false
-                                    //                                    console.log("No Match");
                                     userExist = false;
 
                                 }
@@ -185,7 +183,6 @@
                         getProducts();
                     } else {
                         spinnerObject.spinner(spinnerObject.notFetching);
-                        console.log("No User");
                         window.location.href = "untappd.html";
                     }
                 })
@@ -400,8 +397,7 @@
 
             function matchStore(stores, storeNr) {
                 let storeProducts = [];
-                console.log(storeNr)
-                console.log(stores)
+
                 for (let i = 0; i < stores.length; i++) {
                     let store = stores[i];
                     let products = store.ArtikelNr;
@@ -417,17 +413,19 @@
             }
 
 
-            
+
 
             function compareListToStore(storeproducts, allBeers) {
                 beer = {};
                 index = elasticlunr(function () {
-                this.addField('namn');
-                this.addField('namn2');
-                this.addField('producent');
-                this.setRef('nr');
-            })
-            
+
+                    this.addField('namn');
+                    this.addField('namn2');
+                    this.addField('producent');
+                    this.setRef('nr');
+                })
+
+
                 for (let i = 0; i < storeproducts.length; i++) {
                     for (let j = 0; j < allBeers.length; j++) {
                         try {
@@ -451,10 +449,10 @@
                         }
                     }
                 }
-//                console.log(Object.keys(beer).length)
-//                for(let x in beer){
-//                    console.log(beer)
-//                }
+                //                console.log(Object.keys(beer).length)
+                //                for(let x in beer){
+                //                    console.log(beer)
+                //                }
             }
             let myStore; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
@@ -518,13 +516,13 @@
                     content.div.appendChild(content.beerName);
                     content.infoDiv.appendChild(content.style);
                     content.infoDiv.appendChild(content.brewery);
-                
+
                     content.moreInfo.appendChild(content.description);
                     content.div.appendChild(content.moreInfo);
-                    
+
                     content.div.appendChild(content.favorite);
                     content.div.appendChild(content.remove);
-                    
+
                     container.appendChild(content.div);
 
                     increment++;
@@ -535,27 +533,43 @@
                     let beerOnly = index.search(beerName + " " + brewery, {
                         fields: {
                             namn: {
-                                boost: 4,
+                                boost: 1.2,
                             },
                             namn2: {
-                                boost: 2,
+                                boost: 1.4,
                             },
                             producer: {
-                                boost: 1.5,
+                                boost: 0,
                             }
                         }
                     });
 
-                    //                    ändra score kan behövas samt tweak av paramaterar till document
-                    if (beerOnly[0].score > 7) {
-//                        console.log("this should exist in store! " + beerOnly[0].doc.namn);
-//                        console.log("the nr is: " + beerOnly[0].doc.nr);
+
+                    if (beerOnly.length == 0) {
+                        content.favorite.setAttribute("style", "background-color: red; width: 108px")
+                        content.favorite.disabled = true;
+                        content.favorite.innerText = "Not in store";
+                    } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-
-                    } else {
-//                        console.log("I doubt you will find what you are looking for " + beerOnly[0].doc.namn);
+                    } else if (beerOnly.length >= 10 && beerOnly[0].score > 6){
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
+                        content.favorite.disabled = true;
+                        content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                        content.favorite.innerText = "In store";
+                    }else if (beerOnly.length > 20 && beerOnly[0].score > 2){
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
+                        content.favorite.disabled = true;
+                        content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                        content.favorite.innerText = "In store";
+                    }else {
+                        console.log("Score: ", beerOnly);
+                        console.log("Length: " + beerOnly.length);
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
                         content.favorite.disabled = true;
                         content.favorite.innerText = "Not in store";
@@ -564,8 +578,7 @@
                 }
 
             }
-
-            ///////////////////////////////////////////////////////////////            
+     
             //Ta bort öl från databasen, arrayen och output 
             function removeBeerFromDb(remove, node) {
                 for (let i = 0; i < favoriteArray.length; i++) {
@@ -628,9 +641,9 @@
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
                         let displayStore = displayCity + ", " + displayAdress;
                         document.getElementById('store').innerText = displayStore;
+
                         document.getElementById('popUpMessage').innerText = "Choose a store.";
                         //                        matchStore(storeOnly, butikNr); 
-
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         addToFavorites();
 
