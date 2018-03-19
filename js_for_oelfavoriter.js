@@ -451,10 +451,10 @@
                         }
                     }
                 }
-                console.log(Object.keys(beer).length)
-                for(let x in beer){
-                    console.log(beer)
-                }
+//                console.log(Object.keys(beer).length)
+//                for(let x in beer){
+//                    console.log(beer)
+//                }
             }
             let myStore; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
