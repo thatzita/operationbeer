@@ -155,6 +155,7 @@
 
                  if (bool === false) {
                      console.log('onAuthStateChanged: user is signed in', user);
+
                      elements.menu.setAttribute('id', 'menuDiv')
                      elements.link.setAttribute('id', 'link');
                      elements.link.innerText = "My Favorites";
@@ -230,6 +231,7 @@
                  }; // End of checkUsers
                  checkUsers(uList);
              } else {
+
                  authSpinner.ifUser = true;
                  authSpinner.spinner(authSpinner.ifUser);
              }
@@ -407,6 +409,7 @@
                      footer.style.position = "fixed";
                  } else {
                      footer.style.position = "sticky";
+
                  }
                  if (beerArray.length >= 4)
                      showMore.style.display = "block";
@@ -454,6 +457,8 @@
 
 
      function favoriteChecked(Event) {
+         Event.target.disabled = true;
+         console.log(Event.target);
          let parent = Event.target.parentElement;
          let bid = Event.target.id;
          let body = document.getElementsByTagName("body")[0];
@@ -463,9 +468,9 @@
          textBox.setAttribute("class", "addedToFavorites");
          textBox.innerText = "Added to favorites";
 
-         checked.setAttribute("class", "fas fa-check-square fa-3x");
+         checked.setAttribute("class", "fas fa-heart fa-3x");
          checked.setAttribute("id", bid);
-         checked.setAttribute("style", "float:right; margin-bottom:10px;");
+         checked.setAttribute("style", "float:right; margin-bottom:10px; cursor:pointer");
 
          let replaced = parent.replaceChild(checked, Event.target);
          body.appendChild(textBox);
