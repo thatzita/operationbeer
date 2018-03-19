@@ -140,7 +140,7 @@
                         elements.img.addEventListener('click', profileMenuEvent);
                         elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/untappd.html");
                         elements.link.setAttribute('id', "link");
-                        elements.link.innerText = "Sök öl";
+                        elements.link.innerText = "Search beer";
 
                         elements.imgcontainer.appendChild(elements.img);
                         //elements.userDiv.appendChild(elements.logOutBtn);
