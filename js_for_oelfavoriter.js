@@ -604,7 +604,7 @@
                 document.getElementById('confirmButton').addEventListener('click', function () {
 
                     if (document.getElementById('listOfStores').value === "") {
-                        document.getElementById('popUpErrorMessage').innerText = "Du måste välja butik!";
+                        document.getElementById('popUpErrorMessage').innerText = "You must choose a store.";
                     } else {
                         container.innerHTML = "";
                         document.getElementById('popUp').style.display = "none";
