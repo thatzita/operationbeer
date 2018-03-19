@@ -26,7 +26,7 @@
             let user = {};
             let userList = [];
 
-            let beerOnly = [];
+            let beer;
             let storeOnly = [];
 
             let userLoggedIn;
@@ -41,8 +41,8 @@
             let spinnerObject = {
                 fetching: true,
                 notFetching: false,
-                loadText1: "Loading beers . . .",
-                loadText2: "Fetching stores . . .",
+                loadText1: "Loading beers",
+                loadText2: "Fetching stores",
                 spinner: function (getData, textVal) {
 
                     let body = document.getElementsByTagName("body")[0];
@@ -85,7 +85,7 @@
                         }
                         userList.push(user);
                     }
-                    //                    console.log(userList);
+                    
                     getUserInfo(userList);
                 })
             }; // getUsers ends here
@@ -126,8 +126,6 @@
                         };
 
                         let profileMenu = document.getElementById('menuDiv');
-                        //                        console.log('onAuthStateChanged: user is signed in', user);
-                        console.log("User logged in..");
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -140,7 +138,7 @@
                         elements.img.addEventListener('click', profileMenuEvent);
                         elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/untappd.html");
                         elements.link.setAttribute('id', "link");
-                        elements.link.innerText = "Sök öl";
+                        elements.link.innerText = "Search beer";
 
                         elements.imgcontainer.appendChild(elements.img);
                         //elements.userDiv.appendChild(elements.logOutBtn);
@@ -167,12 +165,11 @@
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-                                    //                                    console.log("Match = " + userList[i].uId);
+                                    
                                     userExist = true;
                                     id = userList[i].dbId;
                                     break; // Isf bryt loopen
                                 } else { // Annars ingen match, och userExist är false
-                                    //                                    console.log("No Match");
                                     userExist = false;
 
                                 }
@@ -185,7 +182,6 @@
                         getProducts();
                     } else {
                         spinnerObject.spinner(spinnerObject.notFetching);
-                        console.log("No User");
                         window.location.href = "untappd.html";
                     }
                 })
@@ -243,7 +239,7 @@
                         spinnerObject.spinner(spinnerObject.notFetching);
                         let beerDB = json;
                         result = xmlToJSON.parseString(beerDB);
-                        specificStore(result, butikNr);
+                        specificStore(result);
 
                     })
                     .catch(function (error) {
@@ -400,10 +396,10 @@
 
             function matchStore(stores, storeNr) {
                 let storeProducts = [];
+
                 for (let i = 0; i < stores.length; i++) {
                     let store = stores[i];
                     let products = store.ArtikelNr;
-
 
                     if (store._attr.ButikNr._value == storeNr) {
                         for (let z = 0; z < products.length; z++) {
@@ -415,38 +411,46 @@
                 return storeProducts;
             }
 
+
+            
+
             function compareListToStore(storeproducts, allBeers) {
-                beerOnly = [];
-                //                console.log(storeproducts);
-                //                console.log(allBeers);
+                beer = {};
+                index = elasticlunr(function () {
+                this.addField('namn');
+                this.addField('namn2');
+                this.addField('producent');
+                this.setRef('nr');
+            })
+            
                 for (let i = 0; i < storeproducts.length; i++) {
                     for (let j = 0; j < allBeers.length; j++) {
                         try {
                             if (allBeers[j].nr == storeproducts[i]._text) {
-                                beerOnly = {
+                                beer = {
                                     nr: allBeers[j].nr,
                                     namn: allBeers[j].namn,
                                     namn2: allBeers[j].namn2,
                                     producent: allBeers[j].producent,
                                 }
-
-                                index.addDoc(beerOnly);
+                                index.addDoc(beer);
 
                             }
                         } catch (error) {
-                            beerOnly = {
+                            beer = {
                                 namn: allBeers[j].namn,
                                 namn2: allBeers[j].namn2,
                                 producent: allBeers[j].producent,
                             }
-                            index.addDoc(beerOnly);
+                            index.addDoc(beer);
                         }
                     }
                 }
 
             }
-            let myStore = butikNr; //Ska vara vald butik när vi kommer till sidan
+            let myStore; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
+                myStore = butikNr;
                 storeOnly = [];
                 for (let i = 0; i < outputfromStoreFetch.ButikArtikel[0].Butik.length; i++) {
                     storeOnly.push(outputfromStoreFetch.ButikArtikel[0].Butik[i])
@@ -517,11 +521,10 @@
 
                     increment++;
 
-
                     let beerName = content.beerName.innerText;
                     let brewery = content.brewery.innerText;
 
-                    beerOnly = index.search(beerName + " " + brewery, {
+                    let beerOnly = index.search(beerName + " " + brewery, {
                         fields: {
                             namn: {
                                 boost: 4,
@@ -536,21 +539,19 @@
                     });
 
                     //                    ändra score kan behövas samt tweak av paramaterar till document
-                    if (beerOnly[0].score > 6) {
-                        console.log("this should exist in store! " + beerOnly[0].doc.namn);
-                        console.log("the nr is: " + beerOnly[0].doc.nr);
+                    if (beerOnly[0].score > 7) {
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
 
                     } else {
-                        console.log("I doubt you will find what you are looking for " + beerOnly[0].doc.namn);
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
                         content.favorite.disabled = true;
                         content.favorite.innerText = "Not in store";
                     }
 
                 }
+
             }
 
             ///////////////////////////////////////////////////////////////            
@@ -592,19 +593,21 @@
                 document.getElementById('confirmButton').addEventListener('click', function () {
 
                     if (document.getElementById('listOfStores').value === "") {
-                        document.getElementById('popUpErrorMessage').innerText = "Du måste välja butik!";
+                        document.getElementById('popUpErrorMessage').innerText = "You must choose a store.";
                     } else {
                         container.innerHTML = "";
                         document.getElementById('popUp').style.display = "none";
                         butikNr = document.getElementById('listOfStores').value;
-                        console.log("ButikNr: " + butikNr);
+
+
                         let displayCity = document.getElementById('listOfCities').value;
                         let displayAdress = document.getElementById('listOfStores')[document.getElementById('listOfStores').selectedIndex].innerText;
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
                         let displayStore = displayCity + ", " + displayAdress;
                         document.getElementById('store').innerText = displayStore;
                         document.getElementById('popUpErrorMessage').style.display = "none";
-                        //                                                matchStore(storeOnly, butikNr);
+                        //                        matchStore(storeOnly, butikNr); 
+
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         addToFavorites();
 
@@ -621,14 +624,5 @@
                     document.getElementById('menuDiv').style.display = "none";
                 }
             }
-
-            //function för att söka igenom document över all öl som finns på systemet
-            //http://elasticlunr.com/
-            var index = elasticlunr(function () {
-                this.addField('namn');
-                this.addField('namn2');
-                this.addField('producent');
-                this.setRef('nr');
-            });
 
         })

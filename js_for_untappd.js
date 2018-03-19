@@ -104,14 +104,15 @@
                  }
                  userList.push(user);
              }
-             console.log(userList);
              getUserInfo(userList);
          })
      }; // getUsers ends here
      getUsers(); // Activate function
+     let bool = false;
 
      function getUserInfo(uList) {
          firebase.auth().onAuthStateChanged(function (user) {
+
              let elements = {
                  logged: document.getElementsByClassName("logged")[0],
                  notLogged: document.getElementsByClassName("notLogged")[0],
@@ -127,10 +128,13 @@
                  //                  linkFavorites: document.createElement('a'),
                
              };
+
              if (user) {
                  // User is signed in.
                  authSpinner.ifUser = true;
                  authSpinner.spinner(authSpinner.ifUser);
+
+
 
                  var displayName = user.displayName;
                  var email = user.email;
@@ -147,46 +151,51 @@
                      id: uid
                  };
 
-                 console.log('onAuthStateChanged: user is signed in', user);
-                 console.log("User logged in..");
-                 elements.menu.setAttribute('id', 'menuDiv')
-                 elements.link.setAttribute('id', 'link');
-                 elements.link.innerText = "Favoriter";
-                 elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/oelfavoriter.html");
-                 elements.userDiv.setAttribute("class", "userDiv");
-                 elements.logOutBtn.setAttribute("id", "logOut");
-                 elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
-                 elements.logOutBtn.innerText = "Sign out";
-                 elements.name.innerText = `${displayName}`;
-                 elements.imgcontainer.setAttribute("id", "userInfo");
-                 elements.img.setAttribute("class", "userImg");
-                 elements.img.setAttribute("src", photoURL);
-                 elements.imgcontainer.appendChild(elements.img);
 
-                 elements.userDiv.appendChild(elements.imgcontainer);
 
-                 elements.userDiv.appendChild(elements.menu);
-                 elements.menu.appendChild(elements.name);
-                 elements.menu.appendChild(elements.link);
-                 elements.menu.appendChild(elements.logOutBtn);
+                 if (bool === false) {
+                     console.log('onAuthStateChanged: user is signed in', user);
+                     elements.menu.setAttribute('id', 'menuDiv')
+                     elements.link.setAttribute('id', 'link');
+                     elements.link.innerText = "My Favorites";
+                     elements.link.setAttribute('href', "./oelfavoriter.html");
+                     elements.userDiv.setAttribute("class", "userDiv");
+                     elements.logOutBtn.setAttribute("id", "logOut");
+                     elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
+                     elements.logOutBtn.innerText = "Sign out";
+                     elements.name.innerText = `${displayName}`;
+                     elements.imgcontainer.setAttribute("id", "userInfo");
+                     elements.img.setAttribute("class", "userImg");
+                     elements.img.setAttribute("src", photoURL);
+                     elements.imgcontainer.appendChild(elements.img);
 
-                 elements.header.appendChild(elements.userDiv);
-                 elements.logged.style.display = "block";
-                 elements.notLogged.style.display = "none";
+                     elements.userDiv.appendChild(elements.imgcontainer);
 
+                     elements.userDiv.appendChild(elements.menu);
+                     elements.menu.appendChild(elements.name);
+                     elements.menu.appendChild(elements.link);
+                     elements.menu.appendChild(elements.logOutBtn);
+
+                     elements.header.appendChild(elements.userDiv);
+                     elements.logged.style.display = "block";
+                     elements.notLogged.style.display = "none";
+
+                     let menuBtn = document.getElementById('userInfo');
+
+                     document.getElementById('menuDiv').style.display = 'none';
+                     menuBtn.addEventListener('click', function () {
+                         if (document.getElementById('menuDiv').style.display === "none") {
+                             document.getElementById('menuDiv').style.display = 'block';
+                         } else {
+                             document.getElementById('menuDiv').style.display = 'none';
+                         }
+                     });
+
+
+                     bool = true;
+                 }
 
                  //Menu
-                 let menuBtn = document.getElementById('userInfo');
-
-                 document.getElementById('menuDiv').style.display = 'none';
-                 menuBtn.addEventListener('click', function() {
-                    if(document.getElementById('menuDiv').style.display === "none") {
-                        document.getElementById('menuDiv').style.display = 'block';    
-                    }
-                    else {
-                        document.getElementById('menuDiv').style.display = 'none';
-                    }
-                 });
 
                  // Log-out function
                  let loggedOut = document.getElementById('logOut');
@@ -208,12 +217,10 @@
                      let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                      for (i = 0; i < userList.length; i++) { // Går igenom listan  
                          if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-                             console.log("Match = " + userList[i].uId);
                              userExist = true;
                              id = userList[i].dbId;
                              break; // Isf bryt loopen
                          } else { // Annars ingen match, och userExist är false
-                             console.log("No Match");
                              userExist = false;
                          }
                      }
@@ -223,11 +230,12 @@
                  }; // End of checkUsers
                  checkUsers(uList);
              } else {
-                 console.log("No User");
+                 authSpinner.ifUser = true;
+                 authSpinner.spinner(authSpinner.ifUser);
              }
          })
      }; // getUserInfo ends
-      
+
 
      firebase.auth().getRedirectResult().then(function (result) {
          if (result.credential) { // authSpinner gives you a Facebook Access Token. You can use it to access the Facebook API.  
@@ -254,11 +262,11 @@
      let container = document.getElementsByClassName("container")[0];
      let beerArray = [];
 
-     function printOut(array,favs) {
+     function printOut(array, favs) {
 
          container.innerHTML = "";
          let increment = 0;
-         
+
          for (let i = 0; i < array.length; i++) {
 
              let beer = array[i].beer.bid;
@@ -336,7 +344,7 @@
              increment++;
 
              content.favorite.addEventListener("click", favoriteChecked);
-             compareBeer(beer, content.moreInfo , favs);
+             compareBeer(beer, content.moreInfo, favs);
          } // loop through array ends here
      } // printout ends here
 
@@ -352,20 +360,19 @@
                  }
              }
          }
-        return favoriteIds;
+         return favoriteIds;
      }
-     
+
      // Function that compare printoutbeer with every single favorite
-     function compareBeer(beer, cardInfo , favoriteIds) {
+     function compareBeer(beer, cardInfo, favoriteIds) {
          for (let j = 0; j < favoriteIds.length; j++) {
              if (beer === favoriteIds[j]) {
-                 console.log("Match is : " + beer);
                  let heart = document.createElement("svg");
-                
+
                  heart.setAttribute("class", "fas fa-heart fa-3x");
                  heart.setAttribute("style", "float : right; margin-bottom:10px;")
                  let aFavorite = cardInfo.replaceChild(heart, cardInfo.lastChild);
-                 
+
                  break;
              }
          }
@@ -377,25 +384,13 @@
              searchBeerInput.value = "";
          }
      })
-  
-
-
-     searchBeerInput.addEventListener("keydown", function (e) {
-         if (e.keyCode == 13) {
-             searchBeerBtn.click();
-             searchBeerInput.value = "";
-         }
-     })
-
-
 
      searchBeerBtn.addEventListener("click", function () {
-
          offset = 0;
          beerArray = [];
          value = searchBeerInput.value;
          showMore.style.display = "none";
-         beersToBring.innerText = `Beer to bring is ${value}`
+         beersToBring.innerText = `Results for "${value}"`
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -412,7 +407,6 @@
                      footer.style.position = "fixed";
                  } else {
                      footer.style.position = "sticky";
-                     console.log(beerArray)
                  }
                  if (beerArray.length >= 4)
                      showMore.style.display = "block";
@@ -428,12 +422,10 @@
 
      showMore.addEventListener("click", function (e) {
 
-         console.log("clicked showMore");
-         console.log(e.target.id);
+
 
          offset = offset + 5;
-         console.log(counter);
-         console.log(offset)
+
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -444,10 +436,11 @@
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
 
-                 printOut(beerArray,checkUserAndFavs(userList));
+                 printOut(beerArray, checkUserAndFavs(userList));
 
 
-                 console.log(beerArray)
+
+
                  if (beerArray.length >= 4)
                      showMore.style.display = "block";
                  else
@@ -468,7 +461,7 @@
          let textBox = document.createElement("div");
 
          textBox.setAttribute("class", "addedToFavorites");
-         textBox.innerText = "Added among your favorites";
+         textBox.innerText = "Added to favorites";
 
          checked.setAttribute("class", "fas fa-check-square fa-3x");
          checked.setAttribute("id", bid);
@@ -476,17 +469,16 @@
 
          let replaced = parent.replaceChild(checked, Event.target);
          body.appendChild(textBox);
-         setTimeout(function(){
+         setTimeout(function () {
              textBox.className = "textboxHided";
-             setTimeout(function(){
+             setTimeout(function () {
                  body.removeChild(textBox);
-             },8000)
-         },6000)
+             }, 8000)
+         }, 6000)
      }
 
 
-         let replaced = parent.replaceChild(checked, Event.target);
-     }
+
 
 
      container.addEventListener("click", function (e) {
@@ -503,8 +495,6 @@
                  beerObj.img = beerArray[i].beer.beer_label;
                  beerObj.bid = beerArray[i].beer.bid;
                  db.ref(`users/${id}/favorites/`).push(beerObj);
-                 console.log(id);
-                 console.log("ok")
                  disableBtn.disabled = true;
 
 
