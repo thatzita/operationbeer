@@ -464,8 +464,8 @@
 
      function favoriteChecked(Event) {
          Event.target.disabled = true;
-         console.log(Event.target);
          let parent = Event.target.parentElement;
+         console.log(parent);
          let bid = Event.target.id;
          let body = document.getElementsByTagName("body")[0];
          let checked = document.createElement("svg");
@@ -479,13 +479,13 @@
          checked.setAttribute("style", "float:right; margin-bottom:10px; cursor:pointer");
 
          let replaced = parent.replaceChild(checked, Event.target);
-         body.appendChild(textBox);
+         parent.appendChild(textBox);
          setTimeout(function () {
              textBox.className = "textboxHided";
              setTimeout(function () {
-                 body.removeChild(textBox);
-             }, 8000)
-         }, 6000)
+                 parent.removeChild(textBox);
+             }, 2200)
+         }, 3500)
      }
 
 
