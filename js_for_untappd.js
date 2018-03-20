@@ -123,10 +123,10 @@
                  menu: document.createElement('div'),
                  link: document.createElement('a'),
                  img: document.createElement("img"),
-                 name: document.createElement("span"),
+                 name: document.createElement("div"),
 
                  //                  linkFavorites: document.createElement('a'),
-               
+
              };
 
              if (user) {
@@ -159,7 +159,7 @@
                      elements.menu.setAttribute('id', 'menuDiv')
                      elements.link.setAttribute('id', 'link');
                      elements.link.innerText = "My Favorites";
-                     elements.link.setAttribute('href', "./oelfavoriter.html");
+                     elements.link.setAttribute('href', "./beerfavorites.html");
                      elements.userDiv.setAttribute("class", "userDiv");
                      elements.logOutBtn.setAttribute("id", "logOut");
                      elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -379,9 +379,9 @@
              }
          }
      }
-  
-       searchBeerInput.addEventListener("keydown", function(e){
-         if(e.keyCode == 13){
+
+     searchBeerInput.addEventListener("keydown", function (e) {
+         if (e.keyCode == 13) {
              searchBeerBtn.click();
              searchBeerInput.value = "";
          }
