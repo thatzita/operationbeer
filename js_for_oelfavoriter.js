@@ -17,7 +17,6 @@
             let beerFavorites = {};
             let store = [];
 
-            let yourBeer = [];
             let favoriteArray = [];
             let resultProducts;
             let beerToFind;
@@ -29,13 +28,13 @@
             let beer;
             let storeOnly = [];
 
-            let userLoggedIn;
             let id = "";
 
             let city = "";
             let butik = "";
             let butikNr = undefined;
             initPopUp();
+
 
 
             let spinnerObject = {
@@ -108,7 +107,6 @@
 
                     if (user) {
                         // User is signed in.
-
 
                         var displayName = user.displayName;
                         var email = user.email;
@@ -189,7 +187,9 @@
             }; // getUserInfo ends
 
             function addToFavorites() {
+                favoriteArray = [];
                 db.ref(`users/${id}/favorites/`).on("child_added", function (snapshot) {
+
                     let database = snapshot.val();
                     //Lägger till ett objekt för varje ny child_added
                     beerFavorites = {
@@ -199,11 +199,14 @@
                         brewery: database.brewery,
                         img: database.img,
                         id: snapshot.key,
+                        bid: database.bid
                     }
                     favoriteArray.push(beerFavorites);
                     //Skickas till funktionen output för att visas på sidan
                     output(beerFavorites);
+                    console.log(favoriteArray.length);
                 })
+
             }
 
             //Hämtar hem alla produkter som finns på systembolaget
@@ -474,7 +477,6 @@
 
             //Skriver ut lista på sidan över favoriter
             function output(favoriteArray) {
-
                 let content = {
                     div: document.createElement("div"),
                     img: document.createElement("img"),
@@ -489,7 +491,6 @@
                 }
 
                 if (favoriteArray.length !== 0) {
-                    yourBeer = [];
                     content.div.setAttribute("class", "card-body beer");
                     content.img.setAttribute("src", favoriteArray.img);
                     content.img.setAttribute("height", "140px");
@@ -581,31 +582,39 @@
 
             //Ta bort öl från databasen, arrayen och output 
             function removeBeerFromDb(remove, node) {
+                node = node.target.parentElement;
                 for (let i = 0; i < favoriteArray.length; i++) {
-                    if (remove === favoriteArray[i].id) {
+                    if (remove == favoriteArray[i].id) {
                         favoriteArray.splice(i, 1);
                         node.remove();
                     }
                 }
                 db.ref(`users/${id}/favorites/` + remove).remove();
-
+//                output(favoriteArray);
+                console.log(favoriteArray.length)
             }
 
-            db.ref(`users/${id}/favorites/`).on("child_removed", function (snapshot) {
+            
+            
+            db.ref(`users/${id}/favorites/`).on("child_removed", function (snapshotToRemove) {
                 // Inträffar när ett objekt tas bort.
-                let data = snapshot.val(); // det borttagna objektet
-                let key = snapshot.key;
+                let dataToBeRemoved = snapshotToRemove.val(); // det borttagna objektet
+                let key = snapshotToRemove.key;
+                console.log(dataToBeRemoved)
+                console.log(dataToBeRemoved.key)
             })
+
+
+
 
 
             container.addEventListener("click", function (e) {
                 let parentNodeForBeer = e.target.parentNode.lastChild.id;
 
                 let removeId = e.target.id;
-
+                
                 if (removeId === parentNodeForBeer && removeId !== "" && removeId !== undefined) {
-                    let removeParent = e.target.parentNode;
-                    removeBeerFromDb(removeId, removeParent)
+                    removeBeerFromDb(removeId, e)
                 }
             });
 
@@ -660,5 +669,13 @@
                     document.getElementById('menuDiv').style.display = "none";
                 }
             }
+
+
+
+
+
+
+
+
 
         })
