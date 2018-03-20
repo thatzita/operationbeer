@@ -501,7 +501,7 @@
                     content.infoDiv.setAttribute('class', 'infoDiv')
 
 
-                    content.remove.setAttribute("class", "btn btn-outline-danger favBtns removeBtn");
+                    content.remove.setAttribute("class", "btn btn-outline-light favBtns removeBtn");
                     content.remove.setAttribute("id", favoriteArray.id);
                     content.remove.innerText = "Remove beer";
 
@@ -552,23 +552,22 @@
                     } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
                         console.log("Score: ", beerOnly);
                         console.log("Length: " + beerOnly.length);
-
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-                    } else if (beerOnly.length >= 10 && beerOnly[0].score > 6){
+                    } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
                         console.log("Score: ", beerOnly);
                         console.log("Length: " + beerOnly.length);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-                    }else if (beerOnly.length > 20 && beerOnly[0].score > 2){
+                    } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
                         console.log("Score: ", beerOnly);
                         console.log("Length: " + beerOnly.length);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-                    }else {
+                    } else {
                         console.log("Score: ", beerOnly);
                         console.log("Length: " + beerOnly.length);
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
@@ -616,12 +615,12 @@
                 document.getElementById('listOfCities').style.display = "none";
                 document.getElementById('listOfStores').style.display = "none";
 
-                document.getElementById('listOfCounties').addEventListener('click', function() {
-                    if(document.getElementById('listOfCounties').value !== "Choose county") {
+                document.getElementById('listOfCounties').addEventListener('click', function () {
+                    if (document.getElementById('listOfCounties').value !== "Choose county") {
                         document.getElementById('popUpMessage').innerText = "Choose a store.";
                         document.getElementById('listOfCities').style.display = "block";
                         document.getElementById('listOfStores').style.display = "block";
-                    }  
+                    }
                 })
 
                 document.getElementById('popUpButton').addEventListener('click', function () {
