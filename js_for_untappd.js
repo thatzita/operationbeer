@@ -181,7 +181,7 @@
                      elements.logged.style.display = "block";
                      elements.notLogged.style.display = "none";
 
-                     let menuBtn = document.getElementById('userInfo');
+                     let menuBtn = document.getElementsByClassName('userInfo')[0];
 
                      document.getElementById('menuDiv').style.display = 'none';
                      menuBtn.addEventListener('click', function () {
