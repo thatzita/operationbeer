@@ -1,4 +1,3 @@
-
 /*Bootstrap CSS*/
 
 .card {
@@ -557,11 +556,7 @@ p {
     margin-left: 0;
 }
 
-.btn {
-    color: #212529;
-    background-color: #ffc107;
-    border-color: #ffc107;
-}
+
 
 .arrowDown,
 .arrowUp {
@@ -605,6 +600,7 @@ h2 {
 .favBtns {
     margin-bottom: 20px;
     margin-right: 20px;
+    float:right;
 }
 
 .removeBtn {
@@ -804,7 +800,6 @@ s @keyframes blink-caret {
     }
 }
 
-
 .sk-folding-cube {
     margin: auto;
     width: 100px;
@@ -984,9 +979,17 @@ s @keyframes blink-caret {
     bottom: 10px;
     font-size: 1em;
     border-radius: 5px;
-    background-color: rgba(91, 35, 25, 1);
-    color: white;
     border: solid white 2px;
+    color: #ffc107;
+    background-color: transparent;
+    background-image: none;
+    border-color: #ffc107;
+}
+
+#confirmButton:hover {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
 }
 
 #listOfCitiesContent {
@@ -1024,10 +1027,18 @@ s @keyframes blink-caret {
     position: absolute;
     right: 15px;
     height: 100%;
-    background-color: rgba(91, 35, 25, 1);
-    color: white;
     border-radius: 5px;
     border: solid white 2px;
+    color: #ffc107;
+    background-color: transparent;
+    background-image: none;
+    border-color: #ffc107;
+}
+
+#popUpButton:hover {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
 }
 
 #listOfCounties,
@@ -1141,11 +1152,6 @@ footer {
         margin-top: 10px;
         margin-left: 0;
     }
-    .btn {
-        color: #212529;
-        background-color: #ffc107;
-        border-color: #ffc107;
-    }
     .arrowDown,
     .arrowUp {
         margin-right: 10px;
@@ -1184,6 +1190,9 @@ footer {
         top: 30%;
         bottom: 30%;
     }
+    #currentStore {
+        font-size: .9em;
+    }
 
     #popUpMessage {
         font-size: .6em;
@@ -1198,6 +1207,7 @@ footer {
         background-color: #544436;
     }
 }
+
 
 @media (max-width: 690px) {
     .infoDiv {
@@ -1230,7 +1240,6 @@ footer {
     }
     .card-body {
         padding: 0;
-        margin-left: 5%;
     }
     .header,
     .navbar-brand {
@@ -1250,10 +1259,8 @@ footer {
         line-height: 1.5;
         border-radius: 0.25rem;
     }
-
     body {
         background-color: #544436;
-
     }
 }
 
