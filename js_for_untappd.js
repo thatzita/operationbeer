@@ -123,10 +123,10 @@
                  menu: document.createElement('div'),
                  link: document.createElement('a'),
                  img: document.createElement("img"),
-                 name: document.createElement("span"),
+                 name: document.createElement("div"),
 
                  //                  linkFavorites: document.createElement('a'),
-               
+
              };
 
              if (user) {
@@ -159,13 +159,13 @@
                      elements.menu.setAttribute('id', 'menuDiv')
                      elements.link.setAttribute('id', 'link');
                      elements.link.innerText = "My Favorites";
-                     elements.link.setAttribute('href', "./oelfavoriter.html");
+                     elements.link.setAttribute('href', "./beerfavorites.html");
                      elements.userDiv.setAttribute("class", "userDiv");
                      elements.logOutBtn.setAttribute("id", "logOut");
                      elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
                      elements.logOutBtn.innerText = "Sign out";
                      elements.name.innerText = `${displayName}`;
-                     elements.imgcontainer.setAttribute("id", "userInfo");
+                     elements.imgcontainer.setAttribute("class", "userInfo");
                      elements.img.setAttribute("class", "userImg");
                      elements.img.setAttribute("src", photoURL);
                      elements.imgcontainer.appendChild(elements.img);
@@ -181,7 +181,7 @@
                      elements.logged.style.display = "block";
                      elements.notLogged.style.display = "none";
 
-                     let menuBtn = document.getElementById('userInfo');
+                     let menuBtn = document.getElementsByClassName('userInfo')[0];
 
                      document.getElementById('menuDiv').style.display = 'none';
                      menuBtn.addEventListener('click', function () {
@@ -379,9 +379,9 @@
              }
          }
      }
-  
-       searchBeerInput.addEventListener("keydown", function(e){
-         if(e.keyCode == 13){
+
+     searchBeerInput.addEventListener("keydown", function (e) {
+         if (e.keyCode == 13) {
              searchBeerBtn.click();
              searchBeerInput.value = "";
          }
@@ -458,8 +458,8 @@
 
      function favoriteChecked(Event) {
          Event.target.disabled = true;
-         console.log(Event.target);
          let parent = Event.target.parentElement;
+         console.log(parent);
          let bid = Event.target.id;
          let body = document.getElementsByTagName("body")[0];
          let checked = document.createElement("svg");
@@ -473,13 +473,13 @@
          checked.setAttribute("style", "float:right; margin-bottom:10px; cursor:pointer");
 
          let replaced = parent.replaceChild(checked, Event.target);
-         body.appendChild(textBox);
+         parent.appendChild(textBox);
          setTimeout(function () {
              textBox.className = "textboxHided";
              setTimeout(function () {
-                 body.removeChild(textBox);
-             }, 8000)
-         }, 6000)
+                 parent.removeChild(textBox);
+             }, 2200)
+         }, 3500)
      }
 
 
