@@ -1,3 +1,4 @@
+
 /*Bootstrap CSS*/
 
 .card {
@@ -251,57 +252,58 @@ a:active {
 }
 
 .addedToFavorites {
-    position: relative;
-    z-index: 2;
-    background-color: white;
-    text-align: center;
-    padding-top: 20px;
-    color: rgba(0, 0, 0, 0.9);
-    bottom: 0;
-    left: 0;
-    margin-bottom: -20px;
-    width: 250px;
-    height: 50px;
-    font-size: 1.3rem;
-    font-family: 'Muli', sans-serif;
-    border-radius: 8px;
-    -webkit-animation: fadein 2s;
-    /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadein 2s;
-    /* Firefox < 16 */
-    -ms-animation: fadein 2s;
-    /* Internet Explorer */
-    -o-animation: fadein 2s;
-    /* Opera < 12.1 */
-    animation: fadein 2s;
-}
-
+            position:relative;
+            z-index: 2;
+            background-color: white;
+            text-align: center;
+            padding-top: 17px;
+            color: rgba(0, 0, 0, 0.9);
+            bottom: 0;
+            left: 0;
+            margin-bottom:-20px;
+            width: 200px;
+            height: 40px;
+            font-size: 1.09rem;
+            font-weight: 600;
+            font-family: 'Muli', sans-serif;
+            border-radius: 8px;
+            -webkit-animation: fadein 1.7s;
+            /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadein 1.7s;
+            /* Firefox < 16 */
+            -ms-animation: fadein 1.7s;
+            /* Internet Explorer */
+            -o-animation: fadein 1.7s;
+            /* Opera < 12.1 */
+            animation: fadein 1.7s;
+        }
 .textboxHided {
-    position: relative;
-    z-index: 2;
-    background-color: white;
-    text-align: center;
-    padding-top: 20px;
-    color: rgba(0, 0, 0, 0.9);
-    bottom: 0;
-    left: 0;
-    margin-bottom: -20px;
-    width: 250px;
-    height: 50px;
-    font-size: 1.3rem;
-    opacity: 1;
-    font-family: 'Muli', sans-serif;
-    border-radius: 8px;
-    -webkit-animation: fadeout linear forwards 2s;
-    /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadeout linear forwards 2s;
-    /* Firefox < 16 */
-    -ms-animation: fadeout linear forwards 2s;
-    /* Internet Explorer */
-    -o-animation: fadeout linear forwards 2s;
-    /* Opera < 12.1 */
-    animation: fadeout linear forwards 2s;
-}
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            text-align: center;
+            padding-top: 17px;
+            color: rgba(0, 0, 0, 0.9);
+            bottom: 0;
+            left: 0;
+            margin-bottom: -20px;
+            width: 200px;
+            height: 40px;
+            font-weight: 600;
+            font-size: 1.09rem;
+            opacity: 1;
+            font-family: 'Muli', sans-serif;
+            border-radius: 8px;
+            -webkit-animation: fadeout linear forwards 1s;
+            /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadeout linear forwards 1s;
+            /* Firefox < 16 */
+            -ms-animation: fadeout linear forwards 1s;
+            /* Internet Explorer */
+            -o-animation: fadeout linear forwards 1s;
+            /* Opera < 12.1 */
+            animation: fadeout linear forwards 1s;
+        }
 
 @-webkit-keyframes fadeout {
     0% {
@@ -1110,105 +1112,6 @@ footer {
     right: 25%;
 }
 
-@media (max-width: 700px) {
-    .searchField {
-        width: 100vw;
-        height: 50px;
-        border-radius: 0px 0px 0px 0px;
-        padding: 0;
-    }
-    #searchBeerInput {
-        height: 38px;
-        border: 1px solid transparent;
-        padding: 0.375rem 0.75rem;
-        line-height: 1.5;
-        border-radius: 0.25rem;
-    }
-
-    .container {
-        padding: 0;
-        margin: 0;
-    }
-    
-    .beer {
-        padding: 0;
-        width: 100%;
-    }
-    .card-body {
-        padding: 0;
-    }
-
-    .header {
-        font-size: 12pt;
-    }
-    .navbar-brand {
-        font-size: 12pt;
-    }
-    .logotype {
-        height: 30px;
-        width: 30px;
-        margin-top: 10px;
-        margin-left: 0;
-    }
-    .arrowDown,
-    .arrowUp {
-        margin-right: 10px;
-    }
-    h2 {
-        margin-left: 20px;
-        font-size: 18pt;
-    }
-    .details .favoriteBtn {
-        margin-bottom: 10px;
-        margin-right: 10px;
-        color: #212529;
-        background-color: #f8f9fa;
-        border-color: #f8f9fa;
-    }
-    #showMoreBackground {
-        padding: 0;
-        background: rgba(1, 1, 1, 0.2);
-        width: 40%;
-        margin: auto;
-        border-radius: 10px;
-    }
-    #showMore {
-        margin-left: auto;
-        margin-right: auto;
-        bottom: 0;
-        position: sticky;
-        color: #212529;
-        background-color: #ffc107;
-        border-color: #ffc107; 
-    }
-    #popUp {
-        position: fixed;
-        width: 80%;
-        height: 40%;
-        left: 10%;
-        right: 10%;
-        top: 30%;
-        bottom: 30%;
-    }
-    #currentStore {
-        font-size: .9em;
-    }
-
-    #popUpMessage {
-        font-size: .6em;
-    }
-    #confirmButton {
-        font-size: .8em;
-    }
-    #popUp select {
-        margin-top: 15px;
-    }
-    body {
-        background-color: #544436;
-    }
-}
-
-
 @media (max-width: 690px) {
     .infoDiv {
         width: 100%;
@@ -1246,7 +1149,14 @@ footer {
         font-size: 12pt;
     }
     body {
+        background-image: none;
         background-color: #544436;
+    }
+    
+    #popUp {
+        width: 90%;
+        left: 0;
+        right: 0;
     }
 }
 
@@ -1262,6 +1172,9 @@ footer {
     body {
         background-color: #544436;
     }
+    #currentStore {
+        font-size: 0.8em;
+    }
 }
 
 @media (max-width: 360px) {
@@ -1271,5 +1184,21 @@ footer {
     }
     body {
         background-color: #544436;
+    }
+    #currentStore {
+        text-align: left;
+        margin-left: 20px;
+    }
+    #popUpDiv {
+        width: 250px;
+        height: 35px;
+    }
+    #confirmButton {
+        width: 200px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        margin-bottom: 10px;
+        position: static;
     }
 }

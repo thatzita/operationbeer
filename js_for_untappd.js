@@ -313,7 +313,7 @@
              content.img.setAttribute("height", "140px");
 
              content.favorite.setAttribute("class", "btn btn-outline-light favoriteBtn");
-             content.favorite.setAttribute("id", array[i].beer.bid);
+             content.div.setAttribute("id", array[i].beer.bid);
 
              content.favorite.innerText = "Favorite";
              content.beerNameShow.innerText = array[i].beer.beer_name;
@@ -346,6 +346,7 @@
              increment++;
 
              content.favorite.addEventListener("click", favoriteChecked);
+             content.div.addEventListener("click", cardListener);
              compareBeer(beer, content.moreInfo, favs);
          } // loop through array ends here
      } // printout ends here
@@ -372,13 +373,13 @@
                  let heart = document.createElement("svg");
 
                  heart.setAttribute("class", "fas fa-heart fa-3x");
-                 heart.setAttribute("style", "float : right; margin-bottom:10px;")
+                 heart.setAttribute("style", "float : right; margin-bottom:10px; cursor:pointer;")
                  let aFavorite = cardInfo.replaceChild(heart, cardInfo.lastChild);
-
                  break;
              }
          }
      }
+
 
      searchBeerInput.addEventListener("keydown", function (e) {
          if (e.keyCode == 13) {
@@ -456,43 +457,14 @@
      })
 
 
-     function favoriteChecked(Event) {
-         Event.target.disabled = true;
-         let parent = Event.target.parentElement;
-         console.log(parent);
-         let bid = Event.target.id;
-         let body = document.getElementsByTagName("body")[0];
-         let checked = document.createElement("svg");
-         let textBox = document.createElement("div");
-
-         textBox.setAttribute("class", "addedToFavorites");
-         textBox.innerText = "Added to favorites";
-
-         checked.setAttribute("class", "fas fa-heart fa-3x");
-         checked.setAttribute("id", bid);
-         checked.setAttribute("style", "float:right; margin-bottom:10px; cursor:pointer");
-
-         let replaced = parent.replaceChild(checked, Event.target);
-         parent.appendChild(textBox);
-         setTimeout(function () {
-             textBox.className = "textboxHided";
-             setTimeout(function () {
-                 parent.removeChild(textBox);
-             }, 2200)
-         }, 3500)
-     }
-
-
-
-
-
-     container.addEventListener("click", function (e) {
-         let toNumber = parseInt(e.target.id);
-         let disableBtn = e.target;
-
+     function favoriteChecked(e) {
+         e.target.disabled = true;
+         let blockExists = true;
          let beerObj = {}
+         let containerId = e.target.parentElement.parentElement.id;
+
          for (let i = 0; i < beerArray.length; i++) {
-             if (toNumber == beerArray[i].beer.bid) {
+             if (containerId == beerArray[i].beer.bid) {
                  beerObj.name = beerArray[i].beer.beer_name;
                  beerObj.style = beerArray[i].beer.beer_style;
                  beerObj.description = beerArray[i].beer.beer_description;
@@ -500,10 +472,70 @@
                  beerObj.img = beerArray[i].beer.beer_label;
                  beerObj.bid = beerArray[i].beer.bid;
                  db.ref(`users/${id}/favorites/`).push(beerObj);
-                 disableBtn.disabled = true;
-
-
              }
          }
-     })
+
+         let parent = e.target.parentElement;
+         let checked = document.createElement("svg");
+
+         for (let i = 0; i < parent.children.length; i++) {
+             if (parent.children[i].className === "addedToFavorites" || parent.children[i].className === "textboxHided") {
+                 blockExists = false;
+             }
+         }
+
+         checked.setAttribute("class", "fas fa-heart fa-3x");
+         checked.setAttribute("style", "float:right; cursor:pointer");
+         let replaced = parent.replaceChild(checked, e.target);
+
+         if (blockExists) {
+             let textBox = document.createElement("div");
+             textBox.setAttribute("class", "addedToFavorites");
+             textBox.innerText = "Added to favorites";
+             parent.appendChild(textBox);
+             setTimeout(function () {
+                 textBox.className = "textboxHided";
+                 setTimeout(function () {
+                     parent.removeChild(textBox);
+                 }, 900)
+             }, 2000)
+         }
+     }
+
+     function cardListener(e) {
+         console.log(e.target);
+         if (e.target.hasAttribute("fill")) {
+             let passId = e.target.parentElement.parentElement.parentElement.id;
+             regretFavorite(e, userList, passId);
+         }
+     }
+
+     function regretFavorite(e, uList, targetId) {
+
+         let loggedUser = firebase.auth().currentUser;
+         let userId = "";
+         for (let i = 0; i < uList.length; i++) {
+             if (uList[i].uId === loggedUser.uid) {
+                 userId = uList[i].dbId;
+                 for (let fav in uList[i].favorites) {
+                     let beerKey = fav;
+
+                     if (uList[i].favorites[fav].bid == targetId) {
+                         db.ref(`users/${userId}/favorites/${beerKey}`).remove();
+                         break;
+                     }
+                 }
+             }
+         }
+
+
+         let noFavorite = document.createElement("button");
+         noFavorite.setAttribute("class", "btn btn-outline-light");
+         noFavorite.addEventListener("click", favoriteChecked);
+         noFavorite.innerText = "Favorite";
+         let alreadyFavorite = e.target.parentElement;
+         console.log(alreadyFavorite);
+         alreadyFavorite.parentElement.replaceChild(noFavorite, alreadyFavorite);
+     }
+
  })
