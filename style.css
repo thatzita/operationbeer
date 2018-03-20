@@ -1,3 +1,4 @@
+
 /*Bootstrap CSS*/
 
 .card {
@@ -803,6 +804,7 @@ s @keyframes blink-caret {
     }
 }
 
+
 .sk-folding-cube {
     margin: auto;
     width: 100px;
@@ -1182,9 +1184,6 @@ footer {
         top: 30%;
         bottom: 30%;
     }
-    #currentStore {
-        font-size: .9em;
-    }
 
     #popUpMessage {
         font-size: .6em;
@@ -1199,7 +1198,6 @@ footer {
         background-color: #544436;
     }
 }
-
 
 @media (max-width: 690px) {
     .infoDiv {
@@ -1243,7 +1241,6 @@ footer {
     }
 }
 
-
 @media (max-width: 490px) {
     #searchBeerInput {
         height: 38px;
@@ -1253,12 +1250,12 @@ footer {
         line-height: 1.5;
         border-radius: 0.25rem;
     }
+
     body {
         background-color: #544436;
+
     }
 }
-
-
 
 @media (max-width: 360px) {
     #searchBeerBtn {
