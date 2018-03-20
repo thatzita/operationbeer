@@ -576,14 +576,10 @@ h2 {
 .details .favoriteBtn {
     margin-bottom: 10px;
     margin-right: 10px;
-    color: #212529;
-    background-color: #f8f9fa;
-    border-color: #f8f9fa;
 }
 
 #showMoreBackground {
     padding: 0;
-    background: rgba(1, 1, 1, 0.2);
     width: 40%;
     margin: auto;
     border-radius: 10px;
@@ -594,7 +590,6 @@ h2 {
     margin-right: auto;
     bottom: 0;
     position: sticky;
-    background-color: #ffc107;
 }
 
 .favBtns {
@@ -1073,6 +1068,7 @@ s @keyframes blink-caret {
 
 footer {
     width: 100%;
+    margin-top: 20px;
     z-index: 1;
     background: rgba(91, 35, 25, 0.8);
     height: 40px;
@@ -1179,7 +1175,9 @@ footer {
         margin-right: auto;
         bottom: 0;
         position: sticky;
+        color: #212529;
         background-color: #ffc107;
+        border-color: #ffc107; 
     }
     #popUp {
         position: fixed;
