@@ -1,3 +1,4 @@
-https://thatzita.github.io/operationbeer/untappd.html
+https://thatzita.github.io/operationbeer/bmbb.html
 
-https://thatzita.github.io/operationbeer/oelfavoriter.html
+
+https://thatzita.github.io/operationbeer/beerfavorites.html

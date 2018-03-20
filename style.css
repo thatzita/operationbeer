@@ -256,17 +256,20 @@ a:active {
             z-index: 2;
             background-color: white;
             text-align: center;
-            padding-top: 17px;
+            padding-top: 10px;
             color: rgba(0, 0, 0, 0.9);
             bottom: 0;
             left: 0;
             margin-bottom:-20px;
-            width: 200px;
-            height: 40px;
-            font-size: 1.09rem;
+            line-height: 1.5;
+            display: inline-block;
+            width: 140px;
+            height: 33px;
+            vertical-align: middle;
+            font-size: 1rem;
             font-weight: 600;
             font-family: 'Muli', sans-serif;
-            border-radius: 8px;
+            border-radius: 0.25rem;
             -webkit-animation: fadein 1.7s;
             /* Safari, Chrome and Opera > 12.1 */
             -moz-animation: fadein 1.7s;
@@ -277,23 +280,27 @@ a:active {
             /* Opera < 12.1 */
             animation: fadein 1.7s;
         }
-.textboxHided {
+
+  .textboxHided {
             position: relative;
             z-index: 2;
             background-color: white;
             text-align: center;
-            padding-top: 17px;
+            padding-top: 10px;
             color: rgba(0, 0, 0, 0.9);
             bottom: 0;
             left: 0;
             margin-bottom: -20px;
-            width: 200px;
-            height: 40px;
+            line-height: 1.5;
+            display: inline-block;
+            width: 140px;
+            height: 33px;
+             vertical-align: middle;
             font-weight: 600;
-            font-size: 1.09rem;
+            font-size: 1rem;
             opacity: 1;
             font-family: 'Muli', sans-serif;
-            border-radius: 8px;
+            border-radius:0.25rem;
             -webkit-animation: fadeout linear forwards 1s;
             /* Safari, Chrome and Opera > 12.1 */
             -moz-animation: fadeout linear forwards 1s;
