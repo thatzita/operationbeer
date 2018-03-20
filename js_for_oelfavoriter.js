@@ -85,7 +85,7 @@
                         }
                         userList.push(user);
                     }
-                    
+
                     getUserInfo(userList);
                 })
             }; // getUsers ends here
@@ -137,7 +137,7 @@
                         elements.img.setAttribute("class", "userImg");
                         elements.img.setAttribute("src", photoURL);
                         elements.img.addEventListener('click', profileMenuEvent);
-                        elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/untappd.html");
+                        elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/bmbb.html");
                         elements.link.setAttribute('id', "link");
                         elements.link.innerText = "Search beer";
 
@@ -166,7 +166,7 @@
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-                                    
+
                                     userExist = true;
                                     id = userList[i].dbId;
                                     break; // Isf bryt loopen
@@ -183,7 +183,7 @@
                         getProducts();
                     } else {
                         spinnerObject.spinner(spinnerObject.notFetching);
-                        window.location.href = "untappd.html";
+                        window.location.href = "bmbb.html";
                     }
                 })
             }; // getUserInfo ends
@@ -493,7 +493,7 @@
                     content.div.setAttribute("class", "card-body beer");
                     content.img.setAttribute("src", favoriteArray.img);
                     content.img.setAttribute("height", "140px");
-                    content.favorite.setAttribute("class", "btn btn-outline-light favBtns");
+                    content.favorite.setAttribute("class", "btn btn-outline-light favBtns storeBtn");
                     content.favorite.setAttribute("id", "favorite" + increment);
 
                     content.favorite.innerText = "Does it exist?";
@@ -501,7 +501,7 @@
                     content.infoDiv.setAttribute('class', 'infoDiv')
 
 
-                    content.remove.setAttribute("class", "btn btn-outline-danger favBtns removeBtn");
+                    content.remove.setAttribute("class", "btn btn-outline-light favBtns removeBtn");
                     content.remove.setAttribute("id", favoriteArray.id);
                     content.remove.innerText = "Remove beer";
 
@@ -555,19 +555,19 @@
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-                    } else if (beerOnly.length >= 10 && beerOnly[0].score > 6){
+                    } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
                         console.log("Score: ", beerOnly);
                         console.log("Length: " + beerOnly.length);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-                    }else if (beerOnly.length > 20 && beerOnly[0].score > 2){
+                    } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
                         console.log("Score: ", beerOnly);
                         console.log("Length: " + beerOnly.length);
                         content.favorite.disabled = true;
                         content.favorite.setAttribute("style", "background-color: green; width: 108px");
                         content.favorite.innerText = "In store";
-                    }else {
+                    } else {
                         console.log("Score: ", beerOnly);
                         console.log("Length: " + beerOnly.length);
                         content.favorite.setAttribute("style", "background-color: red; width: 108px")
@@ -578,7 +578,7 @@
                 }
 
             }
-     
+
             //Ta bort öl från databasen, arrayen och output 
             function removeBeerFromDb(remove, node) {
                 for (let i = 0; i < favoriteArray.length; i++) {
@@ -615,12 +615,12 @@
                 document.getElementById('listOfCities').style.display = "none";
                 document.getElementById('listOfStores').style.display = "none";
 
-                document.getElementById('listOfCounties').addEventListener('click', function() {
-                    if(document.getElementById('listOfCounties').value !== "Choose county") {
+                document.getElementById('listOfCounties').addEventListener('click', function () {
+                    if (document.getElementById('listOfCounties').value !== "Choose county") {
                         document.getElementById('popUpMessage').innerText = "Choose a store.";
                         document.getElementById('listOfCities').style.display = "block";
                         document.getElementById('listOfStores').style.display = "block";
-                    }  
+                    }
                 })
 
                 document.getElementById('popUpButton').addEventListener('click', function () {
