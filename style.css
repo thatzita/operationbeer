@@ -71,7 +71,7 @@
 
 .btn.disabled,
 .btn:disabled {
-    opacity: 0.65;
+    opacity: 1;
 }
 
 .btn:not(:disabled):not(.disabled) {
@@ -556,8 +556,6 @@ p {
     margin-left: 0;
 }
 
-
-
 .arrowDown,
 .arrowUp {
     margin-right: 10px;
@@ -602,9 +600,13 @@ h2 {
     margin: 0;
 }
 
+.storeBtn {
+    border-color: transparent;
 }
 
-
+.storeBtn:hover {
+    border-color: transparent;
+}
 
 /* Authenticate classes and ids */
 
