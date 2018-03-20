@@ -1,3 +1,4 @@
+
 /*Bootstrap CSS*/
 
 .card {
@@ -251,57 +252,58 @@ a:active {
 }
 
 .addedToFavorites {
-    position: relative;
-    z-index: 2;
-    background-color: white;
-    text-align: center;
-    padding-top: 20px;
-    color: rgba(0, 0, 0, 0.9);
-    bottom: 0;
-    left: 0;
-    margin-bottom: -20px;
-    width: 250px;
-    height: 50px;
-    font-size: 1.3rem;
-    font-family: 'Muli', sans-serif;
-    border-radius: 8px;
-    -webkit-animation: fadein 2s;
-    /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadein 2s;
-    /* Firefox < 16 */
-    -ms-animation: fadein 2s;
-    /* Internet Explorer */
-    -o-animation: fadein 2s;
-    /* Opera < 12.1 */
-    animation: fadein 2s;
-}
-
+            position:relative;
+            z-index: 2;
+            background-color: white;
+            text-align: center;
+            padding-top: 17px;
+            color: rgba(0, 0, 0, 0.9);
+            bottom: 0;
+            left: 0;
+            margin-bottom:-20px;
+            width: 200px;
+            height: 40px;
+            font-size: 1.09rem;
+            font-weight: 600;
+            font-family: 'Muli', sans-serif;
+            border-radius: 8px;
+            -webkit-animation: fadein 1.7s;
+            /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadein 1.7s;
+            /* Firefox < 16 */
+            -ms-animation: fadein 1.7s;
+            /* Internet Explorer */
+            -o-animation: fadein 1.7s;
+            /* Opera < 12.1 */
+            animation: fadein 1.7s;
+        }
 .textboxHided {
-    position: relative;
-    z-index: 2;
-    background-color: white;
-    text-align: center;
-    padding-top: 20px;
-    color: rgba(0, 0, 0, 0.9);
-    bottom: 0;
-    left: 0;
-    margin-bottom: -20px;
-    width: 250px;
-    height: 50px;
-    font-size: 1.3rem;
-    opacity: 1;
-    font-family: 'Muli', sans-serif;
-    border-radius: 8px;
-    -webkit-animation: fadeout linear forwards 2s;
-    /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadeout linear forwards 2s;
-    /* Firefox < 16 */
-    -ms-animation: fadeout linear forwards 2s;
-    /* Internet Explorer */
-    -o-animation: fadeout linear forwards 2s;
-    /* Opera < 12.1 */
-    animation: fadeout linear forwards 2s;
-}
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            text-align: center;
+            padding-top: 17px;
+            color: rgba(0, 0, 0, 0.9);
+            bottom: 0;
+            left: 0;
+            margin-bottom: -20px;
+            width: 200px;
+            height: 40px;
+            font-weight: 600;
+            font-size: 1.09rem;
+            opacity: 1;
+            font-family: 'Muli', sans-serif;
+            border-radius: 8px;
+            -webkit-animation: fadeout linear forwards 1s;
+            /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadeout linear forwards 1s;
+            /* Firefox < 16 */
+            -ms-animation: fadeout linear forwards 1s;
+            /* Internet Explorer */
+            -o-animation: fadeout linear forwards 1s;
+            /* Opera < 12.1 */
+            animation: fadeout linear forwards 1s;
+        }
 
 @-webkit-keyframes fadeout {
     0% {
