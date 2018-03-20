@@ -491,7 +491,9 @@
          if (blockExists) {
              let textBox = document.createElement("div");
              textBox.setAttribute("class", "addedToFavorites");
+
              textBox.innerText = "Beer added";
+           
              parent.appendChild(textBox);
              setTimeout(function () {
                  textBox.className = "textboxHided";
