@@ -493,7 +493,7 @@
                     content.div.setAttribute("class", "card-body beer");
                     content.img.setAttribute("src", favoriteArray.img);
                     content.img.setAttribute("height", "140px");
-                    content.favorite.setAttribute("class", "btn btn-outline-light favBtns");
+                    content.favorite.setAttribute("class", "btn btn-outline-light favBtns storeBtn");
                     content.favorite.setAttribute("id", "favorite" + increment);
 
                     content.favorite.innerText = "Does it exist?";
