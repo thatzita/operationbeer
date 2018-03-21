@@ -261,6 +261,7 @@ a:active {
             bottom: 0;
             left: 0;
             margin-bottom:-20px;
+            box-shadow: 5px 5px 10px black;
             line-height: 1.5;
             display: inline-block;
             width: 140px;
@@ -291,6 +292,7 @@ a:active {
             bottom: 0;
             left: 0;
             margin-bottom: -20px;
+            box-shadow: 5px 5px 10px black;
             line-height: 1.5;
             display: inline-block;
             width: 140px;
