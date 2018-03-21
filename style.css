@@ -959,6 +959,7 @@ h2 {
     border-color: #ffc107;
     margin: auto;
     margin-bottom: 20px;
+    cursor:pointer;
 }
 
 #confirmButton:hover {
