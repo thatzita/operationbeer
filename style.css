@@ -943,6 +943,7 @@ h2 {
 
 #popUpButton {
     font-family: 'Muli', sans-serif;
+    cursor:pointer;
 }
 
 #confirmButton {
