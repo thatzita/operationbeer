@@ -681,7 +681,7 @@ h2 {
 
 
 .logInSection {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     position: absolute;
