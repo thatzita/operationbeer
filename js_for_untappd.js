@@ -66,28 +66,25 @@
          firebase.auth().signInWithRedirect(facebookProvider);
          authSpinner.myStorage.setItem(authSpinner.key, authSpinner.activated);
      });
+     
+     
      let user = {};
      let userList = [];
      let id;
      let footer = document.getElementsByTagName("footer")[0];
 
-
-
      //används av showMore funktionen för att se nästkommande 5 öl
      let counter = 5;
      let offset;
      let value;
-
-
-
      let showMore = document.getElementById("showMore");
      showMore.style.display = "none";
 
+     
      function getUsers() {
          db.ref("users/").on("value", function (snapshot) {
              let data = snapshot.val();
              let keys = Object.keys(data);
-             //             let favoiteKeys = Object.keys
              let keyNr = 0;
 
              for (let user in data) {
@@ -107,9 +104,12 @@
              getUserInfo(userList);
          })
      }; // getUsers ends here
+     
+     
      getUsers(); // Activate function
      let bool = false;
 
+     
      function getUserInfo(uList) {
          firebase.auth().onAuthStateChanged(function (user) {
 
@@ -124,17 +124,12 @@
                  link: document.createElement('a'),
                  img: document.createElement("img"),
                  name: document.createElement("div"),
-
-                 //                  linkFavorites: document.createElement('a'),
-
              };
 
              if (user) {
                  // User is signed in.
                  authSpinner.ifUser = true;
                  authSpinner.spinner(authSpinner.ifUser);
-
-
 
                  var displayName = user.displayName;
                  var email = user.email;
@@ -151,11 +146,7 @@
                      id: uid
                  };
 
-
-
                  if (bool === false) {
-                     console.log('onAuthStateChanged: user is signed in', user);
-
                      elements.menu.setAttribute('id', 'menuDiv')
                      elements.link.setAttribute('id', 'link');
                      elements.link.innerText = "My Favorites";
@@ -191,18 +182,15 @@
                              document.getElementById('menuDiv').style.display = 'none';
                          }
                      });
-
-
                      bool = true;
                  }
-
+                 
+                 
                  //Menu
-
                  // Log-out function
                  let loggedOut = document.getElementById('logOut');
                  let logOut = function (event) {
                      firebase.auth().signOut().then(function (result) {
-                             console.log('User signed out');
                              elements.logged.style.display = "none";
                              elements.notLogged.style.display = "block";
                              elements.userDiv.style.display = "none";
@@ -214,6 +202,7 @@
                  };
                  loggedOut.addEventListener('click', logOut); // Logoutlistener
 
+                 
                  function checkUsers(list) {
                      let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                      for (i = 0; i < userList.length; i++) { // Går igenom listan  
@@ -253,10 +242,6 @@
      })
      // Autentisering slutar här
 
-
-
-
-
      let clientId = "153D83356A0B65CE0BDB2F2058AA09CEE92F165D";
      let clientSecret = "7B480C43412EF225E1E7E6F802A05FEE835B016B";
      let searchBeerBtn = document.getElementById("searchBeerBtn");
@@ -265,14 +250,11 @@
      let beerArray = [];
 
      function printOut(array, favs) {
-
          container.innerHTML = "";
          let increment = 0;
 
          for (let i = 0; i < array.length; i++) {
-
              let beer = array[i].beer.bid;
-
              let content = {
                  div: document.createElement("div"),
 
@@ -292,9 +274,7 @@
                  favorite: document.createElement("button"),
              }
 
-
              content.div.setAttribute("class", "card-body beer");
-
 
              content.hide.setAttribute("id", "hide" + increment);
              content.hide.setAttribute("href", "#hide" + increment);
@@ -318,7 +298,7 @@
              content.favorite.innerText = "Favorite";
              content.beerNameShow.innerText = array[i].beer.beer_name;
              content.beerNameHide.innerText = array[i].beer.beer_name;
-             content.style.innerText = 'Type of beer: ' + array[i].beer.beer_style;
+             content.style.innerText = 'Type: ' + array[i].beer.beer_style;
              content.brewery.innerText = 'Brewery: ' + array[i].brewery.brewery_name;
              content.description.innerText = array[i].beer.beer_description;
 
@@ -331,7 +311,6 @@
              content.show.appendChild(content.arrowUp);
              content.show.appendChild(content.beerNameShow);
              content.div.appendChild(content.show);
-
 
              content.moreInfo.appendChild(content.img);
              content.moreInfo.appendChild(content.infoDiv);
@@ -425,14 +404,9 @@
              })
      })
 
-
-
+     
      showMore.addEventListener("click", function (e) {
-
-
-
          offset = offset + 5;
-
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
                  return request.json();
@@ -445,14 +419,10 @@
 
                  printOut(beerArray, checkUserAndFavs(userList));
 
-
-
-
                  if (beerArray.length >= 4)
                      showMore.style.display = "block";
                  else
                      showMore.style.display = "none";
-
              })
              .catch(function (error) {
                  console.log(error);
@@ -507,16 +477,16 @@
          }
      }
 
+     
      function cardListener(e) {
-         console.log(e.target);
          if (e.target.hasAttribute("fill")) {
              let passId = e.target.parentElement.parentElement.parentElement.id;
              regretFavorite(e, userList, passId);
          }
      }
 
+     
      function regretFavorite(e, uList, targetId) {
-
          let loggedUser = firebase.auth().currentUser;
          let userId = "";
          for (let i = 0; i < uList.length; i++) {
@@ -532,14 +502,11 @@
                  }
              }
          }
-
-
          let noFavorite = document.createElement("button");
          noFavorite.setAttribute("class", "btn btn-outline-light marginBottom");
          noFavorite.addEventListener("click", favoriteChecked);
          noFavorite.innerText = "Favorite";
          let alreadyFavorite = e.target.parentElement;
-         console.log(alreadyFavorite);
          alreadyFavorite.parentElement.replaceChild(noFavorite, alreadyFavorite);
      }
 
