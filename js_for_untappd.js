@@ -120,6 +120,7 @@
              let elements = {
                  logged: document.getElementsByClassName("logged")[0],
                  notLogged: document.getElementsByClassName("notLogged")[0],
+                 logsection: document.getElementsByClassName("logInSection")[0],
                  header: document.getElementsByTagName("header")[0],
                  userDiv: document.createElement("div"),
                  logOutBtn: document.createElement("div"),
@@ -237,7 +238,7 @@
                  }; // End of checkUsers
                  checkUsers(uList);
              } else {
-
+                 elements.logsection.style.display = "flex";
                  authSpinner.ifUser = true;
                  authSpinner.spinner(authSpinner.ifUser);
              }
