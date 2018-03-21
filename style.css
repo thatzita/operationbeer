@@ -600,6 +600,19 @@ h2 {
     position: sticky;
 }
 
+.nothingFound{
+    width: 100%;
+    text-align: center;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+.nothingFound p{
+    font-size: 2rem;
+    margin-top: 0;
+     font-family: 'Muli', sans-serif;
+}
+
 .favBtns {
     margin-bottom: 20px;
     margin-right: 20px;
