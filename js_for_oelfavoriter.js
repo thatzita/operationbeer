@@ -137,7 +137,7 @@
                         elements.img.setAttribute("class", "userImg");
                         elements.img.setAttribute("src", photoURL);
                         elements.img.addEventListener('click', profileMenuEvent);
-                        elements.link.setAttribute('href', "https://thatzita.github.io/operationbeer/bmbb.html");
+                        elements.link.setAttribute('href', "./bmbb.html");
                         elements.link.setAttribute('id', "link");
                         elements.link.innerText = "Search beer";
 
