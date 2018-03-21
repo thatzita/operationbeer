@@ -774,52 +774,6 @@ h2 {
     }
 }
 
-.loadText {
-    color: white;
-    font-family: 'Kalam', cursive;
-    position: relative;
-    text-align: center;
-    top: 30%;
-    width: 300px;
-    letter-spacing: 3.5px;
-    overflow: hidden;
-    /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid orange;
-    /* The typwriter cursor */
-    white-space: nowrap;
-    /* Keeps the content on a single line */
-    margin: 0 auto;
-    /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .15em;
-    /* Adjust as needed */
-    animation: typing 2.3s steps(50, end),
-    blink-caret 0.6s step-end infinite;
-}
-
-
-
-/* The typing effect */
-
-@keyframes typing {
-    from {
-        width: 0
-    }
-    to {
-        width: 280px;
-    }
-}
-
-/* The typewriter cursor effect */
-
-s @keyframes blink-caret {
-    from,
-    to {
-        border-color: transparent
-    }
-    50% {
-        border-color: orange;
-    }
-}
 
 .sk-folding-cube {
     margin: auto;
