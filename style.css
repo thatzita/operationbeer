@@ -1071,6 +1071,7 @@ s @keyframes blink-caret {
 }
 
 #menuDiv {
+    font-family: 'Muli', sans-serif;
     position: absolute;
     top: 65px;
     right: -15px;
@@ -1103,33 +1104,48 @@ footer {
     box-shadow: 0 -3px 15px 0 black;
 }
 
-#menuDiv {
-    position: absolute;
+#menuName {
+    position: relative;
+    top: 10px;
+    vertical-align: center;
+}
+
+#link {
+    position: absolute; 
     top: 65px;
-    right: -15px;
-    height: 200px;
-    width: 250px;
-    background-color: rgba(91, 35, 25, 1);
-    color: white;
-    border-radius: 0 0 5px 5px;
-    text-align: center;
-    font-size: 1.3em;
-    padding-top: 10px;
-    box-shadow: 0 3px 0 0 black;
+    width: 90%;
+    left: 5%;
+    right: 5%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    transition: .5s ease;
+}
+
+#link:hover {
+    background-color: red;
+    border-radius: 5px;
+}
+
+#signOutDiv {
+    position: absolute; 
+    top: 130px;
+    width: 90%;
+    left: 5%;
+    right: 5%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    transition: .5s ease;
+    cursor: pointer;
+}
+
+#signOutDiv:hover {
+    background-color: red;
+    border-radius: 5px;
 }
 
 #logOut {
     position: relative;
-    top: 100px;
-}
-
-#link {
-    margin: 0;
-    position: absolute;
-    top: 33%;
-    width: 50%;
-    left: 25%;
-    right: 25%;
+    top: 110px;
 }
 
 .marginBottom {

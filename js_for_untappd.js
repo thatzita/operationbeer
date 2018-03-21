@@ -117,7 +117,7 @@
                  notLogged: document.getElementsByClassName("notLogged")[0],
                  header: document.getElementsByTagName("header")[0],
                  userDiv: document.createElement("div"),
-                 logOutBtn: document.createElement("button"),
+                 logOutBtn: document.createElement("div"),
                  imgcontainer: document.createElement("div"),
                  menu: document.createElement('div'),
                  link: document.createElement('a'),
@@ -151,9 +151,10 @@
                      elements.link.innerText = "My Favorites";
                      elements.link.setAttribute('href', "./beerfavorites.html");
                      elements.userDiv.setAttribute("class", "userDiv");
-                     elements.logOutBtn.setAttribute("id", "logOut");
-                     elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
+                     elements.logOutBtn.setAttribute("id", "signOutDiv");
+
                      elements.logOutBtn.innerText = "Sign out";
+                     elements.name.setAttribute('id', 'menuName');
                      elements.name.innerText = `${displayName}`;
                      elements.imgcontainer.setAttribute("class", "userInfo");
                      elements.img.setAttribute("class", "userImg");
@@ -199,7 +200,7 @@
 
                  //Menu
                  // Log-out function
-                 let loggedOut = document.getElementById('logOut');
+                 let loggedOut = document.getElementById('signOutDiv');
                  let logOut = function (event) {
                      firebase.auth().signOut().then(function (result) {
                              elements.logged.style.display = "none";
