@@ -341,6 +341,9 @@
              content.moreInfo.appendChild(content.favorite);
 
              content.div.appendChild(content.moreInfo);
+             content.hide.addEventListener('click', function() {
+                 content.div.scrollIntoView({behavior: "smooth", block: "start"});
+             });
              container.appendChild(content.div);
 
              increment++;
