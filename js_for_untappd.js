@@ -67,9 +67,6 @@
          authSpinner.myStorage.setItem(authSpinner.key, authSpinner.activated);
      });
 
-
-     let body = document.getElementsByTagName("body")[0];
-
      let user = {};
      let userList = [];
      let id;
@@ -199,7 +196,6 @@
                          showOrHide = false;
                      }
                  })
-
 
                  //Menu
                  // Log-out function
@@ -408,6 +404,21 @@
 
                  if (container.children.length === 0) {
                      footer.style.position = "fixed";
+
+                     let nothingFound = document.createElement("div");
+                     let text = document.createElement("p");
+                     let sadFace = document.createElement("i");
+                     let sadDiv = document.createElement("div");
+
+                     sadFace.setAttribute("class", "far fa-frown fa-6x");
+                     sadFace.setAttribute("style", "color:white;");
+                     nothingFound.setAttribute("class", "nothingFound");
+                     text.innerText = "No beers found";
+
+                     sadDiv.appendChild(sadFace);
+                     nothingFound.appendChild(text);
+                     nothingFound.appendChild(sadDiv);
+                     container.appendChild(nothingFound);
                  } else {
                      footer.style.position = "sticky";
 
@@ -434,18 +445,14 @@
                  for (let i = 0; i < beerDB.response.beers.items.length; i++) {
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
-
                  printOut(beerArray, checkUserAndFavs(userList));
 
                  if (beerArray.length >= 4 && offset !== 10) {
                      showMore.style.display = "block";
-                     console.log(offset);
                  } else if (offset == 15) {
                      showMore.style.display = "none";
-                     console.log(offset);
                  } else {
                      showMore.style.display = "none";
-                     console.log(offset);
                  }
              })
              .catch(function (error) {
