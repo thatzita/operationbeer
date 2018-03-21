@@ -32,11 +32,16 @@
              }
          },
          spinner: function (aUser) {
+             let body = document.getElementsByTagName("body")[0];
              let container = document.getElementsByClassName("loaderContainer")[0];
              let lSpinner = document.getElementsByClassName("sk-folding-cube")[0];
-             let loadText = document.getElementsByClassName("loadText")[0];
-             let body = document.getElementsByTagName("body")[0];
-             container.appendChild(loadText);
+             let text = document.createElement("h1");
+             
+             text.innerText ="Waiting for user"
+             text.setAttribute("class", "spinnerText");
+             text.setAttribute("style", "top:20%;")
+             lSpinner.setAttribute("style" , "top:25%;")
+             container.appendChild(text);
              container.appendChild(lSpinner);
              body.appendChild(container);
 
