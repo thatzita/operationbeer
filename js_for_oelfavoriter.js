@@ -98,7 +98,7 @@
                     let elements = {
                         header: document.getElementsByTagName("header")[0],
                         userDiv: document.createElement("div"),
-                        logOutBtn: document.createElement("button"),
+                        logOutBtn: document.createElement("div"),
                         imgcontainer: document.createElement("div"),
                         img: document.createElement("img"),
                         name: document.createElement("div"),
@@ -123,10 +123,10 @@
                         let profileMenu = document.getElementById('menuDiv');
 
                         elements.userDiv.setAttribute("class", "userDiv");
-                        elements.logOutBtn.setAttribute("id", "logOut");
-                        elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
+                        elements.logOutBtn.setAttribute("id", "signOutDiv");
                         elements.logOutBtn.innerText = "Sign out";
                         elements.name.innerText = `${displayName}`;
+                        elements.name.setAttribute('id', 'menuName');
                         profileMenu.appendChild(elements.name);
                         elements.imgcontainer.setAttribute("class", "userInfo");
                         elements.img.setAttribute("class", "userImg");
@@ -134,7 +134,7 @@
                         elements.img.addEventListener('click', profileMenuEvent);
                         elements.link.setAttribute('href', "./bmbb.html");
                         elements.link.setAttribute('id', "link");
-                        elements.link.innerText = "Search beer";
+                        elements.link.innerText = "Search Beer";
 
                         elements.imgcontainer.appendChild(elements.img);
                         profileMenu.appendChild(elements.logOutBtn);
@@ -144,7 +144,7 @@
                         elements.header.appendChild(elements.userDiv);
 
                         // Log-out function
-                        let loggedOut = document.getElementById('logOut');
+                        let loggedOut = document.getElementById('signOutDiv');
                         let logOut = function (event) {
                             firebase.auth().signOut().then(function (result) {
                                     elements.userDiv.style.display = "none";
