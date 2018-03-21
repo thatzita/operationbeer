@@ -372,7 +372,7 @@
              if (beer === favoriteIds[j]) {
                  let heart = document.createElement("svg");
 
-                 heart.setAttribute("class", "fas fa-heart fa-3x");
+                 heart.setAttribute("class", "fas fa-heart fa-3x marginBottom");
                  heart.setAttribute("style", "float : right; margin-bottom:10px; cursor:pointer;")
                  let aFavorite = cardInfo.replaceChild(heart, cardInfo.lastChild);
                  break;
@@ -484,7 +484,7 @@
              }
          }
 
-         checked.setAttribute("class", "fas fa-heart fa-3x");
+         checked.setAttribute("class", "fas fa-heart fa-3x marginBottom");
          checked.setAttribute("style", "float:right; cursor:pointer");
          let replaced = parent.replaceChild(checked, e.target);
 
@@ -532,7 +532,7 @@
 
 
          let noFavorite = document.createElement("button");
-         noFavorite.setAttribute("class", "btn btn-outline-light");
+         noFavorite.setAttribute("class", "btn btn-outline-light marginBottom");
          noFavorite.addEventListener("click", favoriteChecked);
          noFavorite.innerText = "Favorite";
          let alreadyFavorite = e.target.parentElement;
