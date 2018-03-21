@@ -1009,7 +1009,6 @@ s @keyframes blink-caret {
     color: #212529;
     background-color: #ffc107;
     border-color: #ffc107;
-    position:fixed;
 }
 
 #listOfCitiesContent {
