@@ -543,26 +543,26 @@
                             content.favorite.disabled = true;
                             content.favorite.innerText = "Not in store";
                         } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
-                            //                            console.log("Score: ", beerOnly);
-                            //                            console.log("Length: " + beerOnly.length);
+                            //                                                        console.log("Score: ", beerOnly);
+                            //                                                        console.log("Length: " + beerOnly.length);
                             content.favorite.disabled = true;
                             content.favorite.setAttribute("style", "background-color: green; width: 108px");
                             content.favorite.innerText = "In store";
                         } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
-                            //                            console.log("Score: ", beerOnly);
-                            //                            console.log("Length: " + beerOnly.length);
+                            //                                                        console.log("Score: ", beerOnly);
+                            //                                                        console.log("Length: " + beerOnly.length);
                             content.favorite.disabled = true;
                             content.favorite.setAttribute("style", "background-color: green; width: 108px");
                             content.favorite.innerText = "In store";
                         } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
-                            //                            console.log("Score: ", beerOnly);
-                            //                            console.log("Length: " + beerOnly.length);
+                            //                                                        console.log("Score: ", beerOnly);
+                            //                                                        console.log("Length: " + beerOnly.length);
                             content.favorite.disabled = true;
                             content.favorite.setAttribute("style", "background-color: green; width: 108px");
                             content.favorite.innerText = "In store";
                         } else {
-                            //                            console.log("Score: ", beerOnly);
-                            //                            console.log("Length: " + beerOnly.length);
+                            //                                                        console.log("Score: ", beerOnly);
+                            //                                                        console.log("Length: " + beerOnly.length);
                             content.favorite.setAttribute("style", "background-color: red; width: 108px")
                             content.favorite.disabled = true;
                             content.favorite.innerText = "Not in store";
@@ -586,29 +586,30 @@
 
 
             db.ref(`users/${id}/`).on("child_changed", function (snapshot) {
-                container.innerHTML = "";
-                favoriteArray = [];
-
                 let data = snapshot.val();
                 let key = snapshot.key;
-
-                for (let key in data) {
-                    if (typeof data[key] == "object") {
-                        for (let favs in data[key]) {
-                            beerFavorites = {
-                                name: data[key][favs].name,
-                                style: data[key][favs].style,
-                                description: data[key][favs].description,
-                                brewery: data[key][favs].brewery,
-                                img: data[key][favs].img,
-                                id: favs,
-                                bid: data[key][favs].bid
+                
+                if (key === id) {
+                    container.innerHTML = "";
+                    favoriteArray = [];
+                    for (let key in data) {
+                        if (typeof data[key] == "object") {
+                            for (let favs in data[key]) {
+                                beerFavorites = {
+                                    name: data[key][favs].name,
+                                    style: data[key][favs].style,
+                                    description: data[key][favs].description,
+                                    brewery: data[key][favs].brewery,
+                                    img: data[key][favs].img,
+                                    id: favs,
+                                    bid: data[key][favs].bid
+                                }
+                                favoriteArray.push(beerFavorites);
                             }
-                            favoriteArray.push(beerFavorites);
                         }
                     }
+                    output(favoriteArray);
                 }
-                output(favoriteArray);
             })
 
             container.addEventListener("click", function (e) {
