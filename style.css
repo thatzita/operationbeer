@@ -1083,7 +1083,7 @@ footer {
     z-index: 1;
     background: rgba(91, 35, 25, 0.8);
     height: 40px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     -moz-box-shadow: 0 -3px 15px 0 black;
     -webkit-box-shadow: 0 -3px 15px 0 black;
