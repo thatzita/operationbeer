@@ -37,7 +37,7 @@
             let butikNr = undefined;
             initPopUp();
 
-            
+
             let spinnerObject = {
                 fetching: true,
                 notFetching: false,
@@ -66,7 +66,7 @@
                 }
             };
 
-            
+
             function getUsers() {
                 db.ref("users/").once("value", function (snapshot) {
                     let data = snapshot.val();
@@ -121,7 +121,7 @@
                         };
 
                         let profileMenu = document.getElementById('menuDiv');
-                        
+
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -142,7 +142,7 @@
 
                         elements.userDiv.appendChild(elements.imgcontainer);
                         elements.header.appendChild(elements.userDiv);
-                        
+
                         // Log-out function
                         let loggedOut = document.getElementById('logOut');
                         let logOut = function (event) {
@@ -153,7 +153,7 @@
                                     console.log('Signout failed');
                                 })
                         };
-                        
+
                         loggedOut.addEventListener('click', logOut); // Logoutlistener
                         function checkUsers(list) {
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
@@ -166,7 +166,7 @@
                                     userExist = false;
                                 }
                             }
-                            
+
                             if (userExist === false)
                                 db.ref("users/").push(uData);
                         }; // End of checkUsers
@@ -179,7 +179,7 @@
                 })
             }; // getUserInfo ends
 
-            
+
             function addToFavorites() {
                 favoriteArray = [];
                 db.ref(`users/${id}/favorites/`).once("value", function (snapshot) {
@@ -237,7 +237,7 @@
                     })
                     .catch(function (error) {
                         console.log(error);
-                    spinnerObject.spinner(spinnerObject.notFetching);
+                        spinnerObject.spinner(spinnerObject.notFetching);
                     })
             }
 
@@ -268,14 +268,14 @@
                     console.log(error);
                 })
 
-            
+
             function clearCities() {
                 while (document.getElementById('listOfCities').firstChild) {
                     document.getElementById('listOfCities').removeChild(document.getElementById('listOfCities').firstChild);
                 }
             }
 
-            
+
             function clearStores() {
                 while (document.getElementById('listOfStores').firstChild) {
                     document.getElementById('listOfStores').removeChild(document.getElementById('listOfStores').firstChild);
@@ -293,7 +293,7 @@
                 })
             }
 
-            
+
             function createCountiesList(json) {
                 let newList = [];
                 json.ButikerOmbud[0].ButikOmbud.forEach(store => {
@@ -303,7 +303,7 @@
                 return Object.keys(newList).sort();
             }
 
-            
+
             function addToListOfCities(citiesList) {
                 let dropDown = document.getElementById('listOfCities');
                 citiesList.forEach(city => {
@@ -316,7 +316,7 @@
                 })
             }
 
-            
+
             function createCitiesList(json, county) {
                 let newList = [];
                 json.ButikerOmbud[0].ButikOmbud.forEach(store => {
@@ -328,7 +328,7 @@
                 return Object.keys(newList).sort();
             }
 
-            
+
             function addToListOfStores(storeList) {
                 let dropDown = document.getElementById('listOfStores');
                 storeList.forEach(butik => {
@@ -339,16 +339,16 @@
                 })
             }
 
-            
+
             function createStoresList(json, city) {
                 let newList = [];
 
-                
+
                 function NewStore(address, nr) {
                     this.address = address,
                         this.nr = nr
                 }
-                
+
                 json.ButikerOmbud[0].ButikOmbud.forEach(store => {
                     let place = "";
                     if (store.Address4[0]._text == city && typeof (store.Nr[0]._text) == 'number') {
@@ -364,8 +364,9 @@
                 return newList;
             }
 
-            
+
             let listofBeers = [];
+
             function beerOnlyList(outputFromFetch) {
                 let thatBeer = {};
                 listofBeers = [];
@@ -444,8 +445,8 @@
                     }
                 }
             }
-            
-            
+
+
             let myStore; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
                 myStore = butikNr;
@@ -542,26 +543,26 @@
                             content.favorite.disabled = true;
                             content.favorite.innerText = "Not in store";
                         } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
-//                            console.log("Score: ", beerOnly);
-//                            console.log("Length: " + beerOnly.length);
+                            //                            console.log("Score: ", beerOnly);
+                            //                            console.log("Length: " + beerOnly.length);
                             content.favorite.disabled = true;
                             content.favorite.setAttribute("style", "background-color: green; width: 108px");
                             content.favorite.innerText = "In store";
                         } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
-//                            console.log("Score: ", beerOnly);
-//                            console.log("Length: " + beerOnly.length);
+                            //                            console.log("Score: ", beerOnly);
+                            //                            console.log("Length: " + beerOnly.length);
                             content.favorite.disabled = true;
                             content.favorite.setAttribute("style", "background-color: green; width: 108px");
                             content.favorite.innerText = "In store";
                         } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
-//                            console.log("Score: ", beerOnly);
-//                            console.log("Length: " + beerOnly.length);
+                            //                            console.log("Score: ", beerOnly);
+                            //                            console.log("Length: " + beerOnly.length);
                             content.favorite.disabled = true;
                             content.favorite.setAttribute("style", "background-color: green; width: 108px");
                             content.favorite.innerText = "In store";
                         } else {
-//                            console.log("Score: ", beerOnly);
-//                            console.log("Length: " + beerOnly.length);
+                            //                            console.log("Score: ", beerOnly);
+                            //                            console.log("Length: " + beerOnly.length);
                             content.favorite.setAttribute("style", "background-color: red; width: 108px")
                             content.favorite.disabled = true;
                             content.favorite.innerText = "Not in store";
@@ -641,10 +642,10 @@
                         document.getElementById('popUpMessage').innerText = "You must choose a store.";
                     } else {
                         container.innerHTML = "";
-                        
+
                         document.getElementById('popUp').style.display = "none";
                         butikNr = document.getElementById('listOfStores').value;
-                        
+
                         let displayCity = document.getElementById('listOfCities').value;
                         let displayAdress = document.getElementById('listOfStores')[document.getElementById('listOfStores').selectedIndex].innerText;
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
@@ -652,7 +653,6 @@
                         document.getElementById('store').innerText = displayStore;
 
                         document.getElementById('popUpMessage').innerText = "Choose a store.";
-                        //                        matchStore(storeOnly, butikNr); 
                         compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         addToFavorites();
 
@@ -661,7 +661,19 @@
             }
             document.getElementById('menuDiv').style.display = "none";
 
-            
+
+            let showOrHide = false;
+            window.addEventListener("click", function (e) {
+                let showMenu = document.getElementsByClassName('userImg');
+                if (e.target === showMenu.item(0) && showOrHide === false) {
+                    document.getElementById('menuDiv').style.display = "block";
+                    showOrHide = true;
+                } else {
+                    document.getElementById('menuDiv').style.display = "none";
+                    showOrHide = false;
+                }
+            })
+
             function profileMenuEvent() {
                 if (document.getElementById('menuDiv').style.display == "none") {
                     document.getElementById('menuDiv').style.display = "block";

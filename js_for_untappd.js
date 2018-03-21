@@ -67,7 +67,6 @@
          authSpinner.myStorage.setItem(authSpinner.key, authSpinner.activated);
      });
 
-
      let user = {};
      let userList = [];
      let id;
@@ -185,6 +184,18 @@
                      bool = true;
                  }
 
+
+                 let showOrHide = false;
+                 window.addEventListener("click", function (e) {
+                     let showMenu = document.getElementsByClassName('userImg');
+                     if (e.target === showMenu.item(0) && showOrHide === false) {
+                         document.getElementById('menuDiv').style.display = "block";
+                         showOrHide = true;
+                     } else {
+                         document.getElementById('menuDiv').style.display = "none";
+                         showOrHide = false;
+                     }
+                 })
 
                  //Menu
                  // Log-out function
@@ -435,6 +446,7 @@
                      beerArray.push(beerDB.response.beers.items[i]);
                  }
                  printOut(beerArray, checkUserAndFavs(userList));
+
                  if (beerArray.length >= 4 && offset !== 10) {
                      showMore.style.display = "block";
                  } else if (offset == 15) {
