@@ -628,13 +628,13 @@
                 document.getElementById('listOfCounties').addEventListener('click', function () {
                     if (document.getElementById('listOfCounties').value !== "Choose county") {
                         document.getElementById('popUpMessage').innerText = "Choose a store.";
-                        document.getElementById('listOfCities').style.display = "block";
-                        document.getElementById('listOfStores').style.display = "block";
+                        document.getElementById('listOfCities').style.display = "flex";
+                        document.getElementById('listOfStores').style.display = "flex";
                     }
                 })
 
                 document.getElementById('popUpButton').addEventListener('click', function () {
-                    document.getElementById('popUp').style.display = 'block';
+                    document.getElementById('popUp').style.display = 'flex';
                 });
                 document.getElementById('confirmButton').addEventListener('click', function () {
 
