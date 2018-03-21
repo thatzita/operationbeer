@@ -945,7 +945,7 @@ s @keyframes blink-caret {
 }
 
 #popUp {
-    position: absolute;
+    position: fixed;
     width: 50%;
     height: 30%;
     left: 25%;
@@ -993,6 +993,7 @@ s @keyframes blink-caret {
 #confirmButton {
     width: 200px;
     height: 20%;
+    position:absolute;
     bottom: 10px;
     font-size: 1em;
     border-radius: 5px;
@@ -1009,6 +1010,7 @@ s @keyframes blink-caret {
     color: #212529;
     background-color: #ffc107;
     border-color: #ffc107;
+    position:fixed;
 }
 
 #listOfCitiesContent {
