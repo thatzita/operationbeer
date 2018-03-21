@@ -10,8 +10,10 @@
             };
             firebase.initializeApp(config);
 
+
             // Initialize Firebase
             const db = firebase.database();
+
             let container = document.getElementsByClassName("container")[0];
             let increment = 0;
             let beerFavorites = {};
@@ -35,8 +37,7 @@
             let butikNr = undefined;
             initPopUp();
 
-
-
+            
             let spinnerObject = {
                 fetching: true,
                 notFetching: false,
@@ -65,6 +66,7 @@
                 }
             };
 
+            
             function getUsers() {
                 db.ref("users/").once("value", function (snapshot) {
                     let data = snapshot.val();
@@ -91,8 +93,6 @@
             getUsers(); // Activate function
 
 
-
-
             function getUserInfo(uList) {
                 firebase.auth().onAuthStateChanged(function (user) {
                     let elements = {
@@ -104,18 +104,15 @@
                         name: document.createElement("div"),
                         link: document.createElement('a')
                     };
-
                     if (user) {
                         // User is signed in.
-
-                        var displayName = user.displayName;
-                        var email = user.email;
-                        var emailVerified = user.emailVerified;
-                        var photoURL = user.photoURL;
-                        var isAnonymous = user.isAnonymous;
-                        var uid = user.uid;
-                        var providerData = user.providerData;
-
+                        let displayName = user.displayName;
+                        let email = user.email;
+                        let emailVerified = user.emailVerified;
+                        let photoURL = user.photoURL;
+                        let isAnonymous = user.isAnonymous;
+                        let uid = user.uid;
+                        let providerData = user.providerData;
                         let uData = {
                             name: displayName,
                             email: email,
@@ -124,7 +121,7 @@
                         };
 
                         let profileMenu = document.getElementById('menuDiv');
-
+                        
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "logOut");
                         elements.logOutBtn.setAttribute("class", "btn btn-outline-warning");
@@ -140,42 +137,38 @@
                         elements.link.innerText = "Search beer";
 
                         elements.imgcontainer.appendChild(elements.img);
-                        //elements.userDiv.appendChild(elements.logOutBtn);
                         profileMenu.appendChild(elements.logOutBtn);
                         profileMenu.appendChild(elements.link);
 
-                        //elements.userDiv.appendChild(elements.name);
                         elements.userDiv.appendChild(elements.imgcontainer);
                         elements.header.appendChild(elements.userDiv);
+                        
                         // Log-out function
                         let loggedOut = document.getElementById('logOut');
                         let logOut = function (event) {
                             firebase.auth().signOut().then(function (result) {
-                                    console.log('User signed out');
                                     elements.userDiv.style.display = "none";
                                 })
                                 .catch(function (error) {
                                     console.log('Signout failed');
                                 })
                         };
+                        
                         loggedOut.addEventListener('click', logOut); // Logoutlistener
-
                         function checkUsers(list) {
                             let userExist = true; // Variabel som kollar om ett id som är identiskt som användaren
                             for (i = 0; i < userList.length; i++) { // Går igenom listan  
                                 if (userList[i].uId === uData.id) { // Kollar om ett användar redan id redan finns
-
                                     userExist = true;
                                     id = userList[i].dbId;
                                     break; // Isf bryt loopen
                                 } else { // Annars ingen match, och userExist är false
                                     userExist = false;
-
                                 }
                             }
+                            
                             if (userExist === false)
                                 db.ref("users/").push(uData);
-
                         }; // End of checkUsers
                         checkUsers(uList);
                         getProducts();
@@ -186,27 +179,25 @@
                 })
             }; // getUserInfo ends
 
+            
             function addToFavorites() {
                 favoriteArray = [];
-                db.ref(`users/${id}/favorites/`).on("child_added", function (snapshot) {
-
+                db.ref(`users/${id}/favorites/`).once("value", function (snapshot) {
                     let database = snapshot.val();
-                    //Lägger till ett objekt för varje ny child_added
-                    beerFavorites = {
-                        name: database.name,
-                        style: database.style,
-                        description: database.description,
-                        brewery: database.brewery,
-                        img: database.img,
-                        id: snapshot.key,
-                        bid: database.bid
+                    for (let key in database) {
+                        beerFavorites = {
+                            name: database[key].name,
+                            style: database[key].style,
+                            description: database[key].description,
+                            brewery: database[key].brewery,
+                            img: database[key].img,
+                            id: key,
+                            bid: database[key].bid
+                        }
+                        favoriteArray.push(beerFavorites);
                     }
-                    favoriteArray.push(beerFavorites);
-                    //Skickas till funktionen output för att visas på sidan
-                    output(beerFavorites);
-                    console.log(favoriteArray.length);
+                    output(favoriteArray);
                 })
-
             }
 
             //Hämtar hem alla produkter som finns på systembolaget
@@ -220,15 +211,14 @@
                         getStores();
                         beerToFind = json;
                         resultProducts = xmlToJSON.parseString(beerToFind);
-                        beerOnlyList(resultProducts)
+                        beerOnlyList(resultProducts);
 
                     })
                     .catch(function (error) {
                         console.log(error);
+                        spinnerObject.spinner(spinnerObject.notFetching);
                     })
             }
-            //Kör fetchen
-
 
             //Hämtar hem butiker och deras sortiment
             function getStores() {
@@ -244,12 +234,11 @@
                         let beerDB = json;
                         result = xmlToJSON.parseString(beerDB);
                         specificStore(result);
-
                     })
                     .catch(function (error) {
                         console.log(error);
+                    spinnerObject.spinner(spinnerObject.notFetching);
                     })
-
             }
 
             fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stores/xml")
@@ -279,12 +268,14 @@
                     console.log(error);
                 })
 
+            
             function clearCities() {
                 while (document.getElementById('listOfCities').firstChild) {
                     document.getElementById('listOfCities').removeChild(document.getElementById('listOfCities').firstChild);
                 }
             }
 
+            
             function clearStores() {
                 while (document.getElementById('listOfStores').firstChild) {
                     document.getElementById('listOfStores').removeChild(document.getElementById('listOfStores').firstChild);
@@ -302,6 +293,7 @@
                 })
             }
 
+            
             function createCountiesList(json) {
                 let newList = [];
                 json.ButikerOmbud[0].ButikOmbud.forEach(store => {
@@ -311,6 +303,7 @@
                 return Object.keys(newList).sort();
             }
 
+            
             function addToListOfCities(citiesList) {
                 let dropDown = document.getElementById('listOfCities');
                 citiesList.forEach(city => {
@@ -323,6 +316,7 @@
                 })
             }
 
+            
             function createCitiesList(json, county) {
                 let newList = [];
                 json.ButikerOmbud[0].ButikOmbud.forEach(store => {
@@ -334,6 +328,7 @@
                 return Object.keys(newList).sort();
             }
 
+            
             function addToListOfStores(storeList) {
                 let dropDown = document.getElementById('listOfStores');
                 storeList.forEach(butik => {
@@ -344,13 +339,16 @@
                 })
             }
 
+            
             function createStoresList(json, city) {
                 let newList = [];
 
+                
                 function NewStore(address, nr) {
                     this.address = address,
                         this.nr = nr
                 }
+                
                 json.ButikerOmbud[0].ButikOmbud.forEach(store => {
                     let place = "";
                     if (store.Address4[0]._text == city && typeof (store.Nr[0]._text) == 'number') {
@@ -363,19 +361,17 @@
                         newList.push(new NewStore(place, store.Nr[0]._text));
                     }
                 });
-                //return Object.keys(newList).sort();
                 return newList;
             }
 
+            
             let listofBeers = [];
-
             function beerOnlyList(outputFromFetch) {
                 let thatBeer = {};
                 listofBeers = [];
                 for (let i = 0; i < outputFromFetch.artiklar[0].artikel.length; i++) {
                     try {
                         if (outputFromFetch.artiklar[0].artikel[i].Varugrupp[0]._text === "Öl") {
-
                             thatBeer = {
                                 nr: outputFromFetch.artiklar[0].artikel[i].nr[0]._text,
                                 namn: outputFromFetch.artiklar[0].artikel[i].Namn[0]._text,
@@ -384,9 +380,7 @@
                             }
                             listofBeers.push(thatBeer);
                         }
-
                     } catch (error) {
-
                         //catch om producer inte finns, då lägger vi till i beerOnly utan producent
                         thatBeer = {
                             nr: outputFromFetch.artiklar[0].artikel[i].nr[0]._text,
@@ -400,7 +394,6 @@
 
             function matchStore(stores, storeNr) {
                 let storeProducts = [];
-
                 for (let i = 0; i < stores.length; i++) {
                     let store = stores[i];
                     let products = store.ArtikelNr;
@@ -421,7 +414,6 @@
             function compareListToStore(storeproducts, allBeers) {
                 beer = {};
                 index = elasticlunr(function () {
-
                     this.addField('namn');
                     this.addField('namn2');
                     this.addField('producent');
@@ -440,7 +432,6 @@
                                     producent: allBeers[j].producent,
                                 }
                                 index.addDoc(beer);
-
                             }
                         } catch (error) {
                             beer = {
@@ -452,11 +443,9 @@
                         }
                     }
                 }
-                //                console.log(Object.keys(beer).length)
-                //                for(let x in beer){
-                //                    console.log(beer)
-                //                }
             }
+            
+            
             let myStore; //Ska vara vald butik när vi kommer till sidan
             function specificStore(outputfromStoreFetch) {
                 myStore = butikNr;
@@ -466,9 +455,8 @@
                 }
             }
 
-
             //Optimera sökning med lightweight elasticlunr function
-            var index = elasticlunr(function () {
+            let index = elasticlunr(function () {
                 this.addField('namn');
                 this.addField('namn2');
                 this.addField('producent');
@@ -476,108 +464,111 @@
             })
 
             //Skriver ut lista på sidan över favoriter
-            function output(favoriteArray) {
-                let content = {
-                    div: document.createElement("div"),
-                    img: document.createElement("img"),
-                    beerName: document.createElement("h2"),
-                    style: document.createElement("h4"),
-                    brewery: document.createElement("h5"),
-                    description: document.createElement("p"),
-                    favorite: document.createElement("button"),
-                    remove: document.createElement("button"),
-                    moreInfo: document.createElement('div'),
-                    infoDiv: document.createElement('div'),
-                }
+            function output(arrayToPrint) {
+                let content = {};
+                if (arrayToPrint.length !== 0) {
+                    for (let i = 0; i < arrayToPrint.length; i++) {
 
-                if (favoriteArray.length !== 0) {
-                    content.div.setAttribute("class", "card-body beer");
-                    content.img.setAttribute("src", favoriteArray.img);
-                    content.img.setAttribute("height", "140px");
-                    content.favorite.setAttribute("class", "btn btn-outline-light favBtns storeBtn");
-                    content.favorite.setAttribute("id", "favorite" + increment);
-
-                    content.favorite.innerText = "Does it exist?";
-                    content.moreInfo.setAttribute("class", "detailsFav");
-                    content.infoDiv.setAttribute('class', 'infoDiv')
-
-
-                    content.remove.setAttribute("class", "btn btn-outline-light favBtns removeBtn");
-                    content.remove.setAttribute("id", favoriteArray.id);
-                    content.remove.innerText = "Remove beer";
-
-                    content.beerName.innerText = favoriteArray.name;
-                    content.style.innerText = 'Type of beer: ' + favoriteArray.style;
-                    content.brewery.innerText = 'Brewery: ' + favoriteArray.brewery;
-                    content.description.innerText = favoriteArray.description;
-
-                    content.moreInfo.appendChild(content.img);
-                    content.moreInfo.appendChild(content.infoDiv);
-
-                    content.div.appendChild(content.beerName);
-                    content.infoDiv.appendChild(content.style);
-                    content.infoDiv.appendChild(content.brewery);
-
-                    content.moreInfo.appendChild(content.description);
-                    content.div.appendChild(content.moreInfo);
-
-                    content.div.appendChild(content.favorite);
-                    content.div.appendChild(content.remove);
-
-                    container.appendChild(content.div);
-
-                    increment++;
-
-                    let beerName = content.beerName.innerText;
-                    let brewery = content.brewery.innerText;
-
-                    let beerOnly = index.search(beerName + " " + brewery, {
-                        fields: {
-                            namn: {
-                                boost: 1.2,
-                            },
-                            namn2: {
-                                boost: 1.4,
-                            },
-                            producer: {
-                                boost: 0,
-                            }
+                        content = {
+                            div: document.createElement("div"),
+                            img: document.createElement("img"),
+                            beerName: document.createElement("h2"),
+                            style: document.createElement("h4"),
+                            brewery: document.createElement("h5"),
+                            description: document.createElement("p"),
+                            favorite: document.createElement("button"),
+                            remove: document.createElement("button"),
+                            moreInfo: document.createElement('div'),
+                            infoDiv: document.createElement('div'),
                         }
-                    });
+
+                        content.div.setAttribute("class", "card-body beer");
+                        content.img.setAttribute("src", arrayToPrint[i].img);
+                        content.img.setAttribute("height", "140px");
+                        content.favorite.setAttribute("class", "btn btn-outline-light favBtns storeBtn");
+                        content.favorite.setAttribute("id", "favorite" + increment);
+
+                        content.favorite.innerText = "Does it exist?";
+                        content.moreInfo.setAttribute("class", "detailsFav");
+                        content.infoDiv.setAttribute('class', 'infoDiv')
 
 
-                    if (beerOnly.length == 0) {
-                        content.favorite.setAttribute("style", "background-color: red; width: 108px")
-                        content.favorite.disabled = true;
-                        content.favorite.innerText = "Not in store";
-                    } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
-                        console.log("Score: ", beerOnly);
-                        console.log("Length: " + beerOnly.length);
-                        content.favorite.disabled = true;
-                        content.favorite.setAttribute("style", "background-color: green; width: 108px");
-                        content.favorite.innerText = "In store";
-                    } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
-                        console.log("Score: ", beerOnly);
-                        console.log("Length: " + beerOnly.length);
-                        content.favorite.disabled = true;
-                        content.favorite.setAttribute("style", "background-color: green; width: 108px");
-                        content.favorite.innerText = "In store";
-                    } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
-                        console.log("Score: ", beerOnly);
-                        console.log("Length: " + beerOnly.length);
-                        content.favorite.disabled = true;
-                        content.favorite.setAttribute("style", "background-color: green; width: 108px");
-                        content.favorite.innerText = "In store";
-                    } else {
-                        console.log("Score: ", beerOnly);
-                        console.log("Length: " + beerOnly.length);
-                        content.favorite.setAttribute("style", "background-color: red; width: 108px")
-                        content.favorite.disabled = true;
-                        content.favorite.innerText = "Not in store";
+                        content.remove.setAttribute("class", "btn btn-outline-light favBtns removeBtn");
+                        content.remove.setAttribute("id", arrayToPrint[i].id);
+                        content.remove.innerText = "Remove beer";
+
+                        content.beerName.innerText = arrayToPrint[i].name;
+                        content.style.innerText = 'Type: ' + arrayToPrint[i].style;
+                        content.brewery.innerText = 'Brewery: ' + arrayToPrint[i].brewery;
+                        content.description.innerText = arrayToPrint[i].description;
+
+                        content.moreInfo.appendChild(content.img);
+                        content.moreInfo.appendChild(content.infoDiv);
+
+                        content.div.appendChild(content.beerName);
+                        content.infoDiv.appendChild(content.style);
+                        content.infoDiv.appendChild(content.brewery);
+
+                        content.moreInfo.appendChild(content.description);
+                        content.div.appendChild(content.moreInfo);
+
+                        content.div.appendChild(content.favorite);
+                        content.div.appendChild(content.remove);
+
+                        container.appendChild(content.div);
+
+                        increment++;
+
+                        let beerName = content.beerName.innerText;
+                        let brewery = content.brewery.innerText;
+
+                        let beerOnly = index.search(beerName + " " + brewery, {
+                            fields: {
+                                namn: {
+                                    boost: 1.2,
+                                },
+                                namn2: {
+                                    boost: 1.4,
+                                },
+                                producer: {
+                                    boost: 0,
+                                }
+                            }
+                        });
+
+
+                        if (beerOnly.length == 0) {
+                            content.favorite.setAttribute("style", "background-color: red; width: 108px")
+                            content.favorite.disabled = true;
+                            content.favorite.innerText = "Not in store";
+                        } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
+//                            console.log("Score: ", beerOnly);
+//                            console.log("Length: " + beerOnly.length);
+                            content.favorite.disabled = true;
+                            content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                            content.favorite.innerText = "In store";
+                        } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
+//                            console.log("Score: ", beerOnly);
+//                            console.log("Length: " + beerOnly.length);
+                            content.favorite.disabled = true;
+                            content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                            content.favorite.innerText = "In store";
+                        } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
+//                            console.log("Score: ", beerOnly);
+//                            console.log("Length: " + beerOnly.length);
+                            content.favorite.disabled = true;
+                            content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                            content.favorite.innerText = "In store";
+                        } else {
+//                            console.log("Score: ", beerOnly);
+//                            console.log("Length: " + beerOnly.length);
+                            content.favorite.setAttribute("style", "background-color: red; width: 108px")
+                            content.favorite.disabled = true;
+                            content.favorite.innerText = "Not in store";
+                        }
+
                     }
-
                 }
-
             }
 
             //Ta bort öl från databasen, arrayen och output 
@@ -590,29 +581,38 @@
                     }
                 }
                 db.ref(`users/${id}/favorites/` + remove).remove();
-//                output(favoriteArray);
-                console.log(favoriteArray.length)
             }
 
-            
-            
-            db.ref(`users/${id}/favorites/`).on("child_removed", function (snapshotToRemove) {
-                // Inträffar när ett objekt tas bort.
-                let dataToBeRemoved = snapshotToRemove.val(); // det borttagna objektet
-                let key = snapshotToRemove.key;
-                console.log(dataToBeRemoved)
-                console.log(dataToBeRemoved.key)
+
+            db.ref(`users/${id}/`).on("child_changed", function (snapshot) {
+                container.innerHTML = "";
+                favoriteArray = [];
+
+                let data = snapshot.val();
+                let key = snapshot.key;
+
+                for (let key in data) {
+                    if (typeof data[key] == "object") {
+                        for (let favs in data[key]) {
+                            beerFavorites = {
+                                name: data[key][favs].name,
+                                style: data[key][favs].style,
+                                description: data[key][favs].description,
+                                brewery: data[key][favs].brewery,
+                                img: data[key][favs].img,
+                                id: favs,
+                                bid: data[key][favs].bid
+                            }
+                            favoriteArray.push(beerFavorites);
+                        }
+                    }
+                }
+                output(favoriteArray);
             })
-
-
-
-
 
             container.addEventListener("click", function (e) {
                 let parentNodeForBeer = e.target.parentNode.lastChild.id;
-
                 let removeId = e.target.id;
-                
                 if (removeId === parentNodeForBeer && removeId !== "" && removeId !== undefined) {
                     removeBeerFromDb(removeId, e)
                 }
@@ -641,10 +641,10 @@
                         document.getElementById('popUpMessage').innerText = "You must choose a store.";
                     } else {
                         container.innerHTML = "";
+                        
                         document.getElementById('popUp').style.display = "none";
                         butikNr = document.getElementById('listOfStores').value;
-
-
+                        
                         let displayCity = document.getElementById('listOfCities').value;
                         let displayAdress = document.getElementById('listOfStores')[document.getElementById('listOfStores').selectedIndex].innerText;
                         displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
@@ -659,9 +659,9 @@
                     }
                 })
             }
-
             document.getElementById('menuDiv').style.display = "none";
 
+            
             function profileMenuEvent() {
                 if (document.getElementById('menuDiv').style.display == "none") {
                     document.getElementById('menuDiv').style.display = "block";
@@ -669,13 +669,4 @@
                     document.getElementById('menuDiv').style.display = "none";
                 }
             }
-
-
-
-
-
-
-
-
-
         })
