@@ -516,7 +516,12 @@
                         content.beerName.innerText = arrayToPrint[i].name;
                         content.style.innerText = 'Type: ' + arrayToPrint[i].style;
                         content.brewery.innerText = 'Brewery: ' + arrayToPrint[i].brewery;
-                        content.description.innerText = arrayToPrint[i].description;
+                        
+                          if (arrayToPrint[i].description == `""` ) {
+                            content.description.innerText = "No description";
+                        } else {
+                            content.description.innerText = arrayToPrint[i].description;
+                        }
 
                         content.moreInfo.appendChild(content.img);
                         content.moreInfo.appendChild(content.infoDiv);
