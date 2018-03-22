@@ -57,6 +57,7 @@
                     body.appendChild(spinContainer);
 
                     if (getData === true) {
+                        body.removeChild(spinContainer);
                         spinContainer.style.display = "block";
                         lSpinner.style.display = "block";
                     } else {
@@ -222,9 +223,9 @@
 
             //Hämtar hem butiker och deras sortiment
             function getStores() {
-                spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText2);
                 let loadCont = document.getElementsByClassName("loaderContainer")[0];
                 loadCont.removeChild(loadCont.children[0]);
+                spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText2);           
                 fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
                     .then(function (requestInStock) {
                         return requestInStock.text();
