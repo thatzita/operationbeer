@@ -36,6 +36,7 @@
             let butik = "";
             let butikNr = undefined;
             //            initPopUp();
+            document.getElementById('popUpButton').innerText = "Choose store";
 
 
             let spinnerObject = {
@@ -556,6 +557,7 @@
                             content.favorite.disabled = true;
                             content.favorite.innerText = "No store chosen";
                         } else {
+                            document.getElementById('popUpButton').innerText = "Change Store";
                             if (beerOnly.length == 0) {
                                 content.favorite.setAttribute("style", "background-color: red; width: 108px")
                                 content.favorite.disabled = true;
