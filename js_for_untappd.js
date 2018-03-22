@@ -478,7 +478,7 @@
              if (containerId == beerArray[i].beer.bid) {
                  beerObj.name = beerArray[i].beer.beer_name;
                  beerObj.style = beerArray[i].beer.beer_style;
-                 beerObj.description = beerArray[i].beer.beer_description;
+                 beerObj.description = `"${beerArray[i].beer.beer_description}"`;
                  beerObj.brewery = beerArray[i].brewery.brewery_name;
                  beerObj.img = beerArray[i].beer.beer_label;
                  beerObj.bid = beerArray[i].beer.bid;
