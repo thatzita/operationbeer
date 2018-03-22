@@ -553,57 +553,36 @@
                         });
 
                         if (alreadyClicked === false) {
-                            console.log("false")
                             content.favorite.setAttribute("style", "background-color: orange; width: 140px")
                             content.favorite.disabled = true;
                             content.favorite.innerText = "No store chosen";
-                            //                            compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         } else {
                             document.getElementById('popUpButton').innerText = "Change Store";
                             if (beerOnly.length == 0) {
-                                console.log("beerOnly.length == " + beerOnly.length)
                                 content.favorite.setAttribute("style", "background-color: red; width: 108px")
                                 content.favorite.disabled = true;
                                 content.favorite.innerText = "Not in store";
-
                             } else if (beerOnly[0].score > 10) {
-                                //                                console.log("Score: ", beerOnly);
-                                //                                console.log("Length: " + beerOnly.length);
                                 content.favorite.setAttribute("style", "background-color: green; width: 108px")
                                 content.favorite.disabled = true;
                                 content.favorite.innerText = "In store";
                             } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
-                                console.log(beerOnly[0]);
-                                //                                console.log("Score: ", beerOnly);
-                                //                                console.log("Length: " + beerOnly.length);
                                 content.favorite.disabled = true;
                                 content.favorite.setAttribute("style", "background-color: green; width: 108px");
                                 content.favorite.innerText = "In store";
                             } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
-                                console.log(beerOnly[0]);
-                                //                                console.log("Score: ", beerOnly);
-                                //                                console.log("Length: " + beerOnly.length);
                                 content.favorite.disabled = true;
                                 content.favorite.setAttribute("style", "background-color: green; width: 108px");
                                 content.favorite.innerText = "In store";
                             } else if (beerOnly.length <= 25 && beerOnly[0].score > !2.6) {
-                                //                                console.log(beerOnly[0]);
-                                console.log("Score: ", beerOnly);
-                                //                                console.log("Length: " + beerOnly.length);
                                 content.favorite.disabled = true;
                                 content.favorite.setAttribute("style", "background-color: red; width: 108px");
                                 content.favorite.innerText = "Not in store";
                             } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
-                                //                                console.log(beerOnly[0]);
-                                console.log("Score: ", beerOnly);
-                                //                                console.log("Length: " + beerOnly.length);
                                 content.favorite.disabled = true;
                                 content.favorite.setAttribute("style", "background-color: green; width: 108px");
                                 content.favorite.innerText = "In store";
                             } else {
-                                console.log(beerOnly[0]);
-                                //                                console.log("Score: ", beerOnly);
-                                //                                console.log("Length: " + beerOnly.length);
                                 content.favorite.setAttribute("style", "background-color: red; width: 108px")
                                 content.favorite.disabled = true;
                                 content.favorite.innerText = "Not in store";
@@ -692,9 +671,6 @@
                     document.getElementById('popUpMessage').innerText = "Choose a store.";
                     compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                     getStores();
-                    //                    console.log(alreadyClicked)
-
-
                 }
             })
 
