@@ -908,7 +908,7 @@ h2 {
     top: 35%;
     bottom: 35%;
     z-index: 1;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     background: rgba(91, 35, 25, 1);
