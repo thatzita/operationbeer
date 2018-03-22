@@ -540,13 +540,13 @@
                         let beerOnly = index.search(beerName + " " + brewery, {
                             fields: {
                                 namn: {
-                                    boost: 1.2,
+                                    boost: 2.5,
                                 },
                                 namn2: {
-                                    boost: 1.4,
+                                    boost: 1.5,
                                 },
                                 producer: {
-                                    boost: 1,
+                                    boost: 1.5,
                                 }
                             }
                         });
@@ -560,27 +560,40 @@
                                 content.favorite.setAttribute("style", "background-color: red; width: 108px")
                                 content.favorite.disabled = true;
                                 content.favorite.innerText = "Not in store";
-                            } else if (beerOnly[0].score > 10) {
+                            }
+
+                            else if (beerOnly[0].score > 9) {
+//                                console.log("score above 4.9", beerOnly);
                                 content.favorite.setAttribute("style", "background-color: green; width: 108px")
                                 content.favorite.disabled = true;
                                 content.favorite.innerText = "In store";
-                            } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
+                            } 
+                            else if (beerOnly[0].score >= 4.9 && beerOnly.length <= 10) {
+//                                console.log("score above 4.9", beerOnly);
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px")
                                 content.favorite.disabled = true;
-                                content.favorite.setAttribute("style", "background-color: green; width: 108px");
                                 content.favorite.innerText = "In store";
-                            } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
+                            } 
+                            else if (beerOnly[0].score > 4 && beerOnly.length > 10 && beerOnly.length < 15) {
+//                                console.log("score above 4", beerOnly);
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px")
                                 content.favorite.disabled = true;
-                                content.favorite.setAttribute("style", "background-color: green; width: 108px");
                                 content.favorite.innerText = "In store";
-                            } else if (beerOnly.length <= 25 && beerOnly[0].score > !2.6) {
+                            }
+                            
+                            else if (beerOnly[0].score > 4 && beerOnly.length >= 15 && beerOnly.length <= 20) {
+//                                console.log("score above 4", beerOnly);
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px")
                                 content.favorite.disabled = true;
-                                content.favorite.setAttribute("style", "background-color: red; width: 108px");
-                                content.favorite.innerText = "Not in store";
-                            } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
-                                content.favorite.disabled = true;
-                                content.favorite.setAttribute("style", "background-color: green; width: 108px");
                                 content.favorite.innerText = "In store";
-                            } else {
+                            }
+                            else if (beerOnly[0].score > 3.5 && beerOnly.length >= 21) {
+//                                console.log("score above 3.5", beerOnly);
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px")
+                                content.favorite.disabled = true;
+                                content.favorite.innerText = "In store";
+                            }   
+                            else {
                                 content.favorite.setAttribute("style", "background-color: red; width: 108px")
                                 content.favorite.disabled = true;
                                 content.favorite.innerText = "Not in store";
