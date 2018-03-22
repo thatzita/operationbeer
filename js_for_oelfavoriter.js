@@ -36,7 +36,7 @@
             let butik = "";
             let butikNr = undefined;
             //            initPopUp();
-            document.getElementById('popUpButton').innerText = "Choose store";
+            document.getElementById('popUpButton').innerText = "Choose Store";
 
 
             let spinnerObject = {
