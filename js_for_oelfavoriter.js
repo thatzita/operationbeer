@@ -57,7 +57,7 @@
                     body.appendChild(spinContainer);
 
                     if (getData === true) {
-                        body.removeChild(spinContainer);
+                        body.removeChild(text);
                         spinContainer.style.display = "block";
                         lSpinner.style.display = "block";
                     } else {
