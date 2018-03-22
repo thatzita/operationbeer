@@ -1171,6 +1171,12 @@ footer {
     .storeBtn {
     border-color: transparent;
     }
+
+    #currentStore {
+        position: absolute;
+        left: 10px;
+        font-size: .8em;
+    }
 }
 
 @media (max-width: 490px) {
@@ -1185,9 +1191,6 @@ footer {
     body {
         background-color: #544436;
     }
-    #currentStore {
-        font-size: 0.8em;
-    }
 }
 
 @media (max-width: 360px) {
@@ -1197,10 +1200,6 @@ footer {
     }
     body {
         background-color: #544436;
-    }
-    #currentStore {
-        text-align: left;
-        margin-left: 20px;
     }
     #popUpDiv {
         width: 250px;
