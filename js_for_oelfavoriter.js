@@ -60,6 +60,7 @@
                         spinContainer.style.display = "block";
                         lSpinner.style.display = "block";
                     } else {
+                        spinContainer.removeChild(text);    
                         lSpinner.style.display = "none";
                         spinContainer.style.display = "none";
                     }
