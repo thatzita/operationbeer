@@ -36,6 +36,7 @@
             let butik = "";
             let butikNr = undefined;
             //            initPopUp();
+            document.getElementById('popUpButton').innerText = "Choose store";
 
 
             let spinnerObject = {
@@ -558,6 +559,7 @@
                             content.favorite.innerText = "No store chosen";
                             //                            compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         } else {
+                            document.getElementById('popUpButton').innerText = "Change Store";
                             if (beerOnly.length == 0) {
                                 console.log("beerOnly.length == " + beerOnly.length)
                                 content.favorite.setAttribute("style", "background-color: red; width: 108px")
