@@ -318,9 +318,15 @@
              content.beerNameHide.innerText = array[i].beer.beer_name;
              content.style.innerText = 'Type: ' + array[i].beer.beer_style;
              content.brewery.innerText = 'Brewery: ' + array[i].brewery.brewery_name;
+             
+             if(array[i].beer.beer_description == ""){
+                 content.description.innerText = "No description";
+             }
+             else{
              content.description.innerText = array[i].beer.beer_description;
+             }
 
-             content.infoDiv.setAttribute('class', 'infoDiv')
+             content.infoDiv.setAttribute('class', 'infoDiv');
 
              content.hide.appendChild(content.arrowDown);
              content.hide.appendChild(content.beerNameHide);
