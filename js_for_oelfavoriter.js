@@ -126,7 +126,7 @@
 
                         elements.userDiv.setAttribute("class", "userDiv");
                         elements.logOutBtn.setAttribute("id", "signOutDiv");
-                        elements.logOutBtn.innerText = "Sign out";
+                        elements.logOutBtn.innerText = "Sign Out";
                         elements.name.innerText = `${displayName}`;
                         elements.name.setAttribute('id', 'menuName');
                         profileMenu.appendChild(elements.name);
