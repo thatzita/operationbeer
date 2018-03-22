@@ -244,10 +244,7 @@
                             console.log(error);
                             spinnerObject.spinner(spinnerObject.notFetching);
                         })
-
                 } else {
-                    //                    specificStore(result);
-                    //                    addToFavorites();
                     output(favoriteArray);
                 }
                 alreadyClicked = true;
