@@ -35,7 +35,7 @@
             let city = "";
             let butik = "";
             let butikNr = undefined;
-            initPopUp();
+            //            initPopUp();
 
 
             let spinnerObject = {
@@ -179,6 +179,8 @@
                 })
             }; // getUserInfo ends
 
+            var alreadyClicked = false;
+
 
             function addToFavorites() {
                 favoriteArray = [];
@@ -208,7 +210,7 @@
                         return requestProducts.text();
                     })
                     .then(function (json) {
-                        getStores();
+                        spinnerObject.spinner(spinnerObject.notFetching);
                         beerToFind = json;
                         resultProducts = xmlToJSON.parseString(beerToFind);
                         beerOnlyList(resultProducts);
@@ -222,24 +224,30 @@
 
             //Hämtar hem butiker och deras sortiment
             function getStores() {
-                 spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText2); 
-                let loadCont = document.getElementsByClassName("loaderContainer")[0];
-                loadCont.removeChild(loadCont.children[0]);
-                          
-                fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
-                    .then(function (requestInStock) {
-                        return requestInStock.text();
-                    })
-                    .then(function (json) {
-                        spinnerObject.spinner(spinnerObject.notFetching);
-                        let beerDB = json;
-                        result = xmlToJSON.parseString(beerDB);
-                        specificStore(result);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                        spinnerObject.spinner(spinnerObject.notFetching);
-                    })
+                if (alreadyClicked === false) {
+                    spinnerObject.spinner(spinnerObject.fetching, spinnerObject.loadText2);
+                    let loadCont = document.getElementsByClassName("loaderContainer")[0];
+                    loadCont.removeChild(loadCont.children[0]);
+                    fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stock/xml")
+                        .then(function (requestInStock) {
+                            return requestInStock.text();
+                        })
+                        .then(function (json) {
+                            spinnerObject.spinner(spinnerObject.notFetching);
+                            let beerDB = json;
+                            result = xmlToJSON.parseString(beerDB);
+                            specificStore(result);
+                            compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
+                            addToFavorites();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            spinnerObject.spinner(spinnerObject.notFetching);
+                        })
+                } else {
+                    output(favoriteArray);
+                }
+                alreadyClicked = true;
             }
 
             fetch("https://cors-anywhere.herokuapp.com/https://www.systembolaget.se/api/assortment/stores/xml")
@@ -390,8 +398,10 @@
                             namn2: outputFromFetch.artiklar[0].artikel[i].Namn2[0]._text,
                         }
                         listofBeers.push(thatBeer);
+
                     }
                 }
+                addToFavorites();
             }
 
             function matchStore(stores, storeNr) {
@@ -403,7 +413,6 @@
                     if (store._attr.ButikNr._value == storeNr) {
                         for (let z = 0; z < products.length; z++) {
                             storeProducts.push(products[z]);
-
                         }
                     }
                 }
@@ -465,8 +474,11 @@
                 this.setRef('nr');
             })
 
+
+            let lengthBool = false;
             //Skriver ut lista på sidan över favoriter
             function output(arrayToPrint) {
+                container.innerHTML = "";
                 let content = {};
                 if (arrayToPrint.length !== 0) {
                     for (let i = 0; i < arrayToPrint.length; i++) {
@@ -490,7 +502,7 @@
                         content.favorite.setAttribute("class", "btn btn-outline-light favBtns storeBtn");
                         content.favorite.setAttribute("id", "favorite" + increment);
 
-                        content.favorite.innerText = "Does it exist?";
+
                         content.moreInfo.setAttribute("class", "detailsFav");
                         content.infoDiv.setAttribute('class', 'infoDiv')
 
@@ -533,42 +545,67 @@
                                     boost: 1.4,
                                 },
                                 producer: {
-                                    boost: 0,
+                                    boost: 1,
                                 }
                             }
                         });
 
-
-                        if (beerOnly.length == 0) {
-                            content.favorite.setAttribute("style", "background-color: red; width: 108px")
+                        if (alreadyClicked === false) {
+                            console.log("false")
+                            content.favorite.setAttribute("style", "background-color: orange; width: 140px")
                             content.favorite.disabled = true;
-                            content.favorite.innerText = "Not in store";
-                        } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
-                            //                                                        console.log("Score: ", beerOnly);
-                            //                                                        console.log("Length: " + beerOnly.length);
-                            content.favorite.disabled = true;
-                            content.favorite.setAttribute("style", "background-color: green; width: 108px");
-                            content.favorite.innerText = "In store";
-                        } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
-                            //                                                        console.log("Score: ", beerOnly);
-                            //                                                        console.log("Length: " + beerOnly.length);
-                            content.favorite.disabled = true;
-                            content.favorite.setAttribute("style", "background-color: green; width: 108px");
-                            content.favorite.innerText = "In store";
-                        } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
-                            //                                                        console.log("Score: ", beerOnly);
-                            //                                                        console.log("Length: " + beerOnly.length);
-                            content.favorite.disabled = true;
-                            content.favorite.setAttribute("style", "background-color: green; width: 108px");
-                            content.favorite.innerText = "In store";
+                            content.favorite.innerText = "No store chosen";
+                            //                            compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
                         } else {
-                            //                                                        console.log("Score: ", beerOnly);
-                            //                                                        console.log("Length: " + beerOnly.length);
-                            content.favorite.setAttribute("style", "background-color: red; width: 108px")
-                            content.favorite.disabled = true;
-                            content.favorite.innerText = "Not in store";
-                        }
+                            if (beerOnly.length == 0) {
+                                console.log("beerOnly.length == " + beerOnly.length)
+                                content.favorite.setAttribute("style", "background-color: red; width: 108px")
+                                content.favorite.disabled = true;
+                                content.favorite.innerText = "Not in store";
 
+                            } else if (beerOnly[0].score > 10) {
+                                //                                console.log("Score: ", beerOnly);
+                                //                                console.log("Length: " + beerOnly.length);
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px")
+                                content.favorite.disabled = true;
+                                content.favorite.innerText = "In store";
+                            } else if (beerOnly[0].score > 5.2 && beerOnly.length < 10) {
+                                console.log(beerOnly[0]);
+                                //                                console.log("Score: ", beerOnly);
+                                //                                console.log("Length: " + beerOnly.length);
+                                content.favorite.disabled = true;
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                                content.favorite.innerText = "In store";
+                            } else if (beerOnly.length >= 10 && beerOnly[0].score > 6) {
+                                console.log(beerOnly[0]);
+                                //                                console.log("Score: ", beerOnly);
+                                //                                console.log("Length: " + beerOnly.length);
+                                content.favorite.disabled = true;
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                                content.favorite.innerText = "In store";
+                            } else if (beerOnly.length <= 25 && beerOnly[0].score > !2.6) {
+                                //                                console.log(beerOnly[0]);
+                                console.log("Score: ", beerOnly);
+                                //                                console.log("Length: " + beerOnly.length);
+                                content.favorite.disabled = true;
+                                content.favorite.setAttribute("style", "background-color: red; width: 108px");
+                                content.favorite.innerText = "Not in store";
+                            } else if (beerOnly.length > 20 && beerOnly[0].score > 2) {
+                                //                                console.log(beerOnly[0]);
+                                console.log("Score: ", beerOnly);
+                                //                                console.log("Length: " + beerOnly.length);
+                                content.favorite.disabled = true;
+                                content.favorite.setAttribute("style", "background-color: green; width: 108px");
+                                content.favorite.innerText = "In store";
+                            } else {
+                                console.log(beerOnly[0]);
+                                //                                console.log("Score: ", beerOnly);
+                                //                                console.log("Length: " + beerOnly.length);
+                                content.favorite.setAttribute("style", "background-color: red; width: 108px")
+                                content.favorite.disabled = true;
+                                content.favorite.innerText = "Not in store";
+                            }
+                        }
                     }
                 }
             }
@@ -589,7 +626,7 @@
             db.ref(`users/${id}/`).on("child_changed", function (snapshot) {
                 let data = snapshot.val();
                 let key = snapshot.key;
-                
+
                 if (key === id) {
                     container.innerHTML = "";
                     favoriteArray = [];
@@ -622,6 +659,43 @@
             });
 
 
+            document.getElementById('popUpButton').addEventListener('click', function () {
+                document.getElementById('popUp').style.display = 'flex';
+            });
+
+
+            let displayCity;
+            let displayAdress;
+
+            let displayStore;
+
+
+            document.getElementById('confirmButton').addEventListener('click', function (e) {
+
+                if (document.getElementById('listOfStores').value === "") {
+                    document.getElementById('popUpMessage').innerText = "You must choose a store.";
+                } else {
+                    container.innerHTML = "";
+
+                    document.getElementById('popUp').style.display = "none";
+                    butikNr = document.getElementById('listOfStores').value;
+
+                    displayCity = document.getElementById('listOfCities').value;
+                    displayAdress = document.getElementById('listOfStores')[document.getElementById('listOfStores').selectedIndex].innerText;
+                    displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
+                    displayStore = displayCity + ", " + displayAdress;
+                    document.getElementById('store').innerText = displayStore;
+
+                    document.getElementById('popUpMessage').innerText = "Choose a store.";
+                    compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
+                    getStores();
+                    //                    console.log(alreadyClicked)
+
+
+                }
+            })
+
+
             function initPopUp() {
                 document.getElementById('popUpMessage').innerText = "Choose a store.";
                 document.getElementById('listOfCities').style.display = "none";
@@ -635,31 +709,8 @@
                     }
                 })
 
-                document.getElementById('popUpButton').addEventListener('click', function () {
-                    document.getElementById('popUp').style.display = 'flex';
-                });
-                document.getElementById('confirmButton').addEventListener('click', function () {
 
-                    if (document.getElementById('listOfStores').value === "") {
-                        document.getElementById('popUpMessage').innerText = "You must choose a store.";
-                    } else {
-                        container.innerHTML = "";
 
-                        document.getElementById('popUp').style.display = "none";
-                        butikNr = document.getElementById('listOfStores').value;
-
-                        let displayCity = document.getElementById('listOfCities').value;
-                        let displayAdress = document.getElementById('listOfStores')[document.getElementById('listOfStores').selectedIndex].innerText;
-                        displayCity = displayCity.charAt(0).toUpperCase() + displayCity.slice(1).toLowerCase();
-                        let displayStore = displayCity + ", " + displayAdress;
-                        document.getElementById('store').innerText = displayStore;
-
-                        document.getElementById('popUpMessage').innerText = "Choose a store.";
-                        compareListToStore(matchStore(storeOnly, butikNr), listofBeers);
-                        addToFavorites();
-
-                    }
-                })
             }
             document.getElementById('menuDiv').style.display = "none";
 
