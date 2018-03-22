@@ -397,11 +397,13 @@
          }
      })
 
+     beersToBring.style.display = "none";
      searchBeerBtn.addEventListener("click", function () {
          offset = 0;
          beerArray = [];
          value = searchBeerInput.value;
          showMore.style.display = "none";
+         beersToBring.style.display = "block";
          beersToBring.innerText = `Results for "${value}"`
          fetch(`https://api.untappd.com/v4/search/beer?q=${value}&client_id=${clientId}&client_secret=${clientSecret}&limit=${counter}&offset=${offset}`)
              .then(function (request) {
